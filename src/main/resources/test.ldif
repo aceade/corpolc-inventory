@@ -11,16 +11,16 @@ objectclass: organizationalUnit
 ou: people
 
 ## define myself. I belong to the people object
-dn: uid=prowlands,ou=people,dc=connacht,dc=com
+dn: uid=philiprowlands,ou=people,dc=connacht,dc=com
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: Philip Rowlands
 sn: Rowlands
-uid: prowlands
+uid: philiprowlands
 security: max
-userPassword: prowlands
+userPassword: philiprowlands
 
 ## Define another user. He also belongs to the people object
 dn: uid=ajensen451,ou=people,dc=connacht,dc=com
@@ -63,7 +63,7 @@ dn: cn=admin,ou=groups,dc=connacht,dc=com
 objectclass: top
 objectclass: groupOfNames
 cn: admin
-member: uid=prowlands,ou=people,dc=connacht,dc=com
+member: uid=philiprowlands,ou=people,dc=connacht,dc=com
 
 ## Define general users
 dn: cn=user,ou=groups,dc=connacht,dc=com
