@@ -56,7 +56,7 @@ cn: Paula Bean
 sn: Bean
 uid: pbean
 security: min
-userPassword: pbean
+userPassword: brillant
 
 ## define the admin user (moi)
 dn: cn=admin,ou=groups,dc=connacht,dc=com
