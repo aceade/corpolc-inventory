@@ -1,0 +1,118 @@
+## Sample from Baeldung.com
+
+dn: ou=groups,dc=baeldung,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=people,dc=baeldung,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=baeldung,ou=people,dc=baeldung,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Jim Beam
+sn: Beam
+uid: baeldung
+userPassword: password
+
+dn: cn=admin,ou=groups,dc=baeldung,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: admin
+member: uid=baeldung,ou=people,dc=baeldung,dc=com
+
+dn: cn=user,ou=groups,dc=baeldung,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: user
+member: uid=baeldung,ou=people,dc=baeldung,dc=com
+
+#### Connacht Trading
+
+
+## Define a top-level object, groups
+dn: ou=groups,dc=connacht,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+## define a top-level object, people
+dn: ou=people,dc=connacht,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+## define myself. I belong to the people object
+dn: uid=prowlands,ou=people,dc=connacht,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Philip Rowlands
+sn: Rowlands
+uid: prowlands
+security: max
+userPassword: prowlands
+
+## Define another user. He also belongs to the people object
+dn: uid=ajensen451,ou=people,dc=connacht,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Adam Jensen
+sn: Jensen
+uid: ajensen451
+security: med
+userPassword: ineveraskedforthis
+
+## Define an intern (John).
+dn: uid=jsmith,ou=people,dc=connacht,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: John Smith
+sn: Smith
+uid: jsmith
+security: min
+userPassword: jsmith
+
+## Define another intern (Paula)
+dn: uid=pbean,ou=people,dc=connacht,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Paula Bean
+sn: Bean
+uid: pbean
+security: min
+userPassword: pbean
+
+## define the admin user (moi)
+dn: cn=admin,ou=groups,dc=connacht,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: admin
+member: uid=prowlands,ou=people,dc=connacht,dc=com
+
+## Define general users
+dn: cn=user,ou=groups,dc=connacht,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: user
+member: uid=ajensen451,ou=people,dc=connacht,dc=com
+
+## define the intern users
+dn: cn=intern,ou=groups,dc=connacht,dc=com
+objectclass: top
+objectclass: groupOfNames
+cn: intern
+member: uid=jsmith,ou=people,dc=connacht,dc=com
+member: uid=pbean,ou=people,dc=connacht,dc=com
