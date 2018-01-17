@@ -7,10 +7,11 @@ This is a somewhat satirical project/employee/site directory for a fictional evi
 #### Things to note:
 
 * It is *not* for production use!
-** There will be vulnerabilities, so I can teach myself some penetration testing.
-** There will be jokes, references to various memes, and other nonsense.
+    * There will be vulnerabilities, so I can teach myself some penetration testing.
+    * There will be jokes, references to various memes, and other nonsense.
+    * This currently only supports a Postgresql database. I do not intend to support others in the foreseeable future.
 
 
 ## Licence
 
-See the LICENCE.MD file
+See the LICENCE file
