@@ -6,9 +6,10 @@
 package com.aceade.corpolc.inventory.database;
 
 import java.sql.*;
-import java.util.Properties;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -17,11 +18,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
  */
 public class ConnectionFactory {
     
+    private static final Logger logger = LogManager.getLogger(ConnectionFactory.class);
+    
     private final DataSource dataSource;
     
     public ConnectionFactory(String url, String user, String password, Integer poolSize) {
         this.dataSource = makeDataSource(url, user, password, poolSize);
-        System.out.println("Username is [" + user + "], password is [" + password + "]. URL is [" + url + "]. Poolsize is [" + poolSize + "]");
     }
     
     /**
@@ -33,6 +35,8 @@ public class ConnectionFactory {
      * @return 
      */
     private DataSource makeDataSource(String url, String username, String password, int poolsize) {
+        
+        logger.info("Creating a connection pool to url[" + url + "], with pool size [" + poolsize + "]");
         
         BasicDataSource newDataSource = new BasicDataSource();
         newDataSource.setDriverClassName("org.postgresql.Driver");
@@ -48,7 +52,7 @@ public class ConnectionFactory {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            System.err.println(e);
+            logger.error("Unable to retrieve connection! ", e);
             return null;   
         }
         
