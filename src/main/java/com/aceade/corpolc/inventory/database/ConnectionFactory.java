@@ -21,7 +21,7 @@ public class ConnectionFactory {
     
     public ConnectionFactory(String url, String user, String password, Integer poolSize) {
         this.dataSource = makeDataSource(url, user, password, poolSize);
-        System.out.println("Username is [" + user + "], password is [" + password + "]. URL is " + url);
+        System.out.println("Username is [" + user + "], password is [" + password + "]. URL is [" + url + "]. Poolsize is [" + poolSize + "]");
     }
     
     /**
