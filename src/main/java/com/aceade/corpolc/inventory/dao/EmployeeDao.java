@@ -16,12 +16,16 @@ import java.sql.SQLException;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author philip
  */
 public class EmployeeDao extends BaseDao {
+    
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeDao.class);
     
     public Employee getEmployee (long id) {
         String sql = Queries.SELECT_EMPLOYEE;
@@ -38,7 +42,7 @@ public class EmployeeDao extends BaseDao {
             System.out.println(employee);
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve employee ["+id+"]", e);
         }
         
         return employee;
@@ -58,7 +62,7 @@ public class EmployeeDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve all employees ", e);
         }
         
         return employees;
@@ -88,7 +92,7 @@ public class EmployeeDao extends BaseDao {
                 amount = rs.getInt("count");
             }
         } catch  (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve number of employees ", e);
         }
         return amount;
     }
@@ -108,7 +112,7 @@ public class EmployeeDao extends BaseDao {
             stmt.setDouble(7, newEmployee.getSalary());
             success = stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not add new employee ", e);
         }
         return success;
     }
@@ -121,7 +125,7 @@ public class EmployeeDao extends BaseDao {
             stmt.setLong(1, id);
             success = stmt.execute();
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not delete employee ["+id+"]", e);
         }
         return success;
     }

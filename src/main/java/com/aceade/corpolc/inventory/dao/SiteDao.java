@@ -16,12 +16,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author philip
  */
 public class SiteDao extends BaseDao {
+    
+    private static final Logger LOGGER = LogManager.getLogger(SiteDao.class);
     
     public Site getSite(long id) {
         String sql = Queries.SELECT_SITE;
@@ -38,7 +42,7 @@ public class SiteDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Unable to retrieve site with id ["+id+"]", e);
         }
         
         return site;
@@ -59,7 +63,7 @@ public class SiteDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Unable to retrieve all sites", e);
         }
         
         return sites;
@@ -79,7 +83,7 @@ public class SiteDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Unable to retrieve number of sites", e);
         }
         
         return amount;
@@ -99,7 +103,7 @@ public class SiteDao extends BaseDao {
             success = stmt.execute();
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Unable to add new site", e);
         }
         
         return success;
@@ -114,7 +118,7 @@ public class SiteDao extends BaseDao {
             successful = stmt.execute();
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not delete site with id ["+id+"]", e);
         }
         return successful;
     }
@@ -143,7 +147,7 @@ public class SiteDao extends BaseDao {
                 theSite = createSite(rs);
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve site with id ["+id+"]...weakly", e);
         }
         
         return theSite;

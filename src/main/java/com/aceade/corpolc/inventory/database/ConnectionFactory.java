@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectionFactory {
     
-    private static final Logger logger = LogManager.getLogger(ConnectionFactory.class);
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionFactory.class);
     
     private final DataSource dataSource;
     
@@ -36,7 +36,7 @@ public class ConnectionFactory {
      */
     private DataSource makeDataSource(String url, String username, String password, int poolsize) {
         
-        logger.info("Creating a connection pool to url[" + url + "], with pool size [" + poolsize + "]");
+        LOGGER.info("Creating a connection pool to url[" + url + "], with pool size [" + poolsize + "]");
         
         BasicDataSource newDataSource = new BasicDataSource();
         newDataSource.setDriverClassName("org.postgresql.Driver");
@@ -52,7 +52,7 @@ public class ConnectionFactory {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            logger.error("Unable to retrieve connection! ", e);
+            LOGGER.error("Unable to retrieve connection! ", e);
             return null;   
         }
         

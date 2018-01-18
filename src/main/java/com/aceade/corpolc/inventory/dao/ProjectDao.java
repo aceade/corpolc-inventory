@@ -16,12 +16,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author philip
  */
 public class ProjectDao extends BaseDao {
+    
+    private static final Logger LOGGER = LogManager.getLogger(ProjectDao.class);
     
     public Project getProject(long id) {
         String sql = Queries.SELECT_PROJECT;
@@ -40,7 +44,7 @@ public class ProjectDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve project by id ["+id+"]", e);
         }
         
         return project;
@@ -59,7 +63,7 @@ public class ProjectDao extends BaseDao {
             
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve total number of projects", e);
         }
         return amount;
     }
@@ -84,7 +88,7 @@ public class ProjectDao extends BaseDao {
             
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve project by id ["+projectId+"]", e);
         }
         
         return employees;
@@ -109,7 +113,7 @@ public class ProjectDao extends BaseDao {
             }
             
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve sites involved in project with id ["+id+"]", e);
         }
         
         return sites;
@@ -132,7 +136,7 @@ public class ProjectDao extends BaseDao {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            LOGGER.error("Could not retrieve projects for employee ["+employeeId+"]", e);
         }
         
         return projects;
