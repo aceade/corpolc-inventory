@@ -39,7 +39,6 @@ public class EmployeeDao extends BaseDao {
             while (rs.next()) {
                 employee = createEmployee(rs);
             }
-            System.out.println(employee);
             
         } catch (SQLException e) {
             LOGGER.error("Could not retrieve employee ["+id+"]", e);

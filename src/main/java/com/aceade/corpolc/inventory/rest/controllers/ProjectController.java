@@ -12,6 +12,8 @@ import com.aceade.corpolc.inventory.services.SiteService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.PathParam;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/projects")
 public class ProjectController {
     
+    private static final Logger LOGGER = LogManager.getLogger(ProjectController.class);
+    
     @Inject
     private ProjectService projectService;
     
@@ -35,12 +39,13 @@ public class ProjectController {
     
     @RequestMapping(method = RequestMethod.GET, value="/all")
     public List<Project> getAllProjects(){
+        LOGGER.info("Returning all projects");
         return projectService.getAllProjects();
     }
     
     @RequestMapping(method = RequestMethod.GET, value="/{id}")
     public Project getProject(@PathParam("id") long id) {
-        
+        LOGGER.info("Returning project with id ["+id+"]");
         Project project = projectService.getProject(id);      
         project.setEmployees(projectService.getEmployeesOnProject(id));
         project.setSites(projectService.getSitesForProject(id));     

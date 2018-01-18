@@ -13,6 +13,8 @@ import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sites")
 public class SiteController {
     
+    private static final Logger LOGGER = LogManager.getLogger(SiteController.class);
+    
     @Inject
     private SiteService siteService;
     
@@ -40,21 +44,25 @@ public class SiteController {
     
     @RequestMapping(method = RequestMethod.GET, value="/getAll")
     public List<Site> getAllSites(){
+        LOGGER.info("Retrieving all sites");
         return siteService.viewAllSites();
     }
     
     @RequestMapping(method = RequestMethod.GET, value="/get")
     public Site viewSite(@RequestParam(value="id", required=true) long siteId) {
+        LOGGER.info("Retrieving site ["+siteId+"]");
         return siteService.getSite(siteId);
     }
     
     @RequestMapping(method= RequestMethod.GET, value="/count")
     public Integer getSiteCount() {
+        LOGGER.info("Retrieving total number of sites");
         return siteService.getTotalSiteCount();
     }
     
     @RequestMapping(method=RequestMethod.POST, value="/add")
     public ResponseEntity addSite(@RequestBody NewSiteRequest newSite) {
+        LOGGER.info("Adding a new site");
         boolean added = siteService.createSite(newSite);
         if (added) {
             return ResponseEntity.ok().build();    
@@ -66,6 +74,7 @@ public class SiteController {
     
     @RequestMapping(method=RequestMethod.DELETE, value="/")
     public ResponseEntity deleteSite(@RequestParam(value="id", required=true) long id) {
+        LOGGER.info("The site ["+id+"] never existed...");
         boolean added = siteService.deleteSite(id);
         if (added) {
             return ResponseEntity.ok().build();    
@@ -81,6 +90,7 @@ public class SiteController {
      */
     @RequestMapping(method=RequestMethod.GET, value="/get/with/weak/query/why/does/this/exist")
     public Site getSiteWithWeakQuery(@RequestParam(value="id", required=true) String id) {
+        LOGGER.info("Badly retrieving a site with id ["+id+"]");
         return siteService.getSiteBadly(id);
     }
 }

@@ -19,6 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/employees")
 public class EmployeeController {
     
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeController.class);
+    
     @Inject
     private EmployeeService employeeService;
     
@@ -47,16 +51,18 @@ public class EmployeeController {
     
     @RequestMapping(value="/", method=RequestMethod.GET)
     public Employee getEmployee(@RequestParam(value="id", required=true) long id) {
+        LOGGER.info("Retrieveing employee with id ["+id+"]");
         return employeeService.getEmployee(id);
     }
     
     @RequestMapping(value="/", method=RequestMethod.POST)
     public ResponseEntity<Boolean> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
+        LOGGER.info("Adding employee");
         
         // check the security level before we go any further
         Site theSite = siteService.getSite(newDrone.getSiteId());
         int siteSecurity = theSite.getMinimumSecurityLevel().toInt();
-        System.out.println("Site security level is " + siteSecurity + "; new employee is " + newDrone.getSecurityLevel());
+        LOGGER.debug("Site security level is " + siteSecurity + "; new employee is " + newDrone.getSecurityLevel());
         if (siteSecurity > newDrone.getSecurityLevel()) {
             
             return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
@@ -66,26 +72,27 @@ public class EmployeeController {
     
     @RequestMapping(value="/", method=RequestMethod.DELETE)
     public boolean deleteEmployee(@RequestParam(value="id", required=true) long id) {
+        LOGGER.info("Terminating employee ["+id+"]");
         return employeeService.deleteEmployee(id);
     }
     
     @RequestMapping(value="/all", method=RequestMethod.GET)
     public List<Employee> getAllEmployees() {
+        LOGGER.info("Retrieving all employees");
         return employeeService.getAllEmployees();
     }
     
     @RequestMapping(value="/projects")
     public List<Project> getProjectsForEmployee(@RequestParam(value="id", required=true)long id, HttpServletRequest request){
+        LOGGER.info("Retrieving projects for employee ["+id+"]");
         return projectService.getProjectsForEmployee(id);
     }
     
     @RequestMapping(value="/isAdmin")
     public boolean isUserAdmin(UsernamePasswordAuthenticationToken userDetails) {
-        System.out.println(userDetails.getPrincipal());
-        System.out.println(userDetails.getAuthorities());
-        System.out.println(userDetails.getCredentials());
-        
-
+        LOGGER.debug(userDetails.getPrincipal());
+        LOGGER.debug(userDetails.getAuthorities());
+        LOGGER.debug(userDetails.getCredentials());
         
         return false;
     }
