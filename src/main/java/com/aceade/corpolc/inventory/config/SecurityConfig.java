@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .groupSearchBase("ou=groups")
             .groupSearchFilter("member={0}")
             .contextSource()
-//                .root("dc=baeldung,dc=com")
             .root("dc=connacht,dc=com")
             .ldif("classpath:test.ldif");
                 

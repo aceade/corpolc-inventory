@@ -8,6 +8,8 @@ package com.aceade.corpolc.inventory.database;
 import java.sql.*;
 import java.util.Properties;
 import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 
 /**
  *
@@ -15,38 +17,36 @@ import javax.sql.DataSource;
  */
 public class ConnectionFactory {
     
-    private DataSource dataSource;
-    
-    private final String url;
-    
-    private final Properties properties;
+    private final DataSource dataSource;
     
     public ConnectionFactory(String url, String user, String password, Integer poolSize) {
-        this.url = url;
-        this.dataSource = makeDataSource(url, poolSize);
-        this.properties = new Properties();
-        this.properties.put("user", user);
-        this.properties.put("password", password);
+        this.dataSource = makeDataSource(url, user, password, poolSize);
         System.out.println("Username is [" + user + "], password is [" + password + "]. URL is " + url);
     }
     
-    
-    private DataSource makeDataSource(String url, int poolSize) {
+    /**
+     * Set up the DataSource
+     * @param url
+     * @param username
+     * @param password
+     * @param poolsize
+     * @return 
+     */
+    private DataSource makeDataSource(String url, String username, String password, int poolsize) {
         
-        try {
-            Class.forName("org.postgresql.Driver");    
-        } catch (ClassNotFoundException e) {
-            // TODO: get a proper logger!
-            System.err.println(e);
-        }
+        BasicDataSource newDataSource = new BasicDataSource();
+        newDataSource.setDriverClassName("org.postgresql.Driver");
+        newDataSource.setUrl(url);
+        newDataSource.setUsername(username);
+        newDataSource.setPassword(password);
+        newDataSource.setInitialSize(poolsize);
         
-        DataSource dataSource = null;
-        return dataSource;
+        return newDataSource;
     }
     
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection(url, properties);    
+            return dataSource.getConnection();
         } catch (SQLException e) {
             System.err.println(e);
             return null;   
