@@ -9,6 +9,8 @@ import com.aceade.corpolc.inventory.model.base.Department;
 import com.aceade.corpolc.inventory.model.base.SecurityRating;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -16,6 +18,8 @@ import org.springframework.security.core.GrantedAuthority;
  * @author philip
  */
 public class ServiceLibrary {
+    
+    private static final Logger LOGGER = LogManager.getLogger(ServiceLibrary.class);
     
     public static Date getDate(){
         return new Date();
@@ -36,7 +40,7 @@ public class ServiceLibrary {
      */
     public SecurityRating getSecurityRatingFromRole(HttpServletRequest req) {
         
-        System.out.println(req.getRemoteUser());
+        LOGGER.debug(req.getRemoteUser());
         
         if (req.isUserInRole("ROLE_ADMIN")) {
             return SecurityRating.HIGHEST;
