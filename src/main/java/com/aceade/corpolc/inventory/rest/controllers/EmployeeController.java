@@ -90,10 +90,9 @@ public class EmployeeController {
     
     @RequestMapping(value="/isAdmin")
     public boolean isUserAdmin(UsernamePasswordAuthenticationToken userDetails) {
-        LOGGER.debug(userDetails.getPrincipal());
-        LOGGER.debug(userDetails.getAuthorities());
-        LOGGER.debug(userDetails.getCredentials());
+        LOGGER.info(userDetails.getPrincipal());
+        LOGGER.info(userDetails.getAuthorities());
         
-        return false;
+        return userDetails.getAuthorities().toString().contains("ROLE_FULL_ADMIN");
     }
 }
