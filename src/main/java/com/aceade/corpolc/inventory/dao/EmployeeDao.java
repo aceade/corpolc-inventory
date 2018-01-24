@@ -77,7 +77,7 @@ public class EmployeeDao extends BaseDao {
         workplace.setCountry(rs.getString("country"));
         workplace.setRegion(rs.getString("region"));
         workplace.setPostalAddress(rs.getString("postalAddress"));
-        workplace.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("minimumSecurityLevel")));
+        workplace.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("siteSecurityLevel")));
         employee.setWorkplace(workplace);
         return employee;
     }

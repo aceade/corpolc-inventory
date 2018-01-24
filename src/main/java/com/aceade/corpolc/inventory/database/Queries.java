@@ -15,8 +15,8 @@ public class Queries {
      * EMPLOYEE related
      */
     
-    public static final String SELECT_EMPLOYEE = "SELECT e.id, e.name, e.birthday, e.salary, e.workplace as siteId, d.id AS department, s.country, s.region, s.\"postalAddress\", e.\"securityLevel\", s.\"securityLevel\", s.\"securityLevel\" as minimumSecurityLevel FROM employees as e, sites as s, departments as d WHERE e.id = ? AND d.id = e.department;";
-    public static final String SELECT_ALL_EMPLOYEES = "SELECT e.id, e.name, e.birthday, e.salary, e.workplace as siteId, d.id AS department, s.country, s.region, s.\"postalAddress\", e.\"securityLevel\", s.\"securityLevel\", s.\"securityLevel\" as minimumSecurityLevel FROM employees as e, sites as s, departments as d WHERE d.id = e.department";
+    public static final String SELECT_EMPLOYEE = "SELECT e.id, e.name, e.birthday, e.salary, e.workplace as siteId, d.id AS department, s.country, s.region, s.\"postalAddress\", e.\"securityLevel\", s.\"securityLevel\" as siteSecurityLevel FROM employees as e, sites as s, departments as d WHERE e.id = ? AND d.id = e.department;";
+    public static final String SELECT_ALL_EMPLOYEES = "SELECT e.*, s.id as siteid, s.country, s.region, s.\"postalAddress\", s.\"securityLevel\" as \"siteSecurityLevel\" from employees as e, sites as s where e.workplace = s.id ORDER BY e.id;";
     public static final String COUNT_EMPLOYEES = "SELECT COUNT(id) FROM employees";
     public static final String SELECT_EMPLOYEES_BY_SITE = "SELECT e.id, e.name, e.birthday, e.salary, d.id AS department, s.country, s.region, s.\"postalAddress\", e.\"securityLevel\" FROM employees as e, sites as s, departments as d WHERE e.workplace = ?;";
     public static final String ADD_EMPLOYEE = "INSERT INTO employees (id, name, birthday, department, workplace, \"securityLevel\", salary) VALUES (?, ?, ?, ?, ?, ?, ?)";
