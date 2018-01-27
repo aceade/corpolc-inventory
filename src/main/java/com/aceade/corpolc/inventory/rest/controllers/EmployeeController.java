@@ -76,7 +76,7 @@ public class EmployeeController {
         return employeeService.deleteEmployee(id);
     }
     
-    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READ_ONLY})
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(value="/all", method=RequestMethod.GET)
     public List<Employee> getAllEmployees() {
         LOGGER.info("Retrieving all employees");

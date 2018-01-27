@@ -12,7 +12,7 @@ package com.aceade.corpolc.inventory.model.base;
 public class Role {
     
     public static final String ROLE_FULL_ADMIN = "ROLE_FULL_ADMIN";
-    public static final String ROLE_FULL_READ_ONLY = "ROLE_FULL_READ_ONLY";
+    public static final String ROLE_FULL_READONLY = "ROLE_FULL_READONLY";
     public static final String ROLE_VIEW_ALL_ADDRESSES = "ROLE_VIEW_ALL_ADDRESSES";
     public static final String ROLE_PROJECT_ADMIN = "ROLE_PROJECT_ADMIN";
     public static final String ROLE_SITE_ADMIN = "ROLE_SITE_ADMIN";

@@ -39,7 +39,7 @@ public class ProjectController {
     @Inject
     private SiteService siteService;
     
-    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READ_ONLY})
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/all")
     public List<Project> getAllProjects(){
         LOGGER.info("Returning all projects");

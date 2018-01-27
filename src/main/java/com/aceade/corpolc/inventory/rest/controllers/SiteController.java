@@ -43,7 +43,7 @@ public class SiteController {
     @Inject
     private ProjectService projectService;
     
-    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READ_ONLY})
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/getAll")
     public List<Site> getAllSites(){
         LOGGER.info("Retrieving all sites");
