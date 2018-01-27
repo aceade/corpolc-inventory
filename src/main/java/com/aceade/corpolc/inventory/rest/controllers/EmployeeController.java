@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.rest.controllers;
 
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
+import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.errors.EmployeeSecurityException;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
@@ -20,6 +21,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,12 +69,14 @@ public class EmployeeController {
         return new ResponseEntity(employeeService.addEmployee(newDrone), HttpStatus.OK);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.DELETE)
     public boolean deleteEmployee(@RequestParam(value="id", required=true) long id) {
         LOGGER.info("Terminating employee ["+id+"]");
         return employeeService.deleteEmployee(id);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READ_ONLY})
     @RequestMapping(value="/all", method=RequestMethod.GET)
     public List<Employee> getAllEmployees() {
         LOGGER.info("Retrieving all employees");
@@ -85,6 +89,7 @@ public class EmployeeController {
         return projectService.getProjectsForEmployee(id);
     }
     
+    @Deprecated
     @RequestMapping(value="/isAdmin")
     public boolean isUserAdmin(UsernamePasswordAuthenticationToken userDetails) {
         LOGGER.info(userDetails.getPrincipal());

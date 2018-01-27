@@ -42,6 +42,8 @@ public class ServiceLibrary {
         
         LOGGER.debug(req.getRemoteUser());
         
+        
+        
         if (req.isUserInRole("ROLE_ADMIN")) {
             return SecurityRating.HIGHEST;
         } else if (req.isUserInRole("ROLE_INTERN")) {
