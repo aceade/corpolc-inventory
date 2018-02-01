@@ -2,7 +2,7 @@
 
 ## About
 
-This is a somewhat satirical project/employee/site directory for a fictional evil corporation. I started this as some basic Spring practice, but decided to expand it as a means of teaching myself penetration testing.
+This is a project/employee/site directory for a fictional evil corporation. I started this as some basic Spring practice, but decided to expand it as a means of teaching myself penetration testing.
 
 #### Things to note:
 
