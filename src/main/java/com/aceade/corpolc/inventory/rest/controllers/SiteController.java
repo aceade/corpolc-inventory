@@ -5,7 +5,7 @@
  */
 package com.aceade.corpolc.inventory.rest.controllers;
 
-import com.aceade.corpolc.inventory.model.base.SecurityRating;
+import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.services.EmployeeService;
@@ -17,6 +17,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +43,7 @@ public class SiteController {
     @Inject
     private ProjectService projectService;
     
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/getAll")
     public List<Site> getAllSites(){
         LOGGER.info("Retrieving all sites");
@@ -54,12 +56,14 @@ public class SiteController {
         return siteService.getSite(siteId);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method= RequestMethod.GET, value="/count")
     public Integer getSiteCount() {
         LOGGER.info("Retrieving total number of sites");
         return siteService.getTotalSiteCount();
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(method=RequestMethod.POST, value="/add")
     public ResponseEntity addSite(@RequestBody NewSiteRequest newSite) {
         LOGGER.info("Adding a new site");
@@ -72,6 +76,7 @@ public class SiteController {
         
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(method=RequestMethod.DELETE, value="/")
     public ResponseEntity deleteSite(@RequestParam(value="id", required=true) long id) {
         LOGGER.info("The site ["+id+"] never existed...");
@@ -84,7 +89,7 @@ public class SiteController {
     }
     
     /**
-     * This is prone to SQL injection. Done so I can teach myself penetration testing.
+     * This is prone to SQL injection, and allows *EVERYONE* to access it. Done so I can teach myself penetration testing.
      * @param id
      * @return 
      */

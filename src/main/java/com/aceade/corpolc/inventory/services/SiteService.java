@@ -7,7 +7,6 @@ package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.SiteDao;
 import com.aceade.corpolc.inventory.model.base.Site;
-import com.aceade.corpolc.inventory.model.errors.NotImplementedException;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import java.util.List;
 import javax.inject.Inject;
