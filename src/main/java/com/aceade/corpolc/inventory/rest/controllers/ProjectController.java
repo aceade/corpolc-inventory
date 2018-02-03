@@ -49,7 +49,9 @@ public class ProjectController {
     @RequestMapping(method = RequestMethod.GET, value="/{id}")
     public Project getProject(@PathParam("id") long id) {
         LOGGER.info("Returning project with id ["+id+"]");
-        Project project = projectService.getProject(id);      
+        Project project = projectService.getProject(id);  
+        
+        // TODO: filter based on user roles
         project.setEmployees(projectService.getEmployeesOnProject(id));
         project.setSites(projectService.getSitesForProject(id));     
         return project;

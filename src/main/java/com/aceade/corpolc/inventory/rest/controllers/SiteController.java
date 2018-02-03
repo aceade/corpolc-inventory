@@ -56,6 +56,7 @@ public class SiteController {
         return siteService.getSite(siteId);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method= RequestMethod.GET, value="/count")
     public Integer getSiteCount() {
         LOGGER.info("Retrieving total number of sites");

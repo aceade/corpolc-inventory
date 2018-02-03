@@ -28,6 +28,7 @@ public class SiteDao extends BaseDao {
     private static final Logger LOGGER = LogManager.getLogger(SiteDao.class);
     
     public Site getSite(long id) {
+        LOGGER.info("Retrieving site with id ["+id +"]");
         String sql = Queries.SELECT_SITE;
         Site site = null;
         

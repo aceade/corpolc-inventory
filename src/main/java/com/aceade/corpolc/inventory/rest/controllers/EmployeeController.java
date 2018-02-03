@@ -54,6 +54,7 @@ public class EmployeeController {
         return employeeService.getEmployee(id);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.POST)
     public ResponseEntity<Boolean> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
         LOGGER.info("Adding employee");
