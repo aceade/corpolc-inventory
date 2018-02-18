@@ -14,6 +14,8 @@ import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,9 +65,21 @@ public class InventoryConfig {
     }
     
     @Bean
+    public DataSource dataSource() {
+        BasicDataSource newDataSource = new BasicDataSource();
+        newDataSource.setDriverClassName("org.postgresql.Driver");
+        newDataSource.setUrl(jdbcUrl());
+        newDataSource.setUsername(jdbcUser());
+        newDataSource.setPassword(jdbcPassword());
+        newDataSource.setInitialSize(20);
+        
+        return newDataSource;
+    }
+    
+    @Bean
     @Singleton
     public ConnectionFactory connectionFactory(){
-        return new ConnectionFactory(jdbcUrl(), jdbcUser(), jdbcPassword(), 5);
+        return new ConnectionFactory(dataSource());
     }
     
     @Bean
