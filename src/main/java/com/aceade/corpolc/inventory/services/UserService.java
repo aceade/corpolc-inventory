@@ -26,4 +26,9 @@ public class UserService {
         LOGGER.info("Adding new drone: " + newDrone.toString());
         return userDao.addUser(newDrone);
     }
+    
+    public boolean disableUser(String username) {
+        LOGGER.info("Disabling user: " + username);
+        return userDao.disableUser(username);
+    }
 }

@@ -91,7 +91,7 @@ public class NewUserRequest {
 
     @Override
     public String toString() {
-        return "NewUserRequest{" + "username=" + username + ", password=" + password + ", employeeId=" + employeeId + ", role=" + role + '}';
+        return "NewUserRequest{" + "username=" + username + ", password=******, employeeId=" + employeeId + ", role=" + role + '}';
     }
     
     

@@ -45,4 +45,17 @@ public class UserDao extends BaseDao {
         
         return success;
     }
+    
+    public boolean disableUser(String username) {
+        String sql = "UPDATE users SET enabled=false WHERE username = ?";
+        Connection dbConnection = connectionFactory.getConnection();
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            return stmt.execute();
+        } catch (SQLException e) {
+            LOGGER.error("Unable to disable user " + username, e);
+            return false;
+        }
+    
+    }
 }
