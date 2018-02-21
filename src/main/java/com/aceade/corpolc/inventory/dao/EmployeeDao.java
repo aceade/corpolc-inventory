@@ -110,6 +110,7 @@ public class EmployeeDao extends BaseDao {
             stmt.setInt(6, newEmployee.getSecurityLevel());
             stmt.setDouble(7, newEmployee.getSalary());
             success = stmt.execute();
+            
         } catch (SQLException e) {
             LOGGER.error("Could not add new employee ", e);
         }

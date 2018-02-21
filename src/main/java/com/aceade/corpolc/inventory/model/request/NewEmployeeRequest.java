@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  *
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 public class NewEmployeeRequest {
     
-    @NotNull
+    @NotBlank
     private String name;
     
     @NotNull
@@ -119,4 +120,5 @@ public class NewEmployeeRequest {
     public void setSiteId(int siteId) {
         this.siteId = siteId;
     }
+
 }

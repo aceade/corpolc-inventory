@@ -5,8 +5,11 @@
  */
 package com.aceade.corpolc.inventory.services;
 
-import java.security.Principal;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.aceade.corpolc.inventory.dao.UserDao;
+import com.aceade.corpolc.inventory.model.request.NewUserRequest;
+import javax.inject.Inject;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -14,7 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
  */
 public class UserService {
     
-    public static UsernamePasswordAuthenticationToken getUser(Principal user) {
-        return (UsernamePasswordAuthenticationToken) user;
+    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
+    
+    @Inject
+    private UserDao userDao;
+        
+    public boolean addUser(NewUserRequest newDrone) {
+        LOGGER.info("Adding new drone: " + newDrone.toString());
+        return userDao.addUser(newDrone);
     }
 }
