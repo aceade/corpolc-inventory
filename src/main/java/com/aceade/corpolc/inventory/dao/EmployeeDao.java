@@ -34,10 +34,10 @@ public class EmployeeDao extends BaseDao {
         
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                employee = createEmployee(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    employee = createEmployee(rs);
+                }
             }
             
         } catch (SQLException e) {
@@ -52,8 +52,7 @@ public class EmployeeDao extends BaseDao {
         List<Employee> employees = new ArrayList<>();
         Connection dbConnection = connectionFactory.getConnection();
         
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             
             while (rs.next()) {
                 Employee employee = createEmployee(rs);
@@ -96,37 +95,42 @@ public class EmployeeDao extends BaseDao {
         return amount;
     }
 
-    public boolean addEmployee(NewEmployeeRequest newEmployee) {
+    public long addEmployee(NewEmployeeRequest newEmployee) {
+        LOGGER.info("Adding new employee");
         String sql = Queries.ADD_EMPLOYEE;
-        boolean success = false;
         Connection dbConnection = connectionFactory.getConnection();
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             long newId = getTotalEmployeeCount();
             stmt.setLong(1, newId + 1);
             stmt.setString(2, newEmployee.getName());
+            java.util.Date date = newEmployee.getBirthday();
+            LOGGER.info(date);
             stmt.setDate(3, new java.sql.Date (newEmployee.getBirthday().getTime()));
             stmt.setInt(4, newEmployee.getDepartmentId());
             stmt.setInt(5, newEmployee.getSiteId());
             stmt.setInt(6, newEmployee.getSecurityLevel());
             stmt.setDouble(7, newEmployee.getSalary());
-            success = stmt.execute();
+            stmt.execute();
+            
+            return newId;
             
         } catch (SQLException e) {
             LOGGER.error("Could not add new employee ", e);
+            return 0;
         }
-        return success;
     }
     
     public boolean deleteEmployee(long id) {
         String sql = Queries.DELETE_EMPLOYEE;
-        boolean success = false;
         Connection dbConnection = connectionFactory.getConnection();
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            success = stmt.execute();
+            stmt.setLong(2, id);
+            stmt.execute();
+            return true;
         } catch (SQLException e) {
             LOGGER.error("Could not delete employee ["+id+"]", e);
+            return false;
         }
-        return success;
     }
 }

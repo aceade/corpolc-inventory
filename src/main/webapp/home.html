@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Corpolc Inventory System</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+        
+        <script src="resources/inventory.js"></script>
+        <script src="resources/employees.js"></script>
+        <link href="resources/inventory.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="header">
+            Connacht Trading Company Management Portal
+        </div>
+        <div id="body">
+            
+            <div id="controls">
+                
+                <div id="loginPanel">
+                    <label for="usernameInput">Username</label>
+                    <input type="text" id="usernameInput">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" id="passwordInput">
+                    <button id="loginButton" onclick="inventory.login()">Login</button>
+                </div>
+                <label class="noselect" onclick="inventory.toggleElement('#employeesControlDiv')" >Employees</label>
+                <div id="employeesControlDiv" class="controlDiv">
+                    <button onclick="employees.getAllUsers()">Get all</button>
+                    <button onclick="employees.getUser()">Get worker</button>
+                    <input type="number" id="employeeIdInput" min="1">
+                    <button onclick="employees.deleteUser()">Delete worker</button>
+                    <label class="noselect" onclick="inventory.toggleElement('#newDroneControls')" >New Employee</label>
+                    <div class="controlDiv" id="newDroneControls">
+                        <input id="newDroneName" placeholder="Mr Bean">
+                        <select id="newDroneDept" title="Department" >
+                            <option value="1">Board</option>
+                            <option value="2">Financial</option>
+                            <option value="3">Maintenance</option>
+                            <option value="4">Marketing</option>
+                            <option value="5">Production</option>
+                            <option value="6">Research</option>
+                            <option value="7">Resources</option>
+                            <option value="8">Security</option>
+                            <option value="9">Shipping</option>
+                        </select>
+                        <input id="newDroneBirthday" type="date">
+                        <input id="newDroneSite" title="Site ID" type="number">
+                        <select id="newDroneSecurity" title="Security rate" >
+                            <option value="1">MINIMUM</option>
+                            <option value="2">LOW</option>
+                            <option value="3">MEDIUM</option>
+                            <option value="4">PRIVATE</option>
+                            <option value="5">CONFIDENTIAL</option>
+                            <option value="6">HIGH</option>
+                            <option value="7">MAXIMUM</option>
+                        </select>
+                        <input id="newDroneSalary" type="number">
+                        <button onclick="employees.addUser()">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div id="transcript"></div>
+            
+            <div id="clear"></div>
+            
+        </div>
+    </body>
+</html>

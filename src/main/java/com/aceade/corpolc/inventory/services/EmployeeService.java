@@ -30,7 +30,7 @@ public class EmployeeService {
         return employeeDao.getAllEmployees();
     }
     
-    public boolean addEmployee(NewEmployeeRequest newEmployee){
+    public long addEmployee(NewEmployeeRequest newEmployee){
         return employeeDao.addEmployee(newEmployee);
     }
 

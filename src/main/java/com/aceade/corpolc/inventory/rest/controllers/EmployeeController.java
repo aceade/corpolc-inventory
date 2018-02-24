@@ -11,6 +11,7 @@ import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.errors.EmployeeSecurityException;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
+import com.aceade.corpolc.inventory.model.response.NewEmployeeResponse;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
@@ -56,18 +57,38 @@ public class EmployeeController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.POST)
-    public ResponseEntity<Boolean> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
-        LOGGER.info("Adding employee");
+    public ResponseEntity<NewEmployeeResponse> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
+        LOGGER.info("Adding employee: " + newDrone);
+        
+        NewEmployeeResponse response = new NewEmployeeResponse();
+        HttpStatus status;
         
         // check the security level before we go any further
         Site theSite = siteService.getSite(newDrone.getSiteId());
         int siteSecurity = theSite.getMinimumSecurityLevel().toInt();
         LOGGER.debug("Site security level is " + siteSecurity + "; new employee is " + newDrone.getSecurityLevel());
         if (siteSecurity > newDrone.getSecurityLevel()) {
+            LOGGER.error("Site security is too high for this worker! Site security: [" + siteSecurity + "]. Drone security: [" + newDrone.getSecurityLevel() +"]");
+            response.setResponseText("This employee does not have sufficient clearance for this site!");
+            response.setNewDroneId(0);
+            response.setSuccess(false);
+            status = HttpStatus.BAD_REQUEST;
+        } else {
             
-            return new ResponseEntity(false, HttpStatus.BAD_REQUEST);
+            long newId = employeeService.addEmployee(newDrone);
+            response.setNewDroneId(newId);
+            if (newId == 0) {
+                response.setSuccess(false);
+                response.setResponseText("Could not add this new employee. Please consult an administrator");
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                status = HttpStatus.OK;
+                response.setSuccess(true);
+                response.setResponseText("Employee has been added");    
+            }            
         }
-        return new ResponseEntity(employeeService.addEmployee(newDrone), HttpStatus.OK);
+        
+        return new ResponseEntity(response, status);
     }
     
     @Secured({Role.ROLE_FULL_ADMIN})
@@ -89,13 +110,5 @@ public class EmployeeController {
         LOGGER.info("Retrieving projects for employee ["+id+"]");
         return projectService.getProjectsForEmployee(id);
     }
-    
-    @Deprecated
-    @RequestMapping(value="/isAdmin")
-    public boolean isUserAdmin(UsernamePasswordAuthenticationToken userDetails) {
-        LOGGER.info(userDetails.getPrincipal());
-        LOGGER.info(userDetails.getAuthorities());
-        
-        return userDetails.getAuthorities().toString().contains("ROLE_FULL_ADMIN");
-    }
+
 }

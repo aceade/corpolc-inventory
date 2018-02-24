@@ -121,4 +121,10 @@ public class NewEmployeeRequest {
         this.siteId = siteId;
     }
 
+    @Override
+    public String toString() {
+        return "NewEmployeeRequest{" + "name=" + name + ", departmentId=" + departmentId + ", birthday=" + birthday + ", siteId=" + siteId + ", securityLevel=" + securityLevel + ", salary=" + salary + '}';
+    }
+
+    
 }

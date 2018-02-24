@@ -20,7 +20,7 @@ public class Queries {
     public static final String COUNT_EMPLOYEES = "SELECT COUNT(id) FROM employees";
     public static final String SELECT_EMPLOYEES_BY_SITE = "SELECT e.id, e.name, e.birthday, e.salary, d.id AS department, s.country, s.region, s.\"postalAddress\", e.\"securityLevel\" FROM employees as e, sites as s, departments as d WHERE e.workplace = ?;";
     public static final String ADD_EMPLOYEE = "INSERT INTO employees (id, name, birthday, department, workplace, \"securityLevel\", salary) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    public static final String DELETE_EMPLOYEE = "DELETE FROM employees WHERE id = ?";
+    public static final String DELETE_EMPLOYEE = "DELETE FROM users where \"employeeId\"=?; DELETE FROM employees WHERE id = ?";
     
     /**
      * SITE related
