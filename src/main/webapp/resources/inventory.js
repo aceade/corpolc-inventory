@@ -3,7 +3,15 @@
     'use strict';
     
     var logResult = function(result) {
-        $("#transcript").add("p").text(JSON.stringify(result, null, 4));
+        $("#transcript > pre").append(result);
+    };
+    
+    var logJson = function (json) {
+        logResult(JSON.stringify(json, null, 4));
+    };
+    
+    inventory.clearLogs = function() {
+        $('#transcript').empty();
     };
     
     inventory.toggleElement = function(id) {
@@ -30,7 +38,7 @@
             data: JSON.stringify(jsonData),
             processData: false,
             success: function(results){
-                logResult(results);
+                logJson(results);
             },
             error: function(results){
                 logResult(results);
@@ -44,7 +52,7 @@
         
         sessionStorage.setItem("username", username);
         sessionStorage.setItem("password", password);
-        
+        logResult("Logged in");
     };
     
     return inventory;

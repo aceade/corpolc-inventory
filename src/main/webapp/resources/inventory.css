@@ -20,11 +20,23 @@
             user-select: none; 
 }
 
+#clear {
+    width: 100%;
+    clear: both;
+}
+
+#transcript {
+    width:600px;
+    margin-left: 260px;
+    word-break: normal;
+}
+
 #controls {
     width:250px;
     height:300px;
     overflow-y: auto;
     border: 2px solid #4a4a4a;
+    float:left;
 }
 
 #controls button {

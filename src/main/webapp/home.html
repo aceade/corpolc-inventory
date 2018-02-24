@@ -26,6 +26,8 @@ and open the template in the editor.
             
             <div id="controls">
                 
+                <button onclick="inventory.clearLogs()">Clear logs</button>
+                
                 <div id="loginPanel">
                     <label for="usernameInput">Username</label>
                     <input type="text" id="usernameInput">
@@ -71,7 +73,10 @@ and open the template in the editor.
                 </div>
             </div>
             
-            <div id="transcript"></div>
+            <!-- preserve the formatting -->
+            <div id="transcript">
+                <pre>Transcript <br></pre>
+            </div>
             
             <div id="clear"></div>
             
