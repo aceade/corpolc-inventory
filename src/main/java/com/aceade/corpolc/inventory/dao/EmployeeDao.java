@@ -72,6 +72,7 @@ public class EmployeeDao extends BaseDao {
         employee.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
         employee.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
         employee.setSalary(rs.getDouble("salary"));
+        employee.setCurrentlyEmployed(rs.getBoolean("current"));
         Site workplace = new Site(rs.getLong("siteid"));
         workplace.setCountry(rs.getString("country"));
         workplace.setRegion(rs.getString("region"));
@@ -125,7 +126,6 @@ public class EmployeeDao extends BaseDao {
         Connection dbConnection = connectionFactory.getConnection();
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            stmt.setLong(2, id);
             stmt.execute();
             return true;
         } catch (SQLException e) {

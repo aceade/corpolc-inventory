@@ -27,6 +27,8 @@ public class Employee {
     
     private double salary;
     
+    private boolean currentlyEmployed;
+    
     public Employee(long id, String name) {
         this.id = id;
         this.name = name;
@@ -119,5 +121,19 @@ public class Employee {
      */
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    /**
+     * @return the currentlyEmployed
+     */
+    public boolean isCurrentlyEmployed() {
+        return currentlyEmployed;
+    }
+
+    /**
+     * @param currentlyEmployed the currentlyEmployed to set
+     */
+    public void setCurrentlyEmployed(boolean currentlyEmployed) {
+        this.currentlyEmployed = currentlyEmployed;
     }
 }
