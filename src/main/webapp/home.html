@@ -16,6 +16,8 @@ and open the template in the editor.
         
         <script src="resources/inventory.js"></script>
         <script src="resources/employees.js"></script>
+        <script src="resources/projects.js"></script>
+        <script src="resources/sites.js"></script>
         <link href="resources/inventory.css" rel="stylesheet">
     </head>
     <body>
@@ -70,6 +72,39 @@ and open the template in the editor.
                         <button onclick="employees.addUser()">Submit</button>
                     </div>
 
+                </div>
+                <label class="noselect" onclick="inventory.toggleElement('#projectsControlDiv')" >Projects</label>
+                <div id="projectsControlDiv" class="controlDiv">
+                    <button onclick="projects.getAll()">Get All</button>
+                    <button onclick="projects.get()">Get project</button>
+                    <label class="noselect">Select project ID</label>
+                    <input type="number" id="projectIdInput" min="1">
+                    <label class="noselect" onclick="inventory.toggleElement('#newProjectControls')" >Add project</label>
+                    <div id="newProjectControls" class="controlDiv">
+                        Placeholder until we can add them
+                    </div>
+                </div>
+                <label class="noselect" onclick="inventory.toggleElement('#siteControlDiv')" >Sites</label>
+                <div id="siteControlDiv" class="controlDiv">
+                    <button onclick="sites.getAll()">Get All</button>
+                    <button onclick="sites.get()">Get</button>
+                    <input type="number" id="siteIdInput" min="1" >
+                    <label class="noselect" onclick="inventory.toggleElement('#newSiteControls')">Add site</label>
+                    <div class="controlDiv" id="newSiteControls">
+                        <input id="newSiteCountry" placeholder="Ireland">
+                        <input id="newSiteRegion" placeholder="Connacht">
+                        <input id="newSiteAddress" placeholder="Inishbofin">
+                        <select id="newSiteSecurity" title="Security rate" >
+                            <option value="1">MINIMUM</option>
+                            <option value="2">LOW</option>
+                            <option value="3">MEDIUM</option>
+                            <option value="4">PRIVATE</option>
+                            <option value="5">CONFIDENTIAL</option>
+                            <option value="6">HIGH</option>
+                            <option value="7">MAXIMUM</option>
+                        </select>
+                        <button onclick="sites.add()">Submit</button>
+                    </div>
                 </div>
             </div>
             

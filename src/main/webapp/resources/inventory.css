@@ -29,6 +29,8 @@
     width:600px;
     margin-left: 260px;
     word-break: normal;
+    height:700px;
+    overflow-y: auto;
 }
 
 #controls {
@@ -37,6 +39,12 @@
     overflow-y: auto;
     border: 2px solid #4a4a4a;
     float:left;
+}
+
+#controls label {
+    width:100%;
+    border-top: 1px dotted darkred;
+    display: block;
 }
 
 #controls button {

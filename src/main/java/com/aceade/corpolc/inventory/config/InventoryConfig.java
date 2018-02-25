@@ -72,6 +72,11 @@ public class InventoryConfig {
     }
     
     @Bean
+    Integer jdbcTimeout() {
+        return 10;
+    }
+    
+    @Bean
     public DataSource dataSource() {
         BasicDataSource newDataSource = new BasicDataSource();
         newDataSource.setDriverClassName("org.postgresql.Driver");
@@ -79,6 +84,8 @@ public class InventoryConfig {
         newDataSource.setUsername(jdbcUser());
         newDataSource.setPassword(jdbcPassword());
         newDataSource.setInitialSize(20);
+        newDataSource.setDefaultQueryTimeout(jdbcTimeout());
+        newDataSource.setMaxConnLifetimeMillis(jdbcTimeout() * 1000);
         
         return newDataSource;
     }

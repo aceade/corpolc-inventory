@@ -44,8 +44,10 @@ Response: true|false
 ```
 
 #### Terminate Employee
+```
 DELETE /employees/?id=${employeeId}
 Response: true|false
+```
 
 #### Get all employees
 ```
@@ -105,7 +107,3 @@ Response Body:
     ]
 }
 ```
-
-#### Check if current user is admin (DEPRECATED)
-GET /employees/isAdmin
-Return: true|false

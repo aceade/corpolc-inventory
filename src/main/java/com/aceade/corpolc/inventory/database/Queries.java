@@ -39,7 +39,7 @@ public class Queries {
     public static final String SELECT_PROJECT = "SELECT * FROM projects WHERE id = ?";
     public static final String SELECT_ALL_PROJECTS = "SELECT * FROM projects";
     public static final String COUNT_PROJECTS = "SELECT COUNT(id) as numberOfProjects FROM projects";
-    public static final String SELECT_EMPLOYEES_FOR_PROJECT = "SELECT e.id, e.name, e.salary, e.department, e.workplace, e.birthday, e.\"securityLevel\", ep.project_id FROM employees as e, employee_projects AS ep WHERE ep.project_id = ? AND ep.employee_id = e.id";
+    public static final String SELECT_EMPLOYEES_FOR_PROJECT = "SELECT e.id, e.name, e.salary, e.department, e.workplace, e.birthday, e.\"securityLevel\", ep.project_id FROM employees as e, employee_projects AS ep WHERE ep.project_id = ? AND ep.employee_id = e.id AND e.current = true";
     public static final String SELECT_SITES_FOR_PROJECT = "SELECT s.id, s.country, s.region, s.\"postalAddress\", s.\"securityLevel\" FROM sites AS s, sites_projects AS sp WHERE sp.project_id = ? AND sp.site_id = s.id";
 }
 

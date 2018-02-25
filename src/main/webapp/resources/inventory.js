@@ -11,7 +11,7 @@
     };
     
     inventory.clearLogs = function() {
-        $('#transcript').empty();
+        $('#transcript > pre').empty();
     };
     
     inventory.toggleElement = function(id) {

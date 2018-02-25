@@ -58,6 +58,7 @@ public class EmployeeDao extends BaseDao {
                 Employee employee = createEmployee(rs);
                 employees.add(employee);
             }
+            LOGGER.info("Returned [" + employees.size()+"] employees");
             
         } catch (SQLException e) {
             LOGGER.error("Could not retrieve all employees ", e);
@@ -90,6 +91,7 @@ public class EmployeeDao extends BaseDao {
             while (rs.next()) {
                 amount = rs.getInt("count");
             }
+            LOGGER.debug("Returned [" + amount+"] employees");
         } catch  (SQLException e) {
             LOGGER.error("Could not retrieve number of employees ", e);
         }

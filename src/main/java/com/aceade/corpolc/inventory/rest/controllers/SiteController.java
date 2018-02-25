@@ -44,13 +44,13 @@ public class SiteController {
     private ProjectService projectService;
     
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
-    @RequestMapping(method = RequestMethod.GET, value="/getAll")
+    @RequestMapping(method = RequestMethod.GET, value="/all")
     public List<Site> getAllSites(){
         LOGGER.info("Retrieving all sites");
         return siteService.viewAllSites();
     }
     
-    @RequestMapping(method = RequestMethod.GET, value="/get")
+    @RequestMapping(method = RequestMethod.GET, value="")
     public Site viewSite(@RequestParam(value="id", required=true) long siteId) {
         LOGGER.info("Retrieving site ["+siteId+"]");
         return siteService.getSite(siteId);
@@ -64,7 +64,7 @@ public class SiteController {
     }
     
     @Secured({Role.ROLE_FULL_ADMIN})
-    @RequestMapping(method=RequestMethod.POST, value="/add")
+    @RequestMapping(method=RequestMethod.POST, value="/new")
     public ResponseEntity addSite(@RequestBody NewSiteRequest newSite) {
         LOGGER.info("Adding a new site");
         boolean added = siteService.createSite(newSite);
@@ -77,7 +77,7 @@ public class SiteController {
     }
     
     @Secured({Role.ROLE_FULL_ADMIN})
-    @RequestMapping(method=RequestMethod.DELETE, value="/")
+    @RequestMapping(method=RequestMethod.DELETE, value="")
     public ResponseEntity deleteSite(@RequestParam(value="id", required=true) long id) {
         LOGGER.info("The site ["+id+"] never existed...");
         boolean added = siteService.deleteSite(id);

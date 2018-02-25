@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -46,8 +47,8 @@ public class ProjectController {
         return projectService.getAllProjects();
     }
     
-    @RequestMapping(method = RequestMethod.GET, value="/{id}")
-    public Project getProject(@PathParam("id") long id) {
+    @RequestMapping(method = RequestMethod.GET, value="")
+    public Project getProject(@RequestParam("id") long id) {
         LOGGER.info("Returning project with id ["+id+"]");
         Project project = projectService.getProject(id);  
         

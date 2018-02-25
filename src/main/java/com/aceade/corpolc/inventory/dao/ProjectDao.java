@@ -82,7 +82,9 @@ public class ProjectDao extends BaseDao {
                 drone.setSalary(rs.getDouble("salary"));
                 drone.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
                 drone.setBirthday(rs.getDate("birthday"));
+                drone.setCurrentlyEmployed(true);
                 drone.setWorkplace(new Site(rs.getLong("workplace")));
+                
                 employees.add(drone);
             }
             
@@ -140,6 +142,31 @@ public class ProjectDao extends BaseDao {
         }
         
         return projects;
+    }
+
+    public List<Project> getAll() {
+        List<Project> results = new ArrayList<>();
+        String sql = "SELECT * FROM projects";
+        Connection dbConnection = connectionFactory.getConnection();
+        
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            
+            
+            while (rs.next()) {
+                Project project = new Project();
+                project.setTitle(rs.getString("title"));
+                project.setSummary(rs.getString("summary"));
+                project.setBudget(rs.getDouble("budget"));
+                project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
+                results.add(project);
+            }
+            
+        } catch (SQLException e) {
+            LOGGER.error("Could not retrieve all projects!", e);
+        }
+        
+        return results;
     }
     
 }

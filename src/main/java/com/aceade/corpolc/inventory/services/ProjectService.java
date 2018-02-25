@@ -26,7 +26,7 @@ public class ProjectService {
     private ProjectDao projectDao;
     
     public List<Project> getAllProjects(){
-        return Collections.EMPTY_LIST;
+        return projectDao.getAll();
     }
     
     public Project getProject(long id) {

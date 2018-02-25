@@ -94,20 +94,20 @@ public class SiteDao extends BaseDao {
         String sql = Queries.ADD_SITE;
         int amount = getSiteCount();
         Connection dbConnection = connectionFactory.getConnection();
-        boolean success = false;
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setInt(1, amount);
+            stmt.setInt(1, amount+1);
             stmt.setString(2, newSite.getCountry());
             stmt.setString(3, newSite.getRegion());
             stmt.setString(4, newSite.getPostalAddress());
             stmt.setInt(5, newSite.getSecurityLevel());
-            success = stmt.execute();
+            stmt.execute();
+            return true;
             
         } catch (SQLException e) {
             LOGGER.error("Unable to add new site", e);
+            return false;
         }
         
-        return success;
     }
     
     public boolean deleteSite(long id) {
