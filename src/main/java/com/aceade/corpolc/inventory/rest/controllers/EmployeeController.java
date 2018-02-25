@@ -11,7 +11,7 @@ import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.errors.EmployeeSecurityException;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
-import com.aceade.corpolc.inventory.model.response.NewEmployeeResponse;
+import com.aceade.corpolc.inventory.model.response.AddResourceResponse;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
@@ -57,10 +57,10 @@ public class EmployeeController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.POST)
-    public ResponseEntity<NewEmployeeResponse> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
+    public ResponseEntity<AddResourceResponse> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
         LOGGER.info("Adding employee: " + newDrone);
         
-        NewEmployeeResponse response = new NewEmployeeResponse();
+        AddResourceResponse response = new AddResourceResponse();
         HttpStatus status;
         
         // check the security level before we go any further
@@ -70,13 +70,13 @@ public class EmployeeController {
         if (siteSecurity > newDrone.getSecurityLevel()) {
             LOGGER.error("Site security is too high for this worker! Site security: [" + siteSecurity + "]. Drone security: [" + newDrone.getSecurityLevel() +"]");
             response.setResponseText("This employee does not have sufficient clearance for this site!");
-            response.setNewDroneId(0);
+            response.setNewResourceId(0);
             response.setSuccess(false);
             status = HttpStatus.BAD_REQUEST;
         } else {
             
             long newId = employeeService.addEmployee(newDrone);
-            response.setNewDroneId(newId);
+            response.setNewResourceId(newId);
             if (newId == 0) {
                 response.setSuccess(false);
                 response.setResponseText("Could not add this new employee. Please consult an administrator");

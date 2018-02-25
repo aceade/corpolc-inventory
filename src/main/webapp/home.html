@@ -81,9 +81,22 @@ and open the template in the editor.
                     <input type="number" id="projectIdInput" min="1">
                     <label class="noselect" onclick="inventory.toggleElement('#newProjectControls')" >Add project</label>
                     <div id="newProjectControls" class="controlDiv">
-                        Placeholder until we can add them
+                        <input id="newProjectTitle" placeholder="Insert title here">
+                        <input id="newProjectSummary" placeholder="Insert summary here">
+                        <input id="newProjectBudget" type="number" min="10.0" >
+                        <select id="newProjectSecurity" title="Security rate" >
+                            <option value="1">MINIMUM</option>
+                            <option value="2">LOW</option>
+                            <option value="3">MEDIUM</option>
+                            <option value="4">PRIVATE</option>
+                            <option value="5">CONFIDENTIAL</option>
+                            <option value="6">HIGH</option>
+                            <option value="7">MAXIMUM</option>
+                        </select>
+                        <button onclick="projects.add()">Submit</button>
                     </div>
                 </div>
+                
                 <label class="noselect" onclick="inventory.toggleElement('#siteControlDiv')" >Sites</label>
                 <div id="siteControlDiv" class="controlDiv">
                     <button onclick="sites.getAll()">Get All</button>

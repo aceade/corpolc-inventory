@@ -10,6 +10,7 @@ import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.errors.NotImplementedException;
+import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
@@ -45,8 +46,8 @@ public class ProjectService {
         return projectDao.getSitesForProject(projectId);
     }
     
-    public void addProject(){
-        throw new NotImplementedException();
+    public long addProject(NewProjectRequest newProjectRequest){
+        return projectDao.addNewProject(newProjectRequest);
     }
 
     public List<Project> getProjectsForEmployee(long id) {

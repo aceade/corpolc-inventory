@@ -9,6 +9,7 @@ import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Site;
+import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -167,6 +168,30 @@ public class ProjectDao extends BaseDao {
         }
         
         return results;
+    }
+
+    public long addNewProject(NewProjectRequest newProjectRequest) {
+        
+        String sql = "INSERT INTO projects (id, title, summary, budget, \"security_rating\") VALUES(?, ?,?,?,?)";
+        Connection dbConnection = connectionFactory.getConnection();
+        
+        int totalProjects = getTotalProjectCount();
+        int newId = totalProjects + 1;
+        
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+            
+            stmt.setLong(1, newId);
+            stmt.setString(2, newProjectRequest.getTitle());
+            stmt.setString(3, newProjectRequest.getSummary());
+            stmt.setDouble(4, newProjectRequest.getBudget());
+            stmt.setInt(5, newProjectRequest.getSecurityLevel());
+            stmt.execute();
+            return newId;
+        } catch (SQLException e) {
+            LOGGER.error("Unable to add new project", e);
+            return 0;
+        }
+        
     }
     
 }

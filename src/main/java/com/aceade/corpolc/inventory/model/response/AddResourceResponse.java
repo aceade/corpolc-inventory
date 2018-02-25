@@ -6,18 +6,18 @@
 package com.aceade.corpolc.inventory.model.response;
 
 /**
- *
+ * A general response for adding new resources (employees, projects, sites)
  * @author philip
  */
-public class NewEmployeeResponse {
+public class AddResourceResponse {
     
     private boolean success;
     
-    private long newDroneId;
+    private long newResourceId;
     
     private String responseText;
     
-    public NewEmployeeResponse() {
+    public AddResourceResponse() {
         // default
     }
 
@@ -36,17 +36,17 @@ public class NewEmployeeResponse {
     }
 
     /**
-     * @return the newDroneId
+     * @return the newResourceId
      */
-    public long getNewDroneId() {
-        return newDroneId;
+    public long getNewResourceId() {
+        return newResourceId;
     }
 
     /**
-     * @param newDroneId the newDroneId to set
+     * @param newResourceId the newResourceId to set
      */
-    public void setNewDroneId(long newDroneId) {
-        this.newDroneId = newDroneId;
+    public void setNewResourceId(long newResourceId) {
+        this.newResourceId = newResourceId;
     }
 
     /**

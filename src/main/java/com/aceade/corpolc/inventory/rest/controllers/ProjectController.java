@@ -7,15 +7,19 @@ package com.aceade.corpolc.inventory.rest.controllers;
 
 import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Role;
+import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
+import com.aceade.corpolc.inventory.model.response.AddResourceResponse;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
 import java.util.List;
 import javax.inject.Inject;
-import javax.ws.rs.PathParam;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +52,7 @@ public class ProjectController {
     }
     
     @RequestMapping(method = RequestMethod.GET, value="")
-    public Project getProject(@RequestParam("id") long id) {
+    public Project getProject(@RequestParam(value= "id", required=true) long id) {
         LOGGER.info("Returning project with id ["+id+"]");
         Project project = projectService.getProject(id);  
         
@@ -56,5 +60,23 @@ public class ProjectController {
         project.setEmployees(projectService.getEmployeesOnProject(id));
         project.setSites(projectService.getSitesForProject(id));     
         return project;
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value="")
+    public ResponseEntity<AddResourceResponse> addProject(@RequestBody(required = true) NewProjectRequest newProjectRequest) {
+        AddResourceResponse response = new AddResourceResponse();
+        HttpStatus status;
+        long id = projectService.addProject(newProjectRequest);
+        
+        if (id > 0) {
+            status = HttpStatus.OK;
+            response.setNewResourceId(id);
+            response.setResponseText("Successfully added new project");
+        } else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.setResponseText("Could not add new project");
+        }
+        
+        return new ResponseEntity<>(response, status);
     }
 }

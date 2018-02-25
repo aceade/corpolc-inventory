@@ -3,6 +3,15 @@
     
     var url = "/projects";
     
+    var getNewProjectDetails = function() {
+        return {
+            "title" : inventory.getElementValue("#newProjectTitle"),
+            "summary" : inventory.getElementValue("#newProjectSummary"),
+            "budget" : inventory.getElementValue("#newProjectBudget"),
+            "securityLevel" : inventory.getElementValue("#newProjectSecurity")
+        };
+    };
+    
     projects.getAll = function(){
         inventory.makeAjaxCall(url+"/all", 'GET');
     };
@@ -12,8 +21,9 @@
         inventory.makeAjaxCall(url+"?id="+id, 'GET');
     };
     
-    projects.addNew = function() {
-        alert("This isn't functional yet");
+    projects.add = function() {
+        var json = getNewProjectDetails();
+        inventory.makeAjaxCall(url, 'POST', json);
     };
     
     projects.setProjectStatus = function() {
