@@ -26,6 +26,15 @@
         inventory.makeAjaxCall(baseUrl+"/new", 'POST', json);
     };
     
+    /**
+     * Retrieve a site using a query that's prone to SQL injection
+     * @returns {undefined}
+     */
+    sites.getWithWeakQuery = function() {
+        var id = inventory.getElementValue("#sqlInjectionId");
+        inventory.makeAjaxCall(baseUrl+"/get/with/weak/query?id="+id, 'GET');
+    };
+    
     return sites;
     
 })(window.sites = window.sites || {}, window.inventory);

@@ -93,7 +93,7 @@ public class SiteController {
      * @param id
      * @return 
      */
-    @RequestMapping(method=RequestMethod.GET, value="/get/with/weak/query/why/does/this/exist")
+    @RequestMapping(method=RequestMethod.GET, value="/get/with/weak/query")
     public Site getSiteWithWeakQuery(@RequestParam(value="id", required=true) String id) {
         LOGGER.info("Badly retrieving a site with id ["+id+"]");
         return siteService.getSiteBadly(id);

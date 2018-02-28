@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+#loginPanel {
+    padding-bottom: 5px;
+}
+
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -27,16 +31,15 @@
 
 #transcript {
     width:600px;
-    margin-left: 260px;
+    margin-left: 275px;
     word-break: normal;
     height:700px;
     overflow-y: auto;
 }
 
 #controls {
-    width:250px;
-    height:300px;
-    overflow-y: auto;
+    width:260px;
+    height:auto;
     border: 2px solid #4a4a4a;
     float:left;
 }
@@ -45,12 +48,19 @@
     width:100%;
     border-top: 1px dotted darkred;
     display: block;
-    padding-top:2px;
-    padding-bottom:2px;
+    padding-top:5px;
+    padding-bottom:5px;
+    cursor: pointer;
+}
+
+#loginPanel label {
+    cursor: default;
 }
 
 #controls button {
-    width: 100%;
+    width: 245px;
+    padding-top:5px;
+    padding-bottom: 5px;
 }
 
 #controls input {

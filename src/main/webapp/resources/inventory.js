@@ -53,7 +53,10 @@
         sessionStorage.setItem("username", username);
         sessionStorage.setItem("password", password);
         logResult("Logged in");
+        
+        $("#controls > label").show("fold").css("display: block");
     };
+    
     
     return inventory;
     

@@ -22,7 +22,7 @@ and open the template in the editor.
     </head>
     <body>
         <div id="header">
-            Connacht Trading Company Management Portal
+            Corpolc LLC Inventory System
         </div>
         <div id="body">
             
@@ -102,6 +102,11 @@ and open the template in the editor.
                     <button onclick="sites.getAll()">Get All</button>
                     <button onclick="sites.get()">Get</button>
                     <input type="number" id="siteIdInput" min="1" >
+                    <label class="noselect" onclick="inventory.toggleElement('#getSiteViaSqlInjectionDiv')">Get site using a SQL injection prone query</label>
+                    <div class="controlDiv" id="getSiteViaSqlInjectionDiv">
+                        <input type="text" id="sqlInjectionId">
+                        <button onclick="sites.getWithWeakQuery()">Get site</button>
+                    </div>
                     <label class="noselect" onclick="inventory.toggleElement('#newSiteControls')">Add site</label>
                     <div class="controlDiv" id="newSiteControls">
                         <input id="newSiteCountry" placeholder="Ireland">
