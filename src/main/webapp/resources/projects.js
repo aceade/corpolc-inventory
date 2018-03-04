@@ -26,8 +26,12 @@
         inventory.makeAjaxCall(url, 'POST', json);
     };
     
-    projects.setProjectStatus = function() {
-        alert("This isn't functional yet");
+    projects.setProjectStatus = function(newStatus) {
+        var json = {
+            "projectId" : inventory.getElementValue("#projectIdInput"),
+            "newProjectStatus" : newStatus
+        };
+        inventory.makeAjaxCall(url + "/status", "POST", json);
     };
     
     return projects;

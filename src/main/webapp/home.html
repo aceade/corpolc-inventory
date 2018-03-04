@@ -79,6 +79,13 @@ and open the template in the editor.
                     <button onclick="projects.get()">Get project</button>
                     <label class="noselect">Select project ID</label>
                     <input type="number" id="projectIdInput" min="1">
+                    <label class="noselect" onclick="inventory.toggleElement('#updateProjectControls')">Update project</label>
+                    <div id="updateProjectControls" class="controlDiv">
+                        <button onclick="projects.setProjectStatus(this.value)" value="CANCELLED" >Cancel</button>
+                        <button onclick="projects.setProjectStatus(this.value)" value="REJECTED" >Reject</button>
+                        <button onclick="projects.setProjectStatus(this.value)" value="IN_PROGRESS" >Approve</button>
+                        <button onclick="projects.setProjectStatus(this.value)" value="COMPLETED" >Complete</button>
+                    </div>
                     <label class="noselect" onclick="inventory.toggleElement('#newProjectControls')" >Add project</label>
                     <div id="newProjectControls" class="controlDiv">
                         <input id="newProjectTitle" placeholder="Insert title here">
