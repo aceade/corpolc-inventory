@@ -8,7 +8,9 @@ package com.aceade.corpolc.inventory.dao;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
+import com.aceade.corpolc.inventory.model.base.ProjectStatus;
 import com.aceade.corpolc.inventory.model.base.Site;
+import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.sql.Connection;
@@ -41,6 +43,7 @@ public class ProjectDao extends BaseDao {
                 project.setTitle(rs.getString("title"));
                 project.setSummary(rs.getString("summary"));
                 project.setBudget(rs.getDouble("budget"));
+                project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
                 project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
             }
             
@@ -123,7 +126,7 @@ public class ProjectDao extends BaseDao {
     }
 
     public List<Project> getProjectsForEmployee(long employeeId) {
-        String sql = "SELECT p.id, p.title, p.summary, p.security_rating, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
+        String sql = "SELECT p.id, p.title, p.summary, p.security_rating, p.status, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
         List<Project> projects = new ArrayList<>();
         Connection dbConnection = connectionFactory.getConnection();
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
@@ -133,7 +136,8 @@ public class ProjectDao extends BaseDao {
                     Project project = new Project();
                     project.setTitle(rs.getString("title"));
                     project.setSummary(rs.getString("summary"));
-//                    project.setBudget(rs.getDouble("budget"));
+                    project.setBudget(rs.getDouble("budget"));
+                    project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
                     project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
                     projects.add(project);
                 }
@@ -159,6 +163,7 @@ public class ProjectDao extends BaseDao {
                 project.setTitle(rs.getString("title"));
                 project.setSummary(rs.getString("summary"));
                 project.setBudget(rs.getDouble("budget"));
+                project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
                 project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
                 results.add(project);
             }
@@ -172,7 +177,7 @@ public class ProjectDao extends BaseDao {
 
     public long addNewProject(NewProjectRequest newProjectRequest) {
         
-        String sql = "INSERT INTO projects (id, title, summary, budget, \"security_rating\") VALUES(?, ?,?,?,?)";
+        String sql = "INSERT INTO projects (id, title, summary, budget, \"security_rating\", status) VALUES(?, ?,?,?,?, PROPOSED)";
         Connection dbConnection = connectionFactory.getConnection();
         
         int totalProjects = getTotalProjectCount();
@@ -192,6 +197,23 @@ public class ProjectDao extends BaseDao {
             return 0;
         }
         
+    }
+
+    public boolean setProjectStatus(ChangeProjectStatusRequest request) {
+        long id = request.getProjectId();
+        LOGGER.info("Updating status of project [" + id + "]");
+        String sql = "UPDATE projects SET status = ?::project_status WHERE id = ?";
+        Connection dbConnection = connectionFactory.getConnection();
+        
+        try (PreparedStatement st = dbConnection.prepareStatement(sql)) {
+            st.setString(1, request.getNewProjectStatus().name());
+            st.setLong(2, id);
+            st.execute();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Unable to update project ["+id+"]", e);
+            return false;
+        }
     }
     
 }

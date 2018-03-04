@@ -23,6 +23,8 @@ public class Project {
     
     private Double budget;
     
+    private ProjectStatus status;
+    
     private List<Site> sites;
     
     private List<Employee> employees;
@@ -121,6 +123,20 @@ public class Project {
      */
     public void setBudget(Double budget) {
         this.budget = budget;
+    }
+
+    /**
+     * @return the status
+     */
+    public ProjectStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(ProjectStatus status) {
+        this.status = status;
     }
     
 }

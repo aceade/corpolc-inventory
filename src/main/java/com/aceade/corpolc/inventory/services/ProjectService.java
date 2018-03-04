@@ -9,9 +9,8 @@ import com.aceade.corpolc.inventory.dao.ProjectDao;
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Site;
-import com.aceade.corpolc.inventory.model.errors.NotImplementedException;
+import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -52,6 +51,10 @@ public class ProjectService {
 
     public List<Project> getProjectsForEmployee(long id) {
         return projectDao.getProjectsForEmployee(id);
+    }
+
+    public boolean changeProjectStatus(ChangeProjectStatusRequest request) {
+        return projectDao.setProjectStatus(request);
     }
     
 }

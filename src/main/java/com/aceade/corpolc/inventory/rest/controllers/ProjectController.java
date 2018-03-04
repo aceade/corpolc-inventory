@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.rest.controllers;
 
 import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Role;
+import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.response.AddResourceResponse;
 import com.aceade.corpolc.inventory.services.EmployeeService;
@@ -78,5 +79,15 @@ public class ProjectController {
         }
         
         return new ResponseEntity<>(response, status);
+    }
+    
+    @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_PROJECT_ADMIN})
+    @RequestMapping(method = RequestMethod.POST, value="/status")
+    public ResponseEntity<Boolean> changeProjectStatus(@RequestBody ChangeProjectStatusRequest request) {
+        
+        // TODO: check if the user is the admin of the project
+        boolean success = projectService.changeProjectStatus(request);
+        
+        return new ResponseEntity(success, HttpStatus.OK);
     }
 }
