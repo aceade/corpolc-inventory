@@ -289,7 +289,9 @@ Response on failure: 500 Internal Server Error
 ```
 
 #### Get site using a SQL-injection prone query
+
 This exists primarily so I can teach myself how to scan for vulnerabilities.
+
 ```
 GET /projects/get/with/weak/query?id=aaa
 Happy path response:
@@ -326,3 +328,4 @@ Response on success: true (200 OK)
 Response on failure: false (200 OK)
 
 ```
+
