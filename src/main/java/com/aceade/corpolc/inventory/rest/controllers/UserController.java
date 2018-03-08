@@ -36,8 +36,8 @@ public class UserController {
         return new ResponseEntity<>(userService.addUser(newUser), HttpStatus.OK);
     }
     
-    @RequestMapping(value="/{employeeId}", method=RequestMethod.DELETE)
-    public ResponseEntity<Boolean> disableUser(@PathVariable("employeeId") String username) {
+    @RequestMapping(value="/{username}", method=RequestMethod.DELETE)
+    public ResponseEntity<Boolean> disableUser(@PathVariable("username") String username) {
         return new ResponseEntity<>(userService.disableUser(username), HttpStatus.OK);
     }
     
