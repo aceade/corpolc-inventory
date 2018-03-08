@@ -39,6 +39,14 @@ public class Project {
     public long getId() {
         return id;
     }
+    
+    /**
+     * Set the ID.
+     * @param id 
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
     /**
      * @return the securityLevel

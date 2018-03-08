@@ -40,6 +40,7 @@ public class ProjectDao extends BaseDao {
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
+                project.setId(rs.getLong("id"));
                 project.setTitle(rs.getString("title"));
                 project.setSummary(rs.getString("summary"));
                 project.setBudget(rs.getDouble("budget"));
@@ -134,6 +135,7 @@ public class ProjectDao extends BaseDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Project project = new Project();
+                    project.setId(rs.getLong("id"));
                     project.setTitle(rs.getString("title"));
                     project.setSummary(rs.getString("summary"));
                     project.setBudget(rs.getDouble("budget"));
@@ -160,6 +162,7 @@ public class ProjectDao extends BaseDao {
             
             while (rs.next()) {
                 Project project = new Project();
+                project.setId(rs.getLong("id"));
                 project.setTitle(rs.getString("title"));
                 project.setSummary(rs.getString("summary"));
                 project.setBudget(rs.getDouble("budget"));
