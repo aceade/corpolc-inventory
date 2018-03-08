@@ -274,6 +274,7 @@ Request Body:
     "postalAddress": "Connacht Trading Company, Delphi, Mweelrea",
     "minimumSecurityLevel": [0-7]
 }
+```
 
 Response on success: 200 OK
 Response on failure: 500 Internal Server Error
