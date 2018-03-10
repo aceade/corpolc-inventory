@@ -40,8 +40,22 @@ This file lists the database schema, in case you want to test this yourself.
 
 ## Users
 
+Handles login details
+
+| Column        | Type      | Comments  |
 |---------------|-----------|-----------|
 | username      | text      | Unique username |
 | password      | text      | Salted and hashed using BCrypt |
 | employeeId    | bigint    | Mapped to the ID column in the employees table |
 | enabled       | boolean   | If set to true, the user may log in. Otherwise, they may not |
+
+
+## Authorities
+
+Used to define the user's role
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| username      | text      | Username. Must match that in the user table |
+| authority     | text      | Matches a role, e.g. FULL_ADMIN, EDIT_OWN_DETAILS |
+
