@@ -1,10 +1,10 @@
 # DB SCHEMA
 
-This file lists the database schema, in case you want to test this yourself.
+This file lists the database schema. This currently uses a Postgresql 9.3 database.
 
 ## Employees
 
-| Column        | Type      | Comments |
+| Column        | Type      | Comments  |
 |---------------|-----------|-----------|
 | ID            | bigint    | Primary key. Should really be a serial |
 | name          | text      | Employee's full name |
@@ -15,10 +15,18 @@ This file lists the database schema, in case you want to test this yourself.
 | salary        | numeric   | Salary per annum |
 | current       | boolean   | Do they currently work for us or not? |
 
+## Employee-projects
+
+Acts as a mapping between the employes and projects tables.
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| employeeId    | bigint    | Mapped to the ID column in employees |
+| projectId     | bigint    | Mapped to the ID column in projects  |
 
 ## Projects
 
-| Column        | Type      | Comments |
+| Column        | Type      | Comments  |
 |---------------|-----------|-----------|
 | ID            | integer   | Primary key. Should really be a serial |
 | title         | text      | The project's name |
@@ -30,13 +38,22 @@ This file lists the database schema, in case you want to test this yourself.
 
 ## Sites
 
-| Column        | Type      | Comments |
+| Column        | Type      | Comments  |
 |---------------|-----------|-----------|
 | ID            | integer   | Primary key. Should really be a serial |
 | country       | text      |  |
 | region        | text      |  |
 | postalAddress | text      |  |
 | securityLevel | integer   | Minimum security level for any employees working here |
+
+## Sites-projects
+
+Acts as a mapping between the sites and projects tables
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| site_id       | bigint    | Mapped to the ID column in sites |
+| project_id    | bigint    | Mapped to the ID column in projects  |
 
 ## Users
 
@@ -59,3 +76,12 @@ Used to define the user's role
 | username      | text      | Username. Must match that in the user table |
 | authority     | text      | Matches a role, e.g. FULL_ADMIN, EDIT_OWN_DETAILS |
 
+
+## Test
+
+Used purely to test SQL injection.
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| id            | integer   | A unique integer |
+| name          | text      | Any string, e.g. foo |
