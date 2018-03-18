@@ -5,6 +5,7 @@
  */
 package com.aceade.corpolc.inventory.dao;
 
+import com.aceade.corpolc.inventory.database.ProjectRowMapper;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Project;
@@ -32,25 +33,30 @@ public class ProjectDao extends BaseDao {
     
     public Project getProject(long id) {
         String sql = Queries.SELECT_PROJECT;
-        Project project = new Project();
-        Connection dbConnection = connectionFactory.getConnection();
+//        Project project = new Project();
         
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                project.setId(rs.getLong("id"));
-                project.setTitle(rs.getString("title"));
-                project.setSummary(rs.getString("summary"));
-                project.setBudget(rs.getDouble("budget"));
-                project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
-                project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
-            }
-            
-        } catch (SQLException e) {
-            LOGGER.error("Could not retrieve project by id ["+id+"]", e);
-        }
+//        Project project = jdbcTemplate.queryForObject(sql, Project.class, id);
+        Project project = (Project) jdbcTemplate.queryForObject(sql, new ProjectRowMapper(), id);
+        
+        
+//        Connection dbConnection = connectionFactory.getConnection();
+//        
+//        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+//            stmt.setLong(1, id);
+//            ResultSet rs = stmt.executeQuery();
+//            
+//            while (rs.next()) {
+//                project.setId(rs.getLong("id"));
+//                project.setTitle(rs.getString("title"));
+//                project.setSummary(rs.getString("summary"));
+//                project.setBudget(rs.getDouble("budget"));
+//                project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
+//                project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
+//            }
+//            
+//        } catch (SQLException e) {
+//            LOGGER.error("Could not retrieve project by id ["+id+"]", e);
+//        }
         
         return project;
     }
