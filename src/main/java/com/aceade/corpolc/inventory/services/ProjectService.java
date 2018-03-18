@@ -56,5 +56,9 @@ public class ProjectService {
     public boolean changeProjectStatus(ChangeProjectStatusRequest request) {
         return projectDao.setProjectStatus(request);
     }
+
+    public boolean isUserOnProject(long projectId, String username) {
+        return projectDao.isUserOnProject(projectId, username);
+    }
     
 }

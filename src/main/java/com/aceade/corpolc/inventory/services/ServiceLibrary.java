@@ -6,8 +6,10 @@
 package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.model.base.Department;
+import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.base.SecurityRating;
 import java.util.Date;
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -40,8 +42,9 @@ public class ServiceLibrary {
      */
     public SecurityRating getSecurityRatingFromRole(HttpServletRequest req) {
         
-        LOGGER.debug(req.getRemoteUser());
-        
+        LOGGER.info(req.getRemoteUser());
+        LOGGER.info(req.getUserPrincipal());
+        req.getUserPrincipal().implies(Subject.getSubject(null));
         
         
         if (req.isUserInRole("ROLE_ADMIN")) {
@@ -55,4 +58,5 @@ public class ServiceLibrary {
         }
         
     }
+    
 }

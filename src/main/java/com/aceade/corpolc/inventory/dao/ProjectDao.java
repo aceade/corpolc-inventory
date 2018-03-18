@@ -218,5 +218,27 @@ public class ProjectDao extends BaseDao {
             return false;
         }
     }
+
+    public boolean isUserOnProject(long projectId, String username) {
+        String sql = "SELECT * FROM employee_projects ep WHERE ep.project_id=? AND ep.employee_id = (SELECT \"employeeId\" FROM users WHERE username = ?)";
+        Connection dbConnection = connectionFactory.getConnection();
+        
+        try (PreparedStatement st = dbConnection.prepareStatement(sql)) {
+            st.setLong(1, projectId);
+            st.setString(2, username);
+            ResultSet rs = st.executeQuery();
+            long returnedId = -1;
+            while (rs.next()) {
+                returnedId = rs.getLong("project_id");
+                LOGGER.info("Returned project id " + returnedId);
+            }
+            return (returnedId == projectId && returnedId > 0);
+            
+            
+        } catch (SQLException e) {
+            LOGGER.error("Unable to check if user ["+username+"] is assigned to project ["+projectId +"]", e);
+            return false;
+        }
+    }
     
 }
