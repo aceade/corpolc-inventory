@@ -30,7 +30,7 @@ public class ProjectDao extends BaseDao {
     
     private static final Logger LOGGER = LogManager.getLogger(ProjectDao.class);
     
-    public Project getProject(long id) {
+    public Project getProject(long id, boolean sanitise) {
         String sql = Queries.SELECT_PROJECT;
         Project project = new Project();
         Connection dbConnection = connectionFactory.getConnection();
@@ -42,10 +42,14 @@ public class ProjectDao extends BaseDao {
             while (rs.next()) {
                 project.setId(rs.getLong("id"));
                 project.setTitle(rs.getString("title"));
-                project.setSummary(rs.getString("summary"));
-                project.setBudget(rs.getDouble("budget"));
-                project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
                 project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
+                
+                // sensitive data! Authorisation required!!!11!!1!
+                if (!sanitise) {
+                    project.setSummary(rs.getString("summary"));
+                    project.setBudget(rs.getDouble("budget"));
+                    project.setStatus(ProjectStatus.valueOf(rs.getString("status")));    
+                }
             }
             
         } catch (SQLException e) {

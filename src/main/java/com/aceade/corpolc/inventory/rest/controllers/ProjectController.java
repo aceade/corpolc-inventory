@@ -53,21 +53,22 @@ public class ProjectController {
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/all")
     public List<Project> getAllProjects(HttpServletRequest sr){
-        
-        serviceLibrary.getSecurityRatingFromRole(sr);
-        
         LOGGER.info("Returning all projects");
         return projectService.getAllProjects();
     }
     
     @RequestMapping(method = RequestMethod.GET, value="")
-    public Project getProject(@RequestParam(value= "id", required=true) long id) {
-        LOGGER.info("Returning project with id ["+id+"]");
-        Project project = projectService.getProject(id);  
+    public Project getProject(@RequestParam(value= "id", required=true) long projectId, HttpServletRequest req) {
+        LOGGER.info("Returning project with id ["+projectId+"]");
+        Project project;
         
-        // TODO: filter based on user roles
-        project.setEmployees(projectService.getEmployeesOnProject(id));
-        project.setSites(projectService.getSitesForProject(id));     
+        if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || 
+                (req.isUserInRole(Role.ROLE_PROJECT_ADMIN) && projectService.isUserOnProject(projectId, req.getRemoteUser())) ) {
+            project = projectService.getFullProjectDetails(projectId);
+        } else {
+            project = projectService.getProject(projectId, true);  
+        }
+        
         return project;
     }
     

@@ -29,8 +29,8 @@ public class ProjectService {
         return projectDao.getAll();
     }
     
-    public Project getProject(long id) {
-        return projectDao.getProject(id);
+    public Project getProject(long id, boolean sanitise) {
+        return projectDao.getProject(id, sanitise);
     }
     
     public int getProjectCount() {
@@ -68,6 +68,13 @@ public class ProjectService {
      */
     public List<Project> getSanitisedProjectsForEmployee(long id) {
         return projectDao.getProjectsForEmployee(id, true);
+    }
+
+    public Project getFullProjectDetails(long id) {
+        Project project = projectDao.getProject(id, false);
+        project.setEmployees(getEmployeesOnProject(id));
+        project.setSites(getSitesForProject(id));
+        return project;
     }
     
 }
