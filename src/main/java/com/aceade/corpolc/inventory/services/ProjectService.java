@@ -50,7 +50,7 @@ public class ProjectService {
     }
 
     public List<Project> getProjectsForEmployee(long id) {
-        return projectDao.getProjectsForEmployee(id);
+        return projectDao.getProjectsForEmployee(id, false);
     }
 
     public boolean changeProjectStatus(ChangeProjectStatusRequest request) {
@@ -59,6 +59,15 @@ public class ProjectService {
 
     public boolean isUserOnProject(long projectId, String username) {
         return projectDao.isUserOnProject(projectId, username);
+    }
+
+    /**
+     * Return a sanitised list of projects. These don't show the summary, budget or status.
+     * @param id
+     * @return 
+     */
+    public List<Project> getSanitisedProjectsForEmployee(long id) {
+        return projectDao.getProjectsForEmployee(id, true);
     }
     
 }

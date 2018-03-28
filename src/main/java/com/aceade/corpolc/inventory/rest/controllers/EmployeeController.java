@@ -50,9 +50,20 @@ public class EmployeeController {
     private ProjectService projectService;
     
     @RequestMapping(value="/", method=RequestMethod.GET)
-    public Employee getEmployee(@RequestParam(value="id", required=true) long id) {
+    public Employee getEmployee(@RequestParam(value="id", required=true) long id, HttpServletRequest req) {
         LOGGER.info("Retrieveing employee with id ["+id+"]");
-        return employeeService.getEmployee(id);
+        Employee employee = employeeService.getEmployee(id);
+        
+        // sanitise it
+        if (!req.isUserInRole(Role.ROLE_FULL_ADMIN) || !req.isUserInRole(Role.ROLE_FULL_READONLY)) {
+            employee.setDepartment(null);
+            employee.setWorkplace(null);
+            employee.setClearanceLevel(null);
+            employee.setUsername(null);
+            employee.setSalary(0.00);
+        }
+        
+        return employee;
     }
     
     @Secured({Role.ROLE_FULL_ADMIN})
@@ -106,9 +117,14 @@ public class EmployeeController {
     }
     
     @RequestMapping(value="/projects")
-    public List<Project> getProjectsForEmployee(@RequestParam(value="id", required=true)long id, HttpServletRequest request){
-        LOGGER.info("Retrieving projects for employee ["+id+"]");
-        return projectService.getProjectsForEmployee(id);
+    public List<Project> getProjectsForEmployee(@RequestParam(value="id", required=true)long employeeId, HttpServletRequest request){
+        LOGGER.info("Retrieving projects for employee ["+employeeId+"]");
+        
+        if (!request.isUserInRole(Role.ROLE_FULL_ADMIN) || !request.isUserInRole(Role.ROLE_FULL_READONLY)) {
+            return projectService.getSanitisedProjectsForEmployee(employeeId);
+        } else {
+            return projectService.getProjectsForEmployee(employeeId);    
+        }
     }
 
 }

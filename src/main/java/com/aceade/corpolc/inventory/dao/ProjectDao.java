@@ -126,7 +126,7 @@ public class ProjectDao extends BaseDao {
         return sites;
     }
 
-    public List<Project> getProjectsForEmployee(long employeeId) {
+    public List<Project> getProjectsForEmployee(long employeeId, boolean sanitise) {
         String sql = "SELECT p.id, p.title, p.summary, p.security_rating, p.status, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
         List<Project> projects = new ArrayList<>();
         Connection dbConnection = connectionFactory.getConnection();
@@ -137,10 +137,15 @@ public class ProjectDao extends BaseDao {
                     Project project = new Project();
                     project.setId(rs.getLong("id"));
                     project.setTitle(rs.getString("title"));
-                    project.setSummary(rs.getString("summary"));
-                    project.setBudget(rs.getDouble("budget"));
-                    project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
                     project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
+                    
+                    // sanitise the more sensitive details
+                    if (!sanitise) {
+                        project.setSummary(rs.getString("summary"));
+                        project.setBudget(rs.getDouble("budget"));
+                        project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
+                    }
+                    
                     projects.add(project);
                 }
             }

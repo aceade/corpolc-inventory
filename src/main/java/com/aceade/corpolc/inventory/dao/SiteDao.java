@@ -153,4 +153,8 @@ public class SiteDao extends BaseDao {
         
         return theSite;
     }
+
+    public boolean isWorkerAtSite(long employeeId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

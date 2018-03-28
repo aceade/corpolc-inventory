@@ -42,6 +42,10 @@ public class SiteService {
         return siteDao.deleteSite(id);
     }
     
+    public boolean isWorkerAtSite(long employeeId) {
+        return siteDao.isWorkerAtSite(employeeId);
+    }
+    
     public Site getSiteBadly(String id) {
         return siteDao.getSiteWithWeakQuery(id);
     }

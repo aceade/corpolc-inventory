@@ -69,6 +69,7 @@ public class EmployeeDao extends BaseDao {
     
     private Employee createEmployee(ResultSet rs) throws SQLException {
         Employee employee = new Employee(rs.getLong("id"), rs.getString("name"));
+        employee.setUsername(rs.getString("username"));
         employee.setBirthday(rs.getDate("birthday"));
         employee.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
         employee.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
@@ -134,5 +135,27 @@ public class EmployeeDao extends BaseDao {
             LOGGER.error("Could not delete employee ["+id+"]", e);
             return false;
         }
+    }
+
+    public Site getSite(long employeeId) {
+        String sql = "SELECT * FROM sites WHERE id = (SELECT workplace FROM employees WHERE id = ?)";
+        Site theSite = new Site();
+        Connection dbConnection = connectionFactory.getConnection();
+        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
+            stmt.setLong(1, employeeId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                theSite.setId(rs.getLong("id"));
+                theSite.setCountry(rs.getString("country"));
+                theSite.setRegion(rs.getString("region"));
+                theSite.setPostalAddress(rs.getString("postalAddress"));
+                theSite.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("siteSecurityLevel")));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Could not retrieve worksite for employee ["+employeeId+"]", e);
+            // Todo: return default
+        }
+        
+        return theSite;
     }
 }

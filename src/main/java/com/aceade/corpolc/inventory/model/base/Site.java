@@ -35,6 +35,10 @@ public class Site {
     public long getId() {
         return id;
     }
+    
+    public void setId(long newId) {
+        this.id = newId;
+    }
 
     /**
      * @return the country

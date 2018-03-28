@@ -53,7 +53,9 @@ public class SiteController {
     @RequestMapping(method = RequestMethod.GET, value="")
     public Site viewSite(@RequestParam(value="id", required=true) long siteId) {
         LOGGER.info("Retrieving site ["+siteId+"]");
-        return siteService.getSite(siteId);
+        Site theSite = siteService.getSite(siteId);
+        
+        return theSite;
     }
     
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
