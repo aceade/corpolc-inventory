@@ -64,6 +64,7 @@ public class ProjectController {
         
         if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || 
                 (req.isUserInRole(Role.ROLE_PROJECT_ADMIN) && projectService.isUserOnProject(projectId, req.getRemoteUser())) ) {
+            LOGGER.info("Returning full details for project with id ["+ projectId + "]");
             project = projectService.getFullProjectDetails(projectId);
         } else {
             project = projectService.getProject(projectId, true);  
