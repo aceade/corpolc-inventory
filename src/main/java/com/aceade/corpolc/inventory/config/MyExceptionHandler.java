@@ -24,4 +24,9 @@ public class MyExceptionHandler {
     public void handleAccessDeniedException(Exception e) {
         LOGGER.error(e);
     }
+    
+    @ExceptionHandler({NumberFormatException.class})
+    public void handleNumberFormatException(Exception e) {
+        LOGGER.error(e);
+    }
 }
