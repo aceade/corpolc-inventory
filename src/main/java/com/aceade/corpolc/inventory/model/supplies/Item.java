@@ -6,7 +6,7 @@
 package com.aceade.corpolc.inventory.model.supplies;
 
 /**
- *
+ * Base class for supplies
  * @author philip
  */
 public class Item {

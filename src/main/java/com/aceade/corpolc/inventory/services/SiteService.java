@@ -8,6 +8,7 @@ package com.aceade.corpolc.inventory.services;
 import com.aceade.corpolc.inventory.dao.SiteDao;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
+import com.aceade.corpolc.inventory.model.supplies.Item;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -69,6 +70,14 @@ public class SiteService {
      */
     public Site getFullSiteDetails(long siteId) {
         return siteDao.getFullSiteDetails(siteId);
+    }
+    
+    public List<Item> viewFullSupplies(long siteId) {
+        return siteDao.getSuppliesAtSite(siteId);
+    }
+    
+    public List<Item> viewSuppliesOfType(long siteId) {
+        return siteDao.getSuppliesOfTypeAtSite(siteId);
     }
     
 }

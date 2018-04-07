@@ -8,6 +8,7 @@ package com.aceade.corpolc.inventory.dao;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
+import com.aceade.corpolc.inventory.model.supplies.Item;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -164,5 +165,13 @@ public class SiteDao extends BaseDao {
 
     public Site getFullSiteDetails(long siteId) {
         return getSite(siteId);
+    }
+
+    public List<Item> getSuppliesAtSite(long siteId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<Item> getSuppliesOfTypeAtSite(long siteId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

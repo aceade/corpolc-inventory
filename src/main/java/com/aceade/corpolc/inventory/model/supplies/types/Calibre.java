@@ -7,7 +7,7 @@ package com.aceade.corpolc.inventory.model.supplies.types;
 
 /**
  * Track the types of ammo that the corporate security forces use.
- * Abstracted away from all the various different possible calibres.
+ * Abstracted away from all the various different possible calibres; assume they are standardised.
  * @author philip
  */
 public enum Calibre {

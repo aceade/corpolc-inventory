@@ -9,10 +9,9 @@ package com.aceade.corpolc.inventory.model.supplies.types;
  *
  * @author philip
  */
-public enum FoodType {
-    VEGETABLE,
-    ENTOMOPHAGICAL,
-    MEAT,
-    SEAFOOD,
-    DRINK
+public enum SupplyType {
+    FOOD,
+    HARDWARE_SUPPLIES,
+    WEAPONS,
+    MEDICAL_SUPPLIES;
 }
