@@ -6,16 +6,10 @@
 package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.database.EmployeeRowMapper;
+import com.aceade.corpolc.inventory.database.ExtendedEmployeeRowMapper;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
-import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import com.aceade.corpolc.inventory.services.ServiceLibrary;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -30,7 +24,8 @@ public class EmployeeDao extends BaseDao {
     
     public Employee getEmployee (long id) {
         String sql = Queries.SELECT_EMPLOYEE;
-        return (Employee) jdbcTemplate.queryForObject(sql, Employee.class, id);
+        // querying for the object directly doesn't work here...but this does
+        return (Employee) jdbcTemplate.query(sql, new ExtendedEmployeeRowMapper(), id).get(0);
     }
     
     public List<Employee> getAllEmployees() {
