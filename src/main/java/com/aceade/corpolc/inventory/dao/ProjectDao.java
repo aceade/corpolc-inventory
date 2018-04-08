@@ -14,9 +14,12 @@ import com.aceade.corpolc.inventory.model.base.Project;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
@@ -26,7 +29,7 @@ public class ProjectDao extends BaseDao {
     
     private static final Logger LOGGER = LogManager.getLogger(ProjectDao.class);
     
-    public Project getProject(long id) {
+    public Project getProject(long id, boolean sanitise) {
         String sql = Queries.SELECT_PROJECT;
         return (Project) jdbcTemplate.queryForObject(sql, new ProjectRowMapper(), id);
     }
@@ -49,7 +52,7 @@ public class ProjectDao extends BaseDao {
         return sites;  
     }
 
-    public List<Project> getProjectsForEmployee(long employeeId) {
+    public List<Project> getProjectsForEmployee(long employeeId, boolean sanitise) {
         String sql = "SELECT p.id, p.title, p.summary, p.security_rating, p.status, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
         List<Project> projects = jdbcTemplate.query(sql, new ProjectRowMapper(), employeeId);
         return projects;
@@ -85,6 +88,17 @@ public class ProjectDao extends BaseDao {
         // since jdbcTemplate.update returns the number of affected rows, might as well check that a single row updated
         int rowsAffected = jdbcTemplate.update(sql, request.getNewProjectStatus().name(), id);
         return rowsAffected == 1;
+    }
+
+    public boolean isUserOnProject(long projectId, String username) {
+        String sql = "SELECT * FROM employee_projects ep WHERE ep.project_id=? AND ep.employee_id = (SELECT \"employeeId\" FROM users WHERE username = ?)";
+        return (Boolean) jdbcTemplate.queryForObject(sql, new RowMapper(){
+            @Override
+            public Boolean mapRow(ResultSet rs, int i) throws SQLException {
+                return (rs.getLong("project_id") == projectId);
+            }
+            
+        }, projectId, username);
     }
     
 }

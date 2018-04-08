@@ -12,9 +12,11 @@ import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.response.AddResourceResponse;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
+import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import com.aceade.corpolc.inventory.services.SiteService;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -45,21 +47,29 @@ public class ProjectController {
     @Inject
     private SiteService siteService;
     
+    @Inject
+    private ServiceLibrary serviceLibrary;
+    
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/all")
-    public List<Project> getAllProjects(){
+    public List<Project> getAllProjects(HttpServletRequest sr){
         LOGGER.info("Returning all projects");
         return projectService.getAllProjects();
     }
     
     @RequestMapping(method = RequestMethod.GET, value="")
-    public Project getProject(@RequestParam(value= "id", required=true) long id) {
-        LOGGER.info("Returning project with id ["+id+"]");
-        Project project = projectService.getProject(id);  
+    public Project getProject(@RequestParam(value= "id", required=true) long projectId, HttpServletRequest req) {
+        LOGGER.info("Returning project with id ["+projectId+"]");
+        Project project;
         
-        // TODO: filter based on user roles
-        project.setEmployees(projectService.getEmployeesOnProject(id));
-        project.setSites(projectService.getSitesForProject(id));     
+        if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || 
+                (req.isUserInRole(Role.ROLE_PROJECT_ADMIN) && projectService.isUserOnProject(projectId, req.getRemoteUser())) ) {
+            LOGGER.info("Returning full details for project with id ["+ projectId + "]");
+            project = projectService.getFullProjectDetails(projectId);
+        } else {
+            project = projectService.getProject(projectId, true);  
+        }
+        
         return project;
     }
     
@@ -84,11 +94,17 @@ public class ProjectController {
     
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_PROJECT_ADMIN})
     @RequestMapping(method = RequestMethod.POST, value="/status")
-    public ResponseEntity<Boolean> changeProjectStatus(@RequestBody ChangeProjectStatusRequest request) {
+    public ResponseEntity<Boolean> changeProjectStatus(@RequestBody ChangeProjectStatusRequest request, HttpServletRequest sr) {
         
         // TODO: check if the user is the admin of the project
-        boolean success = projectService.changeProjectStatus(request);
-        
-        return new ResponseEntity(success, HttpStatus.OK);
+        boolean authorised = (sr.isUserInRole(Role.ROLE_PROJECT_ADMIN) && projectService.isUserOnProject(request.getProjectId(), sr.getRemoteUser()) ) || sr.isUserInRole(Role.ROLE_FULL_ADMIN);
+        if (!authorised) {
+            LOGGER.warn("User " + sr.getRemoteUser() + " is forbidden from accessing this");
+            return new ResponseEntity(false, HttpStatus.FORBIDDEN);
+        } else {
+            boolean success = projectService.changeProjectStatus(request);
+            return new ResponseEntity(success, HttpStatus.OK);
+        }
+
     }
 }

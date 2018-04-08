@@ -29,6 +29,7 @@ Response:
 ```
 
 #### Add Employee
+Required roles: ROLE_FULL_ADMIN
 ```
 POST /employees/
 Request Body:
@@ -44,12 +45,14 @@ Response: true|false
 ```
 
 #### Terminate Employee
+Required roles: ROLE_FULL_ADMIN
 ```
 DELETE /employees/?id=${employeeId}
 Response: true|false
 ```
 
 #### Get all employees
+Required roles: ROLE_FULL_ADMIN,ROLE_FULL_READONLY
 ```
 GET /employees/all
 Response Body:
@@ -90,6 +93,7 @@ Response Body:
 ```
 
 #### Get projects for employee
+Required roles: Any. ROLE_FULL_ADMIN,ROLE_FULL_READONLY required to view full details.
 ```
 GET /employees/projects?id=${employeeId}
 Response Body:
@@ -113,7 +117,7 @@ Response Body:
 Manipulating project data
 
 #### Get project by ID
-
+Required roles: Any. ROLE_FULL_ADMIN, ROLE_FULL_READONLY required to view all details of any project. ROLE_PROJECT_ADMIN may view full details of a project they control
 ```
 GET /projects?id=1
 Response Body:
@@ -155,7 +159,7 @@ Response Body:
 ```
 
 #### Get all projects
-
+Required roles: ROLE_FULL_ADMIN,ROLE_FULL_READONLY
 ```
 GET /projects/all
 Response Body:
@@ -184,7 +188,7 @@ Response Body:
 ```
 
 #### Add project
-
+Required roles: ROLE_FULL_ADMIN
 ```
 POST /projects
 Request Body:
@@ -205,7 +209,7 @@ ResponseBody:
 ```
 
 #### Change project status
-
+Required roles: ROLE_FULL_ADMIN,ROLE_PROJECT_ADMIN. Project Admins may only change their own project
 ```
 POST /projects/status
 RequestBody:
@@ -223,6 +227,8 @@ ResponseBody:
 
 Manipulating site details
 
+#### Get a specific site
+Required roles: ROLE_FULL_ADMIN, ROLE_FULL_READONLY and ROLE_VIEW_ALL_ADDRESSES required for all details.
 ```
 GET /sites?id=1
 Response Body:
@@ -236,7 +242,7 @@ Response Body:
 ```
 
 #### Get all projects
-
+Required roles: ROLE_FULL_ADMIN,ROLE_FULL_READONLY
 ```
 GET /sites/all
 Response Body:
@@ -259,12 +265,14 @@ Response Body:
 ```
 
 #### Get site count
+Required roles: ROLE_FULL_ADMIN,ROLE_FULL_READONLY
 ```
 GET /site/count
 Response: 2
 
 
 #### Add site
+Required role: ROLE_FULL_ADMIN
 ```
 POST /projects
 Request Body:
@@ -282,6 +290,7 @@ Response on failure: 500 Internal Server Error
 ```
 
 #### Delete Site
+Required role: ROLE_FULL_ADMIN
 
 ```
 DELETE /projects?id=1
@@ -291,10 +300,11 @@ Response on failure: 500 Internal Server Error
 
 #### Get site using a SQL-injection prone query
 
-This exists primarily so I can teach myself how to scan for vulnerabilities.
+Required role: none. Anybody can access this.
+This exists primarily so I can teach myself how to scan for vulnerabilities. I still have not figured out how to get OWASP ZAP to recognise this.
 
 ```
-GET /projects/get/with/weak/query?id=aaa
+GET /projects/get/with/weak/query?id=1
 Happy path response:
 {
     "id": 1,
@@ -308,6 +318,7 @@ Happy path response:
 ## User URLs
 
 Used to add or disable users
+Required role: ROLE_FULL_ADMIN (all URLs)
 
 #### Add a new user
 ```

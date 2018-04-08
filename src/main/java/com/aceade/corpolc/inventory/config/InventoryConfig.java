@@ -12,6 +12,7 @@ import com.aceade.corpolc.inventory.dao.UserDao;
 import com.aceade.corpolc.inventory.database.ConnectionFactory;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
+import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import com.aceade.corpolc.inventory.services.SiteService;
 import com.aceade.corpolc.inventory.services.UserService;
 import javax.inject.Named;
@@ -122,5 +123,10 @@ public class InventoryConfig {
     @Bean
     public UserDao userDao() {
         return new UserDao();
+    }
+    
+    @Bean
+    public ServiceLibrary serviceLibrary() {
+        return new ServiceLibrary();
     }
 }

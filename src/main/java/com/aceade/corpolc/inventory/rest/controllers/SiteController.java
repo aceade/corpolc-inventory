@@ -13,6 +13,7 @@ import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.SiteService;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -51,9 +52,21 @@ public class SiteController {
     }
     
     @RequestMapping(method = RequestMethod.GET, value="")
-    public Site viewSite(@RequestParam(value="id", required=true) long siteId) {
+    public Site viewSite(@RequestParam(value="id", required=true) long siteId, HttpServletRequest req) {
         LOGGER.info("Retrieving site ["+siteId+"]");
-        return siteService.getSite(siteId);
+        Site theSite;
+        
+        if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || (req.isUserInRole(Role.ROLE_SITE_ADMIN) )) {
+           theSite = siteService.getFullSiteDetails(siteId);
+        } else if (req.isUserInRole(Role.ROLE_VIEW_ALL_ADDRESSES)) {
+            LOGGER.info("Need the addresses");
+            theSite = siteService.getSiteWithAddress(siteId);
+        } else {
+            LOGGER.info("Just need the basic site details");
+            theSite = siteService.getSite(siteId);
+        }
+        
+        return theSite;
     }
     
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})

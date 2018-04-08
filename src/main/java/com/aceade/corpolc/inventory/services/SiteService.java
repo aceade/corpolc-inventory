@@ -30,8 +30,16 @@ public class SiteService {
         return siteDao.getSiteCount();
     }
     
+    /**
+     * Return the specified site, with less details.
+     * @param id
+     * @return 
+     */
     public Site getSite(long id) {
-        return siteDao.getSite(id);
+        Site theSite = siteDao.getSite(id);
+        theSite.setPostalAddress("");
+        theSite.setRegion("");
+        return theSite;
     }
     
     public boolean createSite(NewSiteRequest newSite){
@@ -42,8 +50,25 @@ public class SiteService {
         return siteDao.deleteSite(id);
     }
     
+    public boolean isWorkerAtSite(long employeeId) {
+        return siteDao.isWorkerAtSite(employeeId);
+    }
+    
     public Site getSiteBadly(String id) {
         return siteDao.getSiteWithWeakQuery(id);
+    }
+
+    public Site getSiteWithAddress(long siteId) {
+        return siteDao.getSiteWithAddress(siteId);
+    }
+
+    /**
+     * Return the full site details. Currently indistinguishable from getSiteWithAddresses
+     * @param siteId
+     * @return 
+     */
+    public Site getFullSiteDetails(long siteId) {
+        return siteDao.getFullSiteDetails(siteId);
     }
     
 }

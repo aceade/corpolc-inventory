@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
 import com.aceade.corpolc.inventory.model.base.Employee;
+import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import java.util.List;
 import javax.inject.Inject;
@@ -36,6 +37,10 @@ public class EmployeeService {
 
     public boolean deleteEmployee(long id) {
         return employeeDao.deleteEmployee(id);
+    }
+    
+    public Site getEmployeeWorksite(long employeeId) {
+        return employeeDao.getSite(employeeId);
     }
 
 }

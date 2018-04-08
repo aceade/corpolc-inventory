@@ -9,6 +9,7 @@ import com.aceade.corpolc.inventory.database.EmployeeRowMapper;
 import com.aceade.corpolc.inventory.database.ExtendedEmployeeRowMapper;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
+import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import java.util.List;
 import org.apache.log4j.LogManager;
@@ -56,5 +57,11 @@ public class EmployeeDao extends BaseDao {
         String sql = Queries.DELETE_EMPLOYEE;
         int rowsAffected = jdbcTemplate.update(sql, id);
         return rowsAffected == 1;
+    }
+
+    public Site getSite(long employeeId) {
+        String sql = "SELECT * FROM sites WHERE id = (SELECT workplace FROM employees WHERE id = ?)";
+        Site theSite = jdbcTemplate.queryForObject(sql, Site.class, employeeId);
+        return theSite;
     }
 }

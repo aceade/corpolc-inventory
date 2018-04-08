@@ -17,6 +17,8 @@ public class Employee {
     
     private String name;
     
+    private String username;
+    
     private Date birthday;
     
     private Department department;
@@ -135,5 +137,19 @@ public class Employee {
      */
     public void setCurrentlyEmployed(boolean currentlyEmployed) {
         this.currentlyEmployed = currentlyEmployed;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

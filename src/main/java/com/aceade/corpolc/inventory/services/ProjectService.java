@@ -29,8 +29,8 @@ public class ProjectService {
         return projectDao.getAll();
     }
     
-    public Project getProject(long id) {
-        return projectDao.getProject(id);
+    public Project getProject(long id, boolean sanitise) {
+        return projectDao.getProject(id, sanitise);
     }
     
     public int getProjectCount() {
@@ -50,11 +50,31 @@ public class ProjectService {
     }
 
     public List<Project> getProjectsForEmployee(long id) {
-        return projectDao.getProjectsForEmployee(id);
+        return projectDao.getProjectsForEmployee(id, false);
     }
 
     public boolean changeProjectStatus(ChangeProjectStatusRequest request) {
         return projectDao.setProjectStatus(request);
+    }
+
+    public boolean isUserOnProject(long projectId, String username) {
+        return projectDao.isUserOnProject(projectId, username);
+    }
+
+    /**
+     * Return a sanitised list of projects. These don't show the summary, budget or status.
+     * @param id
+     * @return 
+     */
+    public List<Project> getSanitisedProjectsForEmployee(long id) {
+        return projectDao.getProjectsForEmployee(id, true);
+    }
+
+    public Project getFullProjectDetails(long id) {
+        Project project = projectDao.getProject(id, false);
+        project.setEmployees(getEmployeesOnProject(id));
+        project.setSites(getSitesForProject(id));
+        return project;
     }
     
 }
