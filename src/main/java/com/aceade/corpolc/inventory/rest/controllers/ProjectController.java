@@ -72,6 +72,7 @@ public class ProjectController {
         if (id > 0) {
             status = HttpStatus.OK;
             response.setNewResourceId(id);
+            response.setSuccess(true);
             response.setResponseText("Successfully added new project");
         } else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;

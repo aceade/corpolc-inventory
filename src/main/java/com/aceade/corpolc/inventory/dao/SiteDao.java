@@ -6,15 +6,13 @@
 package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.database.Queries;
+import com.aceade.corpolc.inventory.database.SiteRowMapper;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
-import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -30,107 +28,32 @@ public class SiteDao extends BaseDao {
     public Site getSite(long id) {
         LOGGER.info("Retrieving site with id ["+id +"]");
         String sql = Queries.SELECT_SITE;
-        Site site = null;
-        
-        Connection dbConnection = connectionFactory.getConnection();
-        
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                site = createSite(rs);
-            }
-            
-        } catch (SQLException e) {
-            LOGGER.error("Unable to retrieve site with id ["+id+"]", e);
-        }
-        
+        Site site = jdbcTemplate.queryForObject(sql, Site.class, id);
         return site;
     }
     
     public List<Site> getAllSites() {
         String sql = Queries.SELECT_ALL_SITES;
-        List<Site> sites = new ArrayList<>();
-        
-        Connection dbConnection = connectionFactory.getConnection();
-        
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                Site site = createSite(rs);
-                sites.add(site);
-            }
-            
-        } catch (SQLException e) {
-            LOGGER.error("Unable to retrieve all sites", e);
-        }
-        
+        List<Site> sites = jdbcTemplate.query(sql, new SiteRowMapper());
         return sites;
     }
     
     public int getSiteCount (){
         String sql = Queries.COUNT_SITES;
-        int amount = 0;
-        
-        Connection dbConnection = connectionFactory.getConnection();
-        
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                amount = rs.getInt("count");
-            }
-            
-        } catch (SQLException e) {
-            LOGGER.error("Unable to retrieve number of sites", e);
-        }
-        
-        return amount;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
     
     public boolean addSite(NewSiteRequest newSite) {
         String sql = Queries.ADD_SITE;
         int amount = getSiteCount();
-        Connection dbConnection = connectionFactory.getConnection();
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setInt(1, amount+1);
-            stmt.setString(2, newSite.getCountry());
-            stmt.setString(3, newSite.getRegion());
-            stmt.setString(4, newSite.getPostalAddress());
-            stmt.setInt(5, newSite.getSecurityLevel());
-            stmt.execute();
-            return true;
-            
-        } catch (SQLException e) {
-            LOGGER.error("Unable to add new site", e);
-            return false;
-        }
-        
+        int rowsAffected = jdbcTemplate.update(sql, amount+1, newSite.getCountry(), newSite.getRegion(), newSite.getPostalAddress(), newSite.getSecurityLevel());
+        return rowsAffected == 1;        
     }
     
     public boolean deleteSite(long id) {
         String sql = Queries.DELETE_SITE;
-        Connection dbConnection = connectionFactory.getConnection();
-        boolean successful = false;
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            successful = stmt.execute();
-            
-        } catch (SQLException e) {
-            LOGGER.error("Could not delete site with id ["+id+"]", e);
-        }
-        return successful;
-    }
-    
-    private Site createSite(ResultSet rs) throws SQLException {
-        Site site = new Site(rs.getLong("id"));
-        site.setPostalAddress(rs.getString("postalAddress"));
-        site.setCountry(rs.getString("country"));
-        site.setRegion(rs.getString("region"));
-        site.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
-        return site;
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        return rowsAffected == 1;
     }
     
     /**
@@ -144,9 +67,7 @@ public class SiteDao extends BaseDao {
         Connection dbConnection = connectionFactory.getConnection();
         try (Statement statement = dbConnection.createStatement() ) {
             ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()) {
-                theSite = createSite(rs);
-            }
+            theSite = new SiteRowMapper().mapRow(rs, 0);
         } catch (SQLException e) {
             LOGGER.error("Could not retrieve site with id ["+id+"]...weakly", e);
         }
