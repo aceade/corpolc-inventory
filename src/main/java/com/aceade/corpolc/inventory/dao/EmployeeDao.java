@@ -5,16 +5,12 @@
  */
 package com.aceade.corpolc.inventory.dao;
 
+import com.aceade.corpolc.inventory.database.EmployeeRowMapper;
+import com.aceade.corpolc.inventory.database.ExtendedEmployeeRowMapper;
 import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.base.Employee;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import com.aceade.corpolc.inventory.services.ServiceLibrary;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -29,133 +25,43 @@ public class EmployeeDao extends BaseDao {
     
     public Employee getEmployee (long id) {
         String sql = Queries.SELECT_EMPLOYEE;
-        Employee employee = null;
-        Connection dbConnection = connectionFactory.getConnection();
-        
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    employee = createEmployee(rs);
-                }
-            }
-            
-        } catch (SQLException e) {
-            LOGGER.error("Could not retrieve employee ["+id+"]", e);
-        }
-        
-        return employee;
+        // querying for the object directly doesn't work here...but this does
+        return (Employee) jdbcTemplate.query(sql, new ExtendedEmployeeRowMapper(), id).get(0);
     }
     
     public List<Employee> getAllEmployees() {
         String sql = Queries.SELECT_ALL_EMPLOYEES;
-        List<Employee> employees = new ArrayList<>();
-        Connection dbConnection = connectionFactory.getConnection();
-        
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-            
-            while (rs.next()) {
-                Employee employee = createEmployee(rs);
-                employees.add(employee);
-            }
-            LOGGER.info("Returned [" + employees.size()+"] employees");
-            
-        } catch (SQLException e) {
-            LOGGER.error("Could not retrieve all employees ", e);
-        }
-        
+        List<Employee> employees = jdbcTemplate.query(sql, new EmployeeRowMapper());
         return employees;
-    }
-    
-    private Employee createEmployee(ResultSet rs) throws SQLException {
-        Employee employee = new Employee(rs.getLong("id"), rs.getString("name"));
-        employee.setUsername(rs.getString("username"));
-        employee.setBirthday(rs.getDate("birthday"));
-        employee.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
-        employee.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
-        employee.setSalary(rs.getDouble("salary"));
-        employee.setCurrentlyEmployed(rs.getBoolean("current"));
-        Site workplace = new Site(rs.getLong("siteid"));
-        workplace.setCountry(rs.getString("country"));
-        workplace.setRegion(rs.getString("region"));
-        workplace.setPostalAddress(rs.getString("postalAddress"));
-        workplace.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("siteSecurityLevel")));
-        employee.setWorkplace(workplace);
-        return employee;
     }
     
     public int getTotalEmployeeCount() {
         String sql = "SELECT COUNT(id) from employees AS count";
-        int amount = 0;
-        Connection dbConnection = connectionFactory.getConnection();
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                amount = rs.getInt("count");
-            }
-            LOGGER.debug("Returned [" + amount+"] employees");
-        } catch  (SQLException e) {
-            LOGGER.error("Could not retrieve number of employees ", e);
-        }
-        return amount;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     public long addEmployee(NewEmployeeRequest newEmployee) {
         LOGGER.info("Adding new employee");
         String sql = Queries.ADD_EMPLOYEE;
-        Connection dbConnection = connectionFactory.getConnection();
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            long newId = getTotalEmployeeCount();
-            stmt.setLong(1, newId + 1);
-            stmt.setString(2, newEmployee.getName());
-            java.util.Date date = newEmployee.getBirthday();
-            LOGGER.info(date);
-            stmt.setDate(3, new java.sql.Date (newEmployee.getBirthday().getTime()));
-            stmt.setInt(4, newEmployee.getDepartmentId());
-            stmt.setInt(5, newEmployee.getSiteId());
-            stmt.setInt(6, newEmployee.getSecurityLevel());
-            stmt.setDouble(7, newEmployee.getSalary());
-            stmt.execute();
-            
+        long newId = getTotalEmployeeCount() + 1;
+        int rowsAffected = jdbcTemplate.update(sql, newId, newEmployee.getName(), new java.sql.Date (newEmployee.getBirthday().getTime()),
+            newEmployee.getDepartmentId(), newEmployee.getSiteId(), newEmployee.getSecurityLevel(), newEmployee.getSalary());
+        if (rowsAffected == 1) {
             return newId;
-            
-        } catch (SQLException e) {
-            LOGGER.error("Could not add new employee ", e);
+        } else {
             return 0;
         }
     }
     
     public boolean deleteEmployee(long id) {
         String sql = Queries.DELETE_EMPLOYEE;
-        Connection dbConnection = connectionFactory.getConnection();
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            stmt.execute();
-            return true;
-        } catch (SQLException e) {
-            LOGGER.error("Could not delete employee ["+id+"]", e);
-            return false;
-        }
+        int rowsAffected = jdbcTemplate.update(sql, id);
+        return rowsAffected == 1;
     }
 
     public Site getSite(long employeeId) {
         String sql = "SELECT * FROM sites WHERE id = (SELECT workplace FROM employees WHERE id = ?)";
-        Site theSite = new Site();
-        Connection dbConnection = connectionFactory.getConnection();
-        try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
-            stmt.setLong(1, employeeId);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                theSite.setId(rs.getLong("id"));
-                theSite.setCountry(rs.getString("country"));
-                theSite.setRegion(rs.getString("region"));
-                theSite.setPostalAddress(rs.getString("postalAddress"));
-                theSite.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("siteSecurityLevel")));
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Could not retrieve worksite for employee ["+employeeId+"]", e);
-            // Todo: return default
-        }
-        
+        Site theSite = jdbcTemplate.queryForObject(sql, Site.class, employeeId);
         return theSite;
     }
 }

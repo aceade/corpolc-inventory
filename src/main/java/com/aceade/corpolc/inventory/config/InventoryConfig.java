@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -89,6 +90,13 @@ public class InventoryConfig {
         newDataSource.setMaxConnLifetimeMillis(jdbcTimeout() * 1000);
         
         return newDataSource;
+    }
+    
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+        JdbcTemplate template = new JdbcTemplate();
+        template.setDataSource(dataSource());
+        return template;
     }
     
     @Bean

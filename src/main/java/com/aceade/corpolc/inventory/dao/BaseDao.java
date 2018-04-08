@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.database.ConnectionFactory;
 import javax.inject.Inject;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -17,4 +18,6 @@ public class BaseDao {
     @Inject
     protected ConnectionFactory connectionFactory;
     
+    @Inject
+    protected JdbcTemplate jdbcTemplate;
 }
