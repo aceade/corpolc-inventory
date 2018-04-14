@@ -19,8 +19,11 @@ public class Item {
     
     private double weightPerUnit;
     
-    protected Item(){
-        
+    private boolean consumable;
+    
+    private SupplyType type;
+    
+    public Item(){
     }
 
     /**
@@ -77,6 +80,34 @@ public class Item {
      */
     public void setWeightPerUnit(double weightPerUnit) {
         this.weightPerUnit = weightPerUnit;
+    }
+    
+    /**
+     * @return true if this can be consumed by a living person or thing
+     */
+    public boolean isConsumable() {
+        return consumable;
+    }
+    
+    /**
+     * @param isConsumable whether or not this can be eating/drunk or otherwise used by a living object
+     */
+    public void setConsumable(boolean isConsumable) {
+        this.consumable = isConsumable;
+    }
+
+    /**
+     * @return the type
+     */
+    public SupplyType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(SupplyType type) {
+        this.type = type;
     }
     
     

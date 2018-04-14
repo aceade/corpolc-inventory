@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.aceade.corpolc.inventory.model.supplies.types;
+package com.aceade.corpolc.inventory.model.supplies;
 
 /**
  *
  * @author philip
  */
-public enum FoodType {
-    VEGETABLE,
-    ENTOMOPHAGICAL,
-    MEAT,
-    SEAFOOD,
-    DRINK
+public enum OrderStatus {
+    SUBMITTED,
+    APPROVED,
+    REJECTED,
+    CANCELLED,
+    SHIPPING,
+    DELIVERED
 }
