@@ -8,12 +8,14 @@ package com.aceade.corpolc.inventory.config;
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
 import com.aceade.corpolc.inventory.dao.ProjectDao;
 import com.aceade.corpolc.inventory.dao.SiteDao;
+import com.aceade.corpolc.inventory.dao.SupplyDao;
 import com.aceade.corpolc.inventory.dao.UserDao;
 import com.aceade.corpolc.inventory.database.ConnectionFactory;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import com.aceade.corpolc.inventory.services.SiteService;
+import com.aceade.corpolc.inventory.services.SupplyService;
 import com.aceade.corpolc.inventory.services.UserService;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -52,6 +54,11 @@ public class InventoryConfig {
     @Bean
     public UserService userService() {
         return new UserService();
+    }
+    
+    @Bean
+    public SupplyService supplyService() {
+        return new SupplyService();
     }
     
     // JDBC
@@ -123,6 +130,11 @@ public class InventoryConfig {
     @Bean
     public UserDao userDao() {
         return new UserDao();
+    }
+    
+    @Bean
+    public SupplyDao supplyDao() {
+        return new SupplyDao();
     }
     
     @Bean

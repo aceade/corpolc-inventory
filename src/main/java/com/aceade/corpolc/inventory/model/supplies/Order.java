@@ -8,6 +8,7 @@ package com.aceade.corpolc.inventory.model.supplies;
 import com.aceade.corpolc.inventory.model.base.Site;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Holds details for a supply run.
@@ -15,13 +16,17 @@ import java.util.List;
  */
 public class Order {
     
-    private List<Item> items;
+    private long id;
+    
+    private Map<Item, Integer> items;
     
     private Site address;
     
     private Date orderDate;
     
     private OrderStatus orderStatus;
+    
+    private String username;
     
     public Order() {
         //
@@ -30,14 +35,14 @@ public class Order {
     /**
      * @return the items
      */
-    public List<Item> getItems() {
+    public Map<Item, Integer> getItems() {
         return items;
     }
 
     /**
      * @param items the items to set
      */
-    public void setItems(List<Item> items) {
+    public void setItems(Map<Item, Integer> items) {
         this.items = items;
     }
 
@@ -81,6 +86,34 @@ public class Order {
      */
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
     }
     
     

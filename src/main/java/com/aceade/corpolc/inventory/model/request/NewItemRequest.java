@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.aceade.corpolc.inventory.model.supplies;
+package com.aceade.corpolc.inventory.model.request;
+
+import com.aceade.corpolc.inventory.model.supplies.SupplyType;
 
 /**
- * Base class for supplies
+ *
  * @author philip
  */
-public class Item {
-    
+public class NewItemRequest {
     private String name;
     
     private double buyingPrice;
@@ -23,7 +24,8 @@ public class Item {
     
     private SupplyType type;
     
-    public Item(){
+    public NewItemRequest() {
+        // default constructor
     }
 
     /**
@@ -81,19 +83,19 @@ public class Item {
     public void setWeightPerUnit(double weightPerUnit) {
         this.weightPerUnit = weightPerUnit;
     }
-    
+
     /**
-     * @return true if this can be consumed by a living person or thing
+     * @return the consumable
      */
     public boolean isConsumable() {
         return consumable;
     }
-    
+
     /**
-     * @param isConsumable whether or not this can be eating/drunk or otherwise used by a living object
+     * @param consumable the consumable to set
      */
-    public void setConsumable(boolean isConsumable) {
-        this.consumable = isConsumable;
+    public void setConsumable(boolean consumable) {
+        this.consumable = consumable;
     }
 
     /**
@@ -109,10 +111,6 @@ public class Item {
     public void setType(SupplyType type) {
         this.type = type;
     }
-
-    @Override
-    public String toString() {
-        return "Item{" + "name=" + name + ", buyingPrice=" + buyingPrice + ", sellingPrice=" + sellingPrice + ", weightPerUnit=" + weightPerUnit + ", consumable=" + consumable + ", type=" + type + '}';
-    }
+    
     
 }

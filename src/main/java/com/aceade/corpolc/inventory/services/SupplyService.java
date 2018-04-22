@@ -5,24 +5,42 @@
  */
 package com.aceade.corpolc.inventory.services;
 
+import com.aceade.corpolc.inventory.dao.SupplyDao;
+import com.aceade.corpolc.inventory.model.request.NewItemRequest;
+import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
+import com.aceade.corpolc.inventory.model.supplies.Order;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Handles anything relating to supplies and stocks.
  * @author philip
  */
+@Singleton
 public class SupplyService {
     
+    @Inject
+    private SupplyDao supplyDao;
     
-    public void addItem() {
-        throw new UnsupportedOperationException("Need to work out the API here");
+    public void addItem(NewItemRequest newItem) {
+        supplyDao.addItem(newItem);
     }
     
-    public Item viewItem(long itemId) {
-        throw new UnsupportedOperationException("Need to work out the API here");
+    public Item getItem(long itemId) {
+        return supplyDao.getItem(itemId);
     }
     
-    public void addOrder() {
-        
+    public void addOrder(NewOrderRequest newOrderRequest, String username) {
+        supplyDao.placeOrder(newOrderRequest, username);
+    }
+    
+    public Order viewOrder(long orderId) {
+        return supplyDao.viewOrder(orderId);
+    }
+    
+    public List<Order> viewUsersOrders(String username) {
+        return supplyDao.viewOrdersByUser(username);
     }
 }
