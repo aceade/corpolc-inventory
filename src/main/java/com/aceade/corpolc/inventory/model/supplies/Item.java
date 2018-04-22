@@ -11,6 +11,8 @@ package com.aceade.corpolc.inventory.model.supplies;
  */
 public class Item {
     
+    private long id;
+    
     private String name;
     
     private double buyingPrice;
@@ -113,6 +115,20 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" + "name=" + name + ", buyingPrice=" + buyingPrice + ", sellingPrice=" + sellingPrice + ", weightPerUnit=" + weightPerUnit + ", consumable=" + consumable + ", type=" + type + '}';
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
     }
     
 }

@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.database.ItemRowMapper;
 import com.aceade.corpolc.inventory.database.OrderRowMapper;
+import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
@@ -85,7 +86,7 @@ public class SupplyDao {
     }
 
     public Order viewOrder(long orderId) {
-        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.\"orderId\" = ? AND o.\"siteId\" = s.id";
+        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.id AS \"siteId\", s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.\"orderId\" = ? AND o.\"siteId\" = s.id";
         Order order = (Order) jdbcTemplate.queryForObject(sql, new OrderRowMapper(), orderId);
 
         order.setItems(getOrderItems(orderId));
@@ -120,9 +121,21 @@ public class SupplyDao {
     }
 
     public List<Order> viewOrdersByUser(String username) {
-        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.username = ? AND o.\"siteId\" = s.id";
+        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.id AS \"siteId\", s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.username = ? AND o.\"siteId\" = s.id";
         return jdbcTemplate.query(sql, new OrderRowMapper(), username);
-//        return jdbcTemplate.query(sql, new OrderRowMapper(), username);
+    }
+
+    public void updateOrderStatus(ChangeOrderStatusRequest changeOrder) {
+        String sql = "UPDATE orders SET status = ?::order_status WHERE \"orderId\" = ?";
+        jdbcTemplate.update(new PreparedStatementCreator(){
+            @Override
+            public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+                PreparedStatement st = conn.prepareStatement(sql);
+                st.setString(1, changeOrder.getNewStatus().name());
+                st.setLong(2, changeOrder.getOrderId());
+                return st;
+            }
+        });
     }
 
 }

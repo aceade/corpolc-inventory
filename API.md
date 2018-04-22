@@ -341,3 +341,111 @@ Response on failure: false (200 OK)
 
 ```
 
+## Supply URLs
+Used to place or view orders, or add/view items
+
+#### View an item
+```
+GET /item?id=1
+Response:
+{
+  "id" : 1
+  "name": "First Aid Kit",
+  "buyingPrice": 10.5,
+  "sellingPrice": 12.2,
+  "weightPerUnit": 1.0,
+  "consumable": false,
+  "type": "MEDICAL_EQUIPMENT"
+}
+```
+
+#### Add an item
+```
+POST /item
+{
+    "name" : "Spycrab Steaks",
+    "buyingPrice" : 1,
+    "sellingprice" : 2
+    "weightPerUnit" : 2000,
+    "consumable" : true,
+    "type" : FOOD    
+}
+Response on success: 200 OK
+```
+
+#### Add an order
+The items are a Map of item IDs to quanity
+```
+POST /order
+{
+    "siteId" : 1,
+    "orderDate" : 1235421653,
+    "orderItems": {
+        "1" : 2,
+        "11" : 5
+    }
+}
+Response on success: 200 OK
+```
+
+#### View order by ID
+```
+GET /order?id=1
+Response on success:
+{
+  "id": 12,
+  "items": {
+    "Item{name=First Aid Kit, buyingPrice=10.5, sellingPrice=12.2, weightPerUnit=1.0, consumable=false, type=MEDICAL_EQUIPMENT}": 2
+  },
+  "address": {
+    "id": 0,
+    "country": "Null Island",
+    "region": "Middle of Nowhere",
+    "postalAddress": "Somewhere",
+    "minimumSecurityLevel": null
+  },
+  "orderDate": "2018-04-19",
+  "orderStatus": "SUBMITTED",
+  "username": "ajensen451"
+}
+```
+
+#### Change order status
+```
+POST /order/status
+{
+    "newStatus" : "APPROVED"
+}
+```
+
+#### View user's orders
+```
+GET /order/user?username=mbison
+
+[{
+  "id": 11,
+  "items": null,
+  "address": {
+    "id": 1,
+    "country": "Null Island",
+    "region": "Middle of Nowhere",
+    "postalAddress": "Somewhere",
+    "minimumSecurityLevel": null
+  },
+  "orderDate": "2018-04-19",
+  "orderStatus": "APPROVED",
+  "username": "mbison"
+}, {
+  "id": 200,
+  "items": null,
+  "address": {
+    "id": 999,
+    "country": "",
+    "region": "Ankh-Morpork",
+    "postalAddress": "The Bucket",
+    "minimumSecurityLevel": null
+  },
+  "orderDate": "2018-04-19",
+  "orderStatus": "CANCELLED",
+  "username": "mbison"
+}]

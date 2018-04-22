@@ -5,6 +5,7 @@
  */
 package com.aceade.corpolc.inventory.rest.controllers;
 
+import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
@@ -48,6 +49,11 @@ public class SupplyController {
     @RequestMapping(value="/order", method=RequestMethod.POST)
     public void placeOrder(@RequestBody NewOrderRequest newOrder, HttpServletRequest req) {
         supplyService.addOrder(newOrder, req.getRemoteUser());
+    }
+    
+    @RequestMapping(value="/order/status", method=RequestMethod.POST)
+    public void changeOrderStatus(@RequestBody ChangeOrderStatusRequest changeOrder) {
+        supplyService.changeOrderStatus(changeOrder);
     }
     
     @RequestMapping(value="/order/user", method=RequestMethod.GET)

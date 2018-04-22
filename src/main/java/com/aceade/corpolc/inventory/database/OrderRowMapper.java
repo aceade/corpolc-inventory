@@ -26,6 +26,7 @@ public class OrderRowMapper implements RowMapper {
         order.setUsername(rs.getString("username"));
         order.setOrderStatus(OrderStatus.valueOf(rs.getString("status")));
         Site site = new Site();
+        site.setId(rs.getLong("siteId"));
         site.setCountry(rs.getString("country"));
         site.setPostalAddress(rs.getString("postalAddress"));
         site.setRegion(rs.getString("region"));

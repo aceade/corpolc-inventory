@@ -7,7 +7,6 @@ package com.aceade.corpolc.inventory.model.supplies;
 
 import com.aceade.corpolc.inventory.model.base.Site;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**

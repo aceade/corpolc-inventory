@@ -20,6 +20,7 @@ public class ItemRowMapper implements RowMapper {
     @Override
     public Item mapRow(ResultSet rs, int i) throws SQLException {
         Item item = new Item();
+        item.setId(rs.getLong("id"));
         item.setName(rs.getString("name"));
         item.setBuyingPrice(rs.getDouble("buying_price"));
         item.setSellingPrice(rs.getDouble("selling_price"));

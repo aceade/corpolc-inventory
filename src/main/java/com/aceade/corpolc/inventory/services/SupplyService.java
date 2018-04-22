@@ -6,6 +6,7 @@
 package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.SupplyDao;
+import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
@@ -42,5 +43,9 @@ public class SupplyService {
     
     public List<Order> viewUsersOrders(String username) {
         return supplyDao.viewOrdersByUser(username);
+    }
+
+    public void changeOrderStatus(ChangeOrderStatusRequest changeOrder) {
+        supplyDao.updateOrderStatus(changeOrder);
     }
 }
