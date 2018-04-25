@@ -36,6 +36,11 @@ public class SupplyController {
         return supplyService.getItem(itemId);
     }
     
+    @RequestMapping(value="/item/search", method = RequestMethod.GET)
+    public List<Item> searchForItems(@RequestParam(value="name", required=true) String name) {
+        return supplyService.getItemsWithName(name);
+    }
+    
     @RequestMapping(value="/item", method=RequestMethod.POST)
     public void addItem(@RequestBody NewItemRequest newItem) {
         supplyService.addItem(newItem);
@@ -58,6 +63,12 @@ public class SupplyController {
     
     @RequestMapping(value="/order/user", method=RequestMethod.GET)
     public List<Order> viewUserOrders(@RequestParam String username){
+        // TODO: account for user roles here
         return supplyService.viewUsersOrders(username);
+    }
+    
+    @RequestMapping(value="/order/mine", method=RequestMethod.GET)
+    public List<Order> viewMyOrders(HttpServletRequest req) {
+        return supplyService.viewUsersOrders(req.getRemoteUser());
     }
 }

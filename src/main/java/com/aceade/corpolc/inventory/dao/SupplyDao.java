@@ -138,4 +138,9 @@ public class SupplyDao {
         });
     }
 
+    public List<Item> getItemsWithName(String name) {
+        String sql = "SELECT * FROM items WHERE name LIKE ?";
+        return jdbcTemplate.query(sql, new ItemRowMapper(), "%"+name +"%");
+    }
+
 }

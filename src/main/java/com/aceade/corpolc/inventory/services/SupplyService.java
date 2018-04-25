@@ -48,4 +48,8 @@ public class SupplyService {
     public void changeOrderStatus(ChangeOrderStatusRequest changeOrder) {
         supplyDao.updateOrderStatus(changeOrder);
     }
+
+    public List<Item> getItemsWithName(String name) {
+        return supplyDao.getItemsWithName(name);
+    }
 }

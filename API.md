@@ -359,6 +359,32 @@ Response:
 }
 ```
 
+#### Search for items
+```
+GET /item/search?name=First
+Response:
+[
+    {
+      "id" : 1
+      "name": "First Aid Kit (Large)",
+      "buyingPrice": 10.5,
+      "sellingPrice": 12.2,
+      "weightPerUnit": 1.0,
+      "consumable": false,
+      "type": "MEDICAL_EQUIPMENT"
+    },
+    {
+      "id" : 2
+      "name": "First Aid Kit (Small)",
+      "buyingPrice": 10.5,
+      "sellingPrice": 12.2,
+      "weightPerUnit": 1.0,
+      "consumable": false,
+      "type": "MEDICAL_EQUIPMENT"
+    }
+]
+```
+
 #### Add an item
 ```
 POST /item
@@ -448,4 +474,36 @@ GET /order/user?username=mbison
   "orderDate": "2018-04-19",
   "orderStatus": "CANCELLED",
   "username": "mbison"
+}]
+
+#### View my orders
+```
+GET /order/user/mine
+Response on success:
+[{
+  "id": 11,
+  "items": null,
+  "address": {
+    "id": 55,
+    "country": "United States of North America",
+    "region": "Detroit, MI",
+    "postalAddress": "Sarif Industries",
+    "minimumSecurityLevel": null
+  },
+  "orderDate": "2018-04-19",
+  "orderStatus": "APPROVED",
+  "username": "ajensen451"
+}, {
+  "id": 201,
+  "items": null,
+  "address": {
+    "id": 999,
+    "country": "United States of North America",
+    "region": "New York",
+    "postalAddress": "Liberty Island",
+    "minimumSecurityLevel": null
+  },
+  "orderDate": "2018-04-19",
+  "orderStatus": "SUBMITTED",
+  "username": "ajensen451"
 }]
