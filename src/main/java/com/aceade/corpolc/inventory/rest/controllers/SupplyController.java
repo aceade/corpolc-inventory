@@ -12,6 +12,7 @@ import com.aceade.corpolc.inventory.model.supplies.Item;
 import com.aceade.corpolc.inventory.model.supplies.Order;
 import com.aceade.corpolc.inventory.services.SupplyService;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,11 @@ public class SupplyController {
     @RequestMapping(value="/item", method=RequestMethod.POST)
     public void addItem(@RequestBody NewItemRequest newItem) {
         supplyService.addItem(newItem);
+    }
+    
+    @RequestMapping(value="/site", method=RequestMethod.GET)
+    public Map<Item, Integer> getSiteSites(@RequestParam(value="siteId", required=true) long siteId){
+        return supplyService.getSiteStocks(siteId);
     }
     
     @RequestMapping(value="/order", method=RequestMethod.GET)

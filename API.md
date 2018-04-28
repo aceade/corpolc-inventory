@@ -507,3 +507,13 @@ Response on success:
   "orderStatus": "SUBMITTED",
   "username": "ajensen451"
 }]
+
+#### View site stocks
+```
+GET /site?siteId=1
+Response on success:
+{
+  "Item{name=First Aid Kit, buyingPrice=0.0, sellingPrice=12.2, weightPerUnit=1.0, consumable=false, type=MEDICAL_EQUIPMENT}": 5,
+  "Item{name=Sewer Beer, buyingPrice=0.0, sellingPrice=54.0, weightPerUnit=10.0, consumable=true, type=ALCOHOL}": 20
+}
+```

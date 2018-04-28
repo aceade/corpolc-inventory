@@ -7,6 +7,7 @@ package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.database.ItemRowMapper;
 import com.aceade.corpolc.inventory.database.OrderRowMapper;
+import com.aceade.corpolc.inventory.database.SiteStockMapper;
 import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
@@ -141,6 +142,11 @@ public class SupplyDao {
     public List<Item> getItemsWithName(String name) {
         String sql = "SELECT * FROM items WHERE name LIKE ?";
         return jdbcTemplate.query(sql, new ItemRowMapper(), "%"+name +"%");
+    }
+
+    public Map<Item, Integer> getSiteStocks(long siteId) {
+        String sql = "SELECT s.quantity, i.id, i.name, i.type, i.weight, i.selling_price, i.weight, i.consumable FROM site_stocks s, items i WHERE s.item_id = i.id AND s.site_id = ?";
+        return (Map<Item, Integer>) jdbcTemplate.query(sql, new SiteStockMapper(), siteId);
     }
 
 }

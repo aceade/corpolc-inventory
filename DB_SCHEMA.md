@@ -55,6 +55,51 @@ Acts as a mapping between the sites and projects tables
 | site_id       | bigint    | Mapped to the ID column in sites |
 | project_id    | bigint    | Mapped to the ID column in projects  |
 
+## Site_stocks
+
+Tracks the supplies currently at a site
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| site_id       | bigint    | ID of the site. Mapped to the ID column in sites |
+| item_id       | bigint    | ID of the item. Mapped to the id column in items |
+| quantity      | integer   | How much we currently have in stock |
+
+## Items
+
+Tracks items for supply purposes
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| id            | serial    | Primary key |
+| name          | text      | |
+| buying_price  | numeric   | How much it costs the company to buy |
+| selling_price | numeric   | How much we sell it for |
+| weight        | numeric   | Weight per unit in kg |
+| consumable    | boolean   | Can you eat it? |
+| type          | enum      | Can be FOOD, ALCOHOL, MEDICAL_EQUIPMENT, TOOLS, OFFICE_SUPPLIES, WEAPONS |
+
+## Orders
+
+Tracks orders to a site
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| orderId       | integer   | Primary key. Autoincremented |
+| siteId        | integer   | Identifies the site to which they are being shipped |
+| orderDate     | date      | When this was placed |
+| username      | text      | Who placed the order. Mapped to username in users table |
+
+## Order-items
+
+Keeps track of the items in an order
+
+| Column        | Type      | Comments  |
+|---------------|-----------|-----------|
+| order_id      | long      | Mapped to the orderID column in orders. Must not be NULL |
+| item_id       | long      | Mapped to the id column in items. Must not be NULL |
+| quantity      | integer   | How many units of the item are included |
+
 ## Users
 
 Handles login details

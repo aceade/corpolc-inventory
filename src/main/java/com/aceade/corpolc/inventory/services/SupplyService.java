@@ -12,6 +12,7 @@ import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
 import com.aceade.corpolc.inventory.model.supplies.Order;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -51,5 +52,9 @@ public class SupplyService {
 
     public List<Item> getItemsWithName(String name) {
         return supplyDao.getItemsWithName(name);
+    }
+
+    public Map<Item, Integer> getSiteStocks(long siteId) {
+        return supplyDao.getSiteStocks(siteId);
     }
 }
