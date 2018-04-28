@@ -29,7 +29,7 @@ public class SiteDao extends BaseDao {
     public Site getSite(long id) {
         LOGGER.info("Retrieving site with id ["+id +"]");
         String sql = Queries.SELECT_SITE;
-        Site site = jdbcTemplate.queryForObject(sql, Site.class, id);
+        Site site = (Site) jdbcTemplate.query(sql, new SiteRowMapper(), id).get(0);
         return site;
     }
     
@@ -68,7 +68,10 @@ public class SiteDao extends BaseDao {
         Connection dbConnection = connectionFactory.getConnection();
         try (Statement statement = dbConnection.createStatement() ) {
             ResultSet rs = statement.executeQuery(sql);
-            theSite = new SiteRowMapper().mapRow(rs, 0);
+            while (rs.next()) {
+                theSite = new SiteRowMapper().mapRow(rs, 0);    
+            }
+            
         } catch (SQLException e) {
             LOGGER.error("Could not retrieve site with id ["+id+"]...weakly", e);
         }
