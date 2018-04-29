@@ -17,6 +17,7 @@ As stated in the README, there *WILL* be vulnerabilties in this. Some will be de
 ## Insufficient authentication
 
 1. Basic Access Authentication used to prompt for user details. This is better than nothing, especially if served over a secure connection.
+2. No auditing mechanism. This is to be addressed.
 
 ## Information disclosure
 
