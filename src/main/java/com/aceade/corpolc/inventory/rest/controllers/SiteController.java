@@ -53,16 +53,17 @@ public class SiteController {
     
     @RequestMapping(method = RequestMethod.GET, value="")
     public Site viewSite(@RequestParam(value="id", required=true) long siteId, HttpServletRequest req) {
-        LOGGER.info("Retrieving site ["+siteId+"]");
+        LOGGER.info("User [" + req.getRemoteUser() + "] viewing site ["+siteId+"]");
         Site theSite;
         
         if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || (req.isUserInRole(Role.ROLE_SITE_ADMIN) )) {
+            LOGGER.debug("Full details authorised");
            theSite = siteService.getFullSiteDetails(siteId);
         } else if (req.isUserInRole(Role.ROLE_VIEW_ALL_ADDRESSES)) {
-            LOGGER.info("Need the addresses");
+            LOGGER.debug("Need the addresses");
             theSite = siteService.getSiteWithAddress(siteId);
         } else {
-            LOGGER.info("Just need the basic site details");
+            LOGGER.debug("Just need the basic site details");
             theSite = siteService.getSite(siteId);
         }
         
@@ -78,8 +79,8 @@ public class SiteController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(method=RequestMethod.POST, value="/new")
-    public ResponseEntity addSite(@RequestBody NewSiteRequest newSite) {
-        LOGGER.info("Adding a new site");
+    public ResponseEntity addSite(@RequestBody NewSiteRequest newSite, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] adding a new site");
         boolean added = siteService.createSite(newSite);
         if (added) {
             return ResponseEntity.ok().build();    
@@ -91,8 +92,8 @@ public class SiteController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(method=RequestMethod.DELETE, value="")
-    public ResponseEntity deleteSite(@RequestParam(value="id", required=true) long id) {
-        LOGGER.info("The site ["+id+"] never existed...");
+    public ResponseEntity deleteSite(@RequestParam(value="id", required=true) long id, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] deleting ["+id+"]");
         boolean added = siteService.deleteSite(id);
         if (added) {
             return ResponseEntity.ok().build();    
@@ -103,6 +104,7 @@ public class SiteController {
     
     /**
      * This is prone to SQL injection, and allows *EVERYONE* to access it. Done so I can teach myself penetration testing.
+     * Will not be audited at all
      * @param id
      * @return 
      */

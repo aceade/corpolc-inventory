@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/supplies")
 public class SupplyController {
+    
+    private static final Logger LOGGER = LogManager.getLogger(SupplyController.class);
     
     @Inject
     private SupplyService supplyService;
@@ -43,7 +47,8 @@ public class SupplyController {
     }
     
     @RequestMapping(value="/item", method=RequestMethod.POST)
-    public void addItem(@RequestBody NewItemRequest newItem) {
+    public void addItem(@RequestBody NewItemRequest newItem, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] adding new item [" + newItem + "]");
         supplyService.addItem(newItem);
     }
     
@@ -59,16 +64,19 @@ public class SupplyController {
     
     @RequestMapping(value="/order", method=RequestMethod.POST)
     public void placeOrder(@RequestBody NewOrderRequest newOrder, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] placing a new order");
         supplyService.addOrder(newOrder, req.getRemoteUser());
     }
     
     @RequestMapping(value="/order/status", method=RequestMethod.POST)
-    public void changeOrderStatus(@RequestBody ChangeOrderStatusRequest changeOrder) {
+    public void changeOrderStatus(@RequestBody ChangeOrderStatusRequest changeOrder, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] changing status of order [" + changeOrder.getOrderId() + "]");
         supplyService.changeOrderStatus(changeOrder);
     }
     
     @RequestMapping(value="/order/user", method=RequestMethod.GET)
-    public List<Order> viewUserOrders(@RequestParam String username){
+    public List<Order> viewUserOrders(@RequestParam String username, HttpServletRequest req){
+        LOGGER.info("User [" + req.getRemoteUser() + "] viewing orders placed by [" + username + "]");
         // TODO: account for user roles here
         return supplyService.viewUsersOrders(username);
     }

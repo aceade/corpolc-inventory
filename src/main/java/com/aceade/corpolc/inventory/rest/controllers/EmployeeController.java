@@ -51,7 +51,7 @@ public class EmployeeController {
     
     @RequestMapping(value="/", method=RequestMethod.GET)
     public Employee getEmployee(@RequestParam(value="id", required=true) long id, HttpServletRequest req) {
-        LOGGER.info("Retrieveing employee with id ["+id+"]");
+        LOGGER.debug("User [" + req.getRemoteUser() + "] viewing details of employee ["+id+"]");
         Employee employee = employeeService.getEmployee(id);
         
         // sanitise it
@@ -68,8 +68,8 @@ public class EmployeeController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.POST)
-    public ResponseEntity<AddResourceResponse> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone) throws EmployeeSecurityException {
-        LOGGER.info("Adding employee: " + newDrone);
+    public ResponseEntity<AddResourceResponse> addEmployee(@RequestBody(required = true) NewEmployeeRequest newDrone, HttpServletRequest req) throws EmployeeSecurityException {
+        LOGGER.info("User [" + req.getRemoteUser() + "] adding new employee: " + newDrone);
         
         AddResourceResponse response = new AddResourceResponse();
         HttpStatus status;
@@ -104,23 +104,23 @@ public class EmployeeController {
     
     @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/", method=RequestMethod.DELETE)
-    public boolean deleteEmployee(@RequestParam(value="id", required=true) long id) {
-        LOGGER.info("Terminating employee ["+id+"]");
+    public boolean deleteEmployee(@RequestParam(value="id", required=true) long id, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] terminating employee ["+id+"]");
         return employeeService.deleteEmployee(id);
     }
     
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(value="/all", method=RequestMethod.GET)
-    public List<Employee> getAllEmployees() {
-        LOGGER.info("Retrieving all employees");
+    public List<Employee> getAllEmployees(HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] retrieving all employees");
         return employeeService.getAllEmployees();
     }
     
     @RequestMapping(value="/projects")
-    public List<Project> getProjectsForEmployee(@RequestParam(value="id", required=true)long employeeId, HttpServletRequest request){
-        LOGGER.info("Retrieving projects for employee ["+employeeId+"]");
+    public List<Project> getProjectsForEmployee(@RequestParam(value="id", required=true)long employeeId, HttpServletRequest req){
+        LOGGER.debug("User [" + req.getRemoteUser() + "] retrieving projects for employee ["+employeeId+"]");
         
-        if (!request.isUserInRole(Role.ROLE_FULL_ADMIN) || !request.isUserInRole(Role.ROLE_FULL_READONLY)) {
+        if (!req.isUserInRole(Role.ROLE_FULL_ADMIN) || !req.isUserInRole(Role.ROLE_FULL_READONLY)) {
             return projectService.getSanitisedProjectsForEmployee(employeeId);
         } else {
             return projectService.getProjectsForEmployee(employeeId);    

@@ -53,13 +53,13 @@ public class ProjectController {
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_FULL_READONLY})
     @RequestMapping(method = RequestMethod.GET, value="/all")
     public List<Project> getAllProjects(HttpServletRequest sr){
-        LOGGER.info("Returning all projects");
+        LOGGER.info("User [" + sr.getRemoteUser() + "] viewing all projects");
         return projectService.getAllProjects();
     }
     
     @RequestMapping(method = RequestMethod.GET, value="")
     public Project getProject(@RequestParam(value= "id", required=true) long projectId, HttpServletRequest req) {
-        LOGGER.info("Returning project with id ["+projectId+"]");
+        LOGGER.debug("User [" + req.getRemoteUser() + "] viewing project ["+projectId+"]");
         Project project;
         
         if (req.isUserInRole(Role.ROLE_FULL_ADMIN) || req.isUserInRole(Role.ROLE_FULL_READONLY) || 
@@ -74,7 +74,8 @@ public class ProjectController {
     }
     
     @RequestMapping(method = RequestMethod.POST, value="")
-    public ResponseEntity<AddResourceResponse> addProject(@RequestBody(required = true) NewProjectRequest newProjectRequest) {
+    public ResponseEntity<AddResourceResponse> addProject(@RequestBody(required = true) NewProjectRequest newProjectRequest, HttpServletRequest req) {
+        LOGGER.info("User [" + req.getRemoteUser() + "] adding a new project");
         AddResourceResponse response = new AddResourceResponse();
         HttpStatus status;
         long id = projectService.addProject(newProjectRequest);
@@ -95,11 +96,12 @@ public class ProjectController {
     @Secured({Role.ROLE_FULL_ADMIN, Role.ROLE_PROJECT_ADMIN})
     @RequestMapping(method = RequestMethod.POST, value="/status")
     public ResponseEntity<Boolean> changeProjectStatus(@RequestBody ChangeProjectStatusRequest request, HttpServletRequest sr) {
+        LOGGER.info("User [" + sr.getRemoteUser() + "] is updating the status of project [" + request.getProjectId() + "]");
         
         // TODO: check if the user is the admin of the project
         boolean authorised = (sr.isUserInRole(Role.ROLE_PROJECT_ADMIN) && projectService.isUserOnProject(request.getProjectId(), sr.getRemoteUser()) ) || sr.isUserInRole(Role.ROLE_FULL_ADMIN);
         if (!authorised) {
-            LOGGER.warn("User " + sr.getRemoteUser() + " is forbidden from accessing this");
+            LOGGER.warn("User [" + sr.getRemoteUser() + "] is forbidden from accessing this");
             return new ResponseEntity(false, HttpStatus.FORBIDDEN);
         } else {
             boolean success = projectService.changeProjectStatus(request);
