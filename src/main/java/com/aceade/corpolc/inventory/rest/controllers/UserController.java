@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -43,6 +44,7 @@ public class UserController {
     }
     
     @RequestMapping(value="/{username}", method=RequestMethod.DELETE)
+    @Pointcut("logUserStatusChange")
     public ResponseEntity<Boolean> disableUser(@PathVariable("username") String username, HttpServletRequest req) {
         LOGGER.info("User [" + req.getRemoteUser() + "] disabling user user [" + username +"]");
         return new ResponseEntity<>(userService.disableUser(username), HttpStatus.OK);

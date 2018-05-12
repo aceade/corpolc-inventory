@@ -5,12 +5,15 @@
  */
 package com.aceade.corpolc.inventory.config;
 
+import com.aceade.corpolc.inventory.config.security.UserAuditAspect;
+import com.aceade.corpolc.inventory.dao.AuditDao;
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
 import com.aceade.corpolc.inventory.dao.ProjectDao;
 import com.aceade.corpolc.inventory.dao.SiteDao;
 import com.aceade.corpolc.inventory.dao.SupplyDao;
 import com.aceade.corpolc.inventory.dao.UserDao;
 import com.aceade.corpolc.inventory.database.ConnectionFactory;
+import com.aceade.corpolc.inventory.services.AuditService;
 import com.aceade.corpolc.inventory.services.EmployeeService;
 import com.aceade.corpolc.inventory.services.ProjectService;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
@@ -23,6 +26,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -30,6 +34,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author philip
  */
 @Configuration
+@EnableAspectJAutoProxy
 public class InventoryConfig {
     
     public static final String JDBC_URL = "jdbcUrl";
@@ -140,5 +145,20 @@ public class InventoryConfig {
     @Bean
     public ServiceLibrary serviceLibrary() {
         return new ServiceLibrary();
+    }
+    
+    @Bean
+    public AuditService auditService() {
+        return new AuditService();
+    }
+    
+    @Bean
+    public AuditDao auditDao() {
+        return new AuditDao();
+    }
+    
+    @Bean
+    public UserAuditAspect userAuditAspect() {
+        return new UserAuditAspect();
     }
 }
