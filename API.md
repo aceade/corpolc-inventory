@@ -327,7 +327,8 @@ Request Body:
 {
     "username" : "mbison",
     "password" : "ButForMeItWasTuesday",
-    "employeeId" : 1
+    "employeeId" : 1,
+    "role" : "ROLE_VIEW_OWN_DETAILS"
 }
 Response on success: true (200 OK)
 Response on failure: false (200 OK)
@@ -448,6 +449,7 @@ POST /order/status
 ```
 GET /order/user?username=mbison
 
+```
 [{
   "id": 11,
   "items": null,
@@ -475,6 +477,7 @@ GET /order/user?username=mbison
   "orderStatus": "CANCELLED",
   "username": "mbison"
 }]
+```
 
 #### View my orders
 ```
@@ -507,6 +510,7 @@ Response on success:
   "orderStatus": "SUBMITTED",
   "username": "ajensen451"
 }]
+```
 
 #### View site stocks
 ```

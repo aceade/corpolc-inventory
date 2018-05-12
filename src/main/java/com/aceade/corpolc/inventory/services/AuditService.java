@@ -6,6 +6,7 @@
 package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.AuditDao;
+import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import javax.inject.Inject;
 
 /**
@@ -24,5 +25,9 @@ public class AuditService {
      */
     public void logUserStatusChange(String remoteUser, String user) {
         auditDao.logUserStatusChange(remoteUser, user);
+    }
+
+    public void logUserAdded(NewUserRequest request, String remoteUser) {
+        auditDao.logNewUser(request, remoteUser);
     }
 }

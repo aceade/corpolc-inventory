@@ -5,12 +5,14 @@
  */
 package com.aceade.corpolc.inventory.config.security;
 
+import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.services.AuditService;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -29,16 +31,27 @@ public class UserAuditAspect {
     @Inject
     private AuditService auditService;
     
-    // Create a Pointcut that is called when this method is called
+    // Create a Pointcut for this specific method, with any number of parameters
     @Pointcut("execution(* com.aceade.corpolc.inventory.rest.controllers.UserController.disableUser(..))")
     private void userStatusChange(){}
     
-    // run things before it
+    @Pointcut("execution(* com.aceade.corpolc.inventory.rest.controllers.UserController.addUser(..))")
+    private void userAdded(){}
+    
+    // This will run before the pointcut, allowing me run things before this
     @Before("userStatusChange()")
     public void logUserStatusChange(JoinPoint joinPoint) {
-        LOGGER.info("Logging a user status change: " + joinPoint);
+        LOGGER.debug("Logging a user status change: " + joinPoint);
         String user = joinPoint.getArgs()[0].toString();
         String remoteUser = ((HttpServletRequest)joinPoint.getArgs()[1]).getRemoteUser();
         auditService.logUserStatusChange(remoteUser, user);
+    }
+    
+    @After("userAdded()")
+    public void logUserAdded(JoinPoint joinPoint) {
+        LOGGER.info("Logging a user added: " + joinPoint);
+        NewUserRequest request = (NewUserRequest) joinPoint.getArgs()[0];
+        HttpServletRequest hsr = (HttpServletRequest) joinPoint.getArgs()[1];
+        auditService.logUserAdded(request, hsr.getRemoteUser());
     }
 }
