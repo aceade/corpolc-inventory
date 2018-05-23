@@ -55,4 +55,8 @@ public class AuditService {
         long employeeId = employeeDao.getEmployeeId(newEmployeeRequest);
         auditDao.logEmployeeAdded(newEmployeeRequest, remoteUser, employeeId);
     }
+
+    public void logEmployeeDeletion(long employeeId, String remoteUser) {
+        auditDao.logEmployeeStatusChange(employeeId, remoteUser);
+    }
 }

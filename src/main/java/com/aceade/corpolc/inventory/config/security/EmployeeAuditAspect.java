@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -35,5 +36,15 @@ public class EmployeeAuditAspect {
         NewEmployeeRequest newEmployeeRequest = (NewEmployeeRequest) joinPoint.getArgs()[0];
         HttpServletRequest httpServletRequest = (HttpServletRequest) joinPoint.getArgs()[1];
         auditService.logEmployeeAdded(newEmployeeRequest, httpServletRequest.getRemoteUser());
+    }
+    
+    @Pointcut("execution (* com.aceade.corpolc.inventory.rest.controllers.EmployeeController.deleteEmployee(..))")
+    private void employeeTerminated(){}
+    
+    @Before("employeeTerminated()")
+    private void logEmployeeTermination(JoinPoint joinPoint) {
+        long employeeId = (long) joinPoint.getArgs()[0];
+        HttpServletRequest httpServletRequest = (HttpServletRequest) joinPoint.getArgs()[1];
+        auditService.logEmployeeDeletion(employeeId, httpServletRequest.getRemoteUser());
     }
 }

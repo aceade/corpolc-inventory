@@ -62,5 +62,15 @@ public class AuditDao {
         long timestamp = ServiceLibrary.getDate().getTime();
         jdbcTemplate.update(sql, employeeId, remoteUser, timestamp);
     }
+
+    public void logEmployeeStatusChange(long employeeId, String remoteUser) {
+        String sql = "SELECT current FROM employees WHERE id = ?";
+        boolean previousValue = jdbcTemplate.queryForObject(sql, Boolean.class, employeeId);
+        
+        String updateSql = "INSERT into employee_auditing (employee_id, last_changed, username, previously_current) "
+                + "VALUES (?,?,?,?)";
+        long timestamp = ServiceLibrary.getDate().getTime();
+        jdbcTemplate.update(updateSql, employeeId, timestamp, remoteUser, previousValue);
+    }
     
 }
