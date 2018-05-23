@@ -6,6 +6,7 @@
 package com.aceade.corpolc.inventory.dao;
 
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
+import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
@@ -54,6 +55,12 @@ public class AuditDao {
         String sql = "INSERT INTO project_auditing(project_id, username, last_changed) VALUES(?, ?,?)";
         long timestamp = ServiceLibrary.getDate().getTime();
         jdbcTemplate.update(sql, projectId, remoteUser, timestamp);
+    }
+
+    public void logEmployeeAdded(NewEmployeeRequest newEmployeeRequest, String remoteUser, long employeeId) {
+        String sql = "INSERT INTO employee_auditing(employee_id, username, last_changed) VALUES(?,?,?)";
+        long timestamp = ServiceLibrary.getDate().getTime();
+        jdbcTemplate.update(sql, employeeId, remoteUser, timestamp);
     }
     
 }

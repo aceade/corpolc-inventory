@@ -64,4 +64,10 @@ public class EmployeeDao extends BaseDao {
         Site theSite = jdbcTemplate.queryForObject(sql, Site.class, employeeId);
         return theSite;
     }
+
+    public long getEmployeeId(NewEmployeeRequest newEmployeeRequest) {
+        String sql = "SELECT id FROM employees WHERE name = ? AND birthday = ? AND workplace = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, newEmployeeRequest.getName(), newEmployeeRequest.getBirthday(),
+                newEmployeeRequest.getSiteId());
+    }
 }

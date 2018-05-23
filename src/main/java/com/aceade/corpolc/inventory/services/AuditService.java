@@ -6,8 +6,10 @@
 package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.AuditDao;
+import com.aceade.corpolc.inventory.dao.EmployeeDao;
 import com.aceade.corpolc.inventory.dao.ProjectDao;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
+import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import javax.inject.Inject;
@@ -23,6 +25,9 @@ public class AuditService {
     
     @Inject
     private ProjectDao projectDao;
+    
+    @Inject
+    private EmployeeDao employeeDao;
 
     /**
      * 
@@ -44,5 +49,10 @@ public class AuditService {
     public void logProjectAdded(NewProjectRequest request, String remoteUser) {
         long projectId = projectDao.getProjectId(request);
         auditDao.logNewProject(request, remoteUser, projectId);
+    }
+
+    public void logEmployeeAdded(NewEmployeeRequest newEmployeeRequest, String remoteUser) {
+        long employeeId = employeeDao.getEmployeeId(newEmployeeRequest);
+        auditDao.logEmployeeAdded(newEmployeeRequest, remoteUser, employeeId);
     }
 }
