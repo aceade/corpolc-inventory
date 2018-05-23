@@ -47,6 +47,8 @@ public class UserAuditAspect {
         auditService.logUserStatusChange(remoteUser, user);
     }
     
+    // This one runs after it, making sure the user exists before auditing
+    // At least this will store that it was added.
     @After("userAdded()")
     public void logUserAdded(JoinPoint joinPoint) {
         LOGGER.info("Logging a user added: " + joinPoint);

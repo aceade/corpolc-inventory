@@ -5,6 +5,8 @@
  */
 package com.aceade.corpolc.inventory.dao;
 
+import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
+import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import javax.inject.Inject;
@@ -31,6 +33,31 @@ public class AuditDao {
         long timestamp = ServiceLibrary.getDate().getTime();
         String uid = request.getUsername();
         jdbcTemplate.update(sql, uid, remoteUser, timestamp);
+    }
+
+    public void logProjectStatusChange(ChangeProjectStatusRequest request, String remoteUser) {
+        String sql = "INSERT INTO project_auditing(project_id, username, last_changed) VALUES (?,?,?);";
+        long projectId = request.getProjectId();
+        long timestamp = ServiceLibrary.getDate().getTime();
+        jdbcTemplate.update(sql, projectId, remoteUser, timestamp);
+        
+        // Keeping the queries separate to make them easier to edit
+        String updateSql = "UPDATE project_auditing SET previous_status = (SELECT status FROM projects WHERE id = ?), "
+                + "previous_summary = (SELECT summary FROM projects WHERE id = ?)," 
+                + "previous_title = (SELECT title FROM projects WHERE id = ?), "
+                + "previous_budget = (SELECT budget FROM projects WHERE id = ?)," 
+                + "previous_security_rating = (SELECT security_rating FROM projects WHERE id = ?) WHERE project_id = ?";
+        jdbcTemplate.update(updateSql, projectId, projectId, projectId, projectId, projectId ,projectId);
+    }
+
+    public void logNewProject(NewProjectRequest request, String remoteUser) {
+        String sql = "INSERT INTO project_auditing(project_id, username, last_changed) VALUES(0,?,?)";
+        long timestamp = ServiceLibrary.getDate().getTime();
+        jdbcTemplate.update(sql, remoteUser, timestamp);
+        
+        String updateSql = "UPDATE project_auditing SET project_id = (SELECT id FROM projects WHERE summary = ? and title = ? and budget = ?)";
+        jdbcTemplate.update(updateSql, request.getSummary(), request.getTitle(), request.getBudget());
+        
     }
     
 }

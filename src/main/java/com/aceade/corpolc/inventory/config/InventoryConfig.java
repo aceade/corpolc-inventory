@@ -5,6 +5,7 @@
  */
 package com.aceade.corpolc.inventory.config;
 
+import com.aceade.corpolc.inventory.config.security.ProjectAuditAspect;
 import com.aceade.corpolc.inventory.config.security.UserAuditAspect;
 import com.aceade.corpolc.inventory.dao.AuditDao;
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
@@ -160,5 +161,10 @@ public class InventoryConfig {
     @Bean
     public UserAuditAspect userAuditAspect() {
         return new UserAuditAspect();
+    }
+    
+    @Bean
+    public ProjectAuditAspect projectAuditAspect(){
+        return new ProjectAuditAspect();
     }
 }
