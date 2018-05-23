@@ -101,4 +101,14 @@ public class ProjectDao extends BaseDao {
         }, projectId, username);
     }
     
+    /**
+     * Used only for auditing. Exists so I can get the project ID
+     * @param request
+     * @return 
+     */
+    public long getProjectId(NewProjectRequest request) {
+        String sql = "SELECT id FROM projects WHERE summary = ? AND title = ? AND budget = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, request.getSummary(), request.getTitle(), request.getBudget());
+    }
+    
 }

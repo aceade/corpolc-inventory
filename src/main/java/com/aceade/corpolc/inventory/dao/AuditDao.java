@@ -50,14 +50,10 @@ public class AuditDao {
         jdbcTemplate.update(updateSql, projectId, projectId, projectId, projectId, projectId ,projectId);
     }
 
-    public void logNewProject(NewProjectRequest request, String remoteUser) {
-        String sql = "INSERT INTO project_auditing(project_id, username, last_changed) VALUES(0,?,?)";
+    public void logNewProject(NewProjectRequest request, String remoteUser, long projectId) {
+        String sql = "INSERT INTO project_auditing(project_id, username, last_changed) VALUES(?, ?,?)";
         long timestamp = ServiceLibrary.getDate().getTime();
-        jdbcTemplate.update(sql, remoteUser, timestamp);
-        
-        String updateSql = "UPDATE project_auditing SET project_id = (SELECT id FROM projects WHERE summary = ? and title = ? and budget = ?)";
-        jdbcTemplate.update(updateSql, request.getSummary(), request.getTitle(), request.getBudget());
-        
+        jdbcTemplate.update(sql, projectId, remoteUser, timestamp);
     }
     
 }

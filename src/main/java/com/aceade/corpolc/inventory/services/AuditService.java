@@ -6,6 +6,7 @@
 package com.aceade.corpolc.inventory.services;
 
 import com.aceade.corpolc.inventory.dao.AuditDao;
+import com.aceade.corpolc.inventory.dao.ProjectDao;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
@@ -19,6 +20,9 @@ public class AuditService {
     
     @Inject
     private AuditDao auditDao;
+    
+    @Inject
+    private ProjectDao projectDao;
 
     /**
      * 
@@ -38,6 +42,7 @@ public class AuditService {
     }
 
     public void logProjectAdded(NewProjectRequest request, String remoteUser) {
-        auditDao.logNewProject(request, remoteUser);
+        long projectId = projectDao.getProjectId(request);
+        auditDao.logNewProject(request, remoteUser, projectId);
     }
 }
