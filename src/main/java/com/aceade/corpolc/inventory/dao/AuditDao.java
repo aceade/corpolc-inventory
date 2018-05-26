@@ -8,6 +8,7 @@ package com.aceade.corpolc.inventory.dao;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
+import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import javax.inject.Inject;
@@ -71,6 +72,12 @@ public class AuditDao {
                 + "VALUES (?,?,?,?)";
         long timestamp = ServiceLibrary.getDate().getTime();
         jdbcTemplate.update(updateSql, employeeId, timestamp, remoteUser, previousValue);
+    }
+
+    public void logSiteAdded(NewSiteRequest req, String remoteUser, long siteId) {
+        String sql = "INSERT INTO site_auditing (site_id, username, last_accessed, change_reason) VALUES(?,?,?,?::resource_change_reason)";
+        long timestamp = ServiceLibrary.getDate().getTime();
+        jdbcTemplate.update(sql, siteId, remoteUser, timestamp, AuditingReason.creating.toString());
     }
     
 }

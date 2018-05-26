@@ -8,11 +8,14 @@ package com.aceade.corpolc.inventory.services;
 import com.aceade.corpolc.inventory.dao.AuditDao;
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
 import com.aceade.corpolc.inventory.dao.ProjectDao;
+import com.aceade.corpolc.inventory.dao.SiteDao;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
+import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -28,6 +31,9 @@ public class AuditService {
     
     @Inject
     private EmployeeDao employeeDao;
+    
+    @Inject
+    private SiteDao siteDao;
 
     /**
      * 
@@ -58,5 +64,10 @@ public class AuditService {
 
     public void logEmployeeDeletion(long employeeId, String remoteUser) {
         auditDao.logEmployeeStatusChange(employeeId, remoteUser);
+    }
+
+    public void logSiteAdded(NewSiteRequest req, String remoteUser) {
+        long siteId = siteDao.getSiteId(req);
+        auditDao.logSiteAdded(req, remoteUser, siteId);
     }
 }

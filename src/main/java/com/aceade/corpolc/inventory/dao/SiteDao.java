@@ -98,4 +98,9 @@ public class SiteDao extends BaseDao {
     public List<Item> getSuppliesOfTypeAtSite(long siteId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public long getSiteId(NewSiteRequest req) {
+        String sql = "SELECT id FROM sites WHERE country = ? AND region = ? AND \"postalAddress\" = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, req.getCountry(), req.getRegion(), req.getPostalAddress());
+    }
 }
