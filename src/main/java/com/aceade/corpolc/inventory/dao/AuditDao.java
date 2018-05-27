@@ -12,6 +12,7 @@ import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.model.response.AuditEntry;
+import com.aceade.corpolc.inventory.model.response.EmployeeAuditEntry;
 import com.aceade.corpolc.inventory.model.response.ProjectAuditEntry;
 import com.aceade.corpolc.inventory.model.response.SiteAuditEntry;
 import com.aceade.corpolc.inventory.model.response.UserAuditEntry;
@@ -144,6 +145,25 @@ public class AuditDao {
             }
             
         }, projectId);
+    }
+
+    public List<AuditEntry> getEmployeeAuditRecords(long employeeId) {
+        String sql = "SELECT * FROM employee_auditing WHERE employee_id = ?";
+        return jdbcTemplate.query(sql, new RowMapper(){
+            @Override
+            public EmployeeAuditEntry mapRow(ResultSet rs, int i) throws SQLException {
+                EmployeeAuditEntry entry = new EmployeeAuditEntry();
+                entry.setTimestamp(rs.getLong("last_changed"));
+                entry.setUsername(rs.getString("username"));
+                entry.setPreviousBirthday(rs.getDate("previous_birthday"));
+                entry.setPreviousName(rs.getString("previous_name"));
+                entry.setPreviousSalary(rs.getDouble("previous_salary"));
+                entry.setPreviousSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("previous_security_level")));
+                entry.setPreviousState(rs.getBoolean("previously_current"));
+                entry.setPreviousWorkplace(rs.getLong("previous_workplace"));
+                return entry;
+            }
+        }, employeeId);
     }
     
 }

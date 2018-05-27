@@ -84,4 +84,8 @@ public class AuditService {
     public List<AuditEntry> getProjectAuditRecords(long projectId) {
         return auditDao.getProjectAuditRecords(projectId);
     }
+
+    public List<AuditEntry> getEmployeeAuditRecords(long employeeId) {
+        return auditDao.getEmployeeAuditRecords(employeeId);
+    }
 }

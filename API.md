@@ -589,5 +589,15 @@ Response on success:
 GET /audit/employee/1
 Response on success:
 {
+    [{
+      "timestamp": 1527106649967,
+      "username": "philiprowlands",
+      "previousName": null,
+      "previousBirthday": null,
+      "previousWorkplace": 0,
+      "previousSalary": 0.0,
+      "previousSecurityLevel": "MINIMUM",
+      "previousState": true
+    }]
 }
 ```

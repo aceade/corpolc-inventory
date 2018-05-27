@@ -44,8 +44,14 @@ public class AuditController {
     }
     
     @RequestMapping(value="/project/{projectid}", method=RequestMethod.GET)
-    public ResponseEntity<List<AuditEntry>> viewProjectRecords(@PathVariable(value="projectid", required=true)long projectId) {
+    public ResponseEntity<List<AuditEntry>> viewProjectRecords(@PathVariable(value="projectid", required=true) long projectId) {
         List<AuditEntry> results = auditService.getProjectAuditRecords(projectId);
+        return new ResponseEntity(results, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/employee/{employeeid}")
+    public ResponseEntity<List<AuditEntry>> viewEmployeeRecords(@PathVariable(value="employeeid", required=true) long employeeId) {
+        List<AuditEntry> results = auditService.getEmployeeAuditRecords(employeeId);
         return new ResponseEntity(results, HttpStatus.OK);
     }
 }
