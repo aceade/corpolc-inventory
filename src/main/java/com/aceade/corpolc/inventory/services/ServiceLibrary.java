@@ -28,6 +28,9 @@ public class ServiceLibrary {
     }
     
     public static SecurityRating getSecurityRating(int id) {
+        if (id <= 0) {
+            id = 1;
+        }
         return SecurityRating.values()[id - 1];
     }
     

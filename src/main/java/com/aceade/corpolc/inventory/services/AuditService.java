@@ -14,6 +14,8 @@ import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
+import com.aceade.corpolc.inventory.model.response.AuditEntry;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,5 +71,17 @@ public class AuditService {
     public void logSiteAdded(NewSiteRequest req, String remoteUser) {
         long siteId = siteDao.getSiteId(req);
         auditDao.logSiteAdded(req, remoteUser, siteId);
+    }
+
+    public List<AuditEntry> getUserAuditRecords(String userId) {
+        return auditDao.getUserAuditRecords(userId);
+    }
+
+    public List<AuditEntry> getSiteAuditRecords(long siteId) {
+        return auditDao.getSiteAuditRecords(siteId);
+    }
+
+    public List<AuditEntry> getProjectAuditRecords(long projectId) {
+        return auditDao.getProjectAuditRecords(projectId);
     }
 }

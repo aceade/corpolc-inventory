@@ -5,14 +5,23 @@
  */
 package com.aceade.corpolc.inventory.dao;
 
+import com.aceade.corpolc.inventory.model.base.ProjectStatus;
 import com.aceade.corpolc.inventory.model.request.ChangeProjectStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewEmployeeRequest;
 import com.aceade.corpolc.inventory.model.request.NewProjectRequest;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.request.NewUserRequest;
+import com.aceade.corpolc.inventory.model.response.AuditEntry;
+import com.aceade.corpolc.inventory.model.response.ProjectAuditEntry;
+import com.aceade.corpolc.inventory.model.response.SiteAuditEntry;
+import com.aceade.corpolc.inventory.model.response.UserAuditEntry;
 import com.aceade.corpolc.inventory.services.ServiceLibrary;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 import javax.inject.Inject;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  *
@@ -78,6 +87,63 @@ public class AuditDao {
         String sql = "INSERT INTO site_auditing (site_id, username, last_accessed, change_reason) VALUES(?,?,?,?::resource_change_reason)";
         long timestamp = ServiceLibrary.getDate().getTime();
         jdbcTemplate.update(sql, siteId, remoteUser, timestamp, AuditingReason.creating.toString());
+    }
+
+    public List<AuditEntry> getUserAuditRecords(String userId) {
+        String sql = "SELECT * FROM user_auditing WHERE uid = ?";
+        return jdbcTemplate.query(sql, new RowMapper(){
+            @Override
+            public UserAuditEntry mapRow(ResultSet rs, int i) throws SQLException {
+                UserAuditEntry entry = new UserAuditEntry();
+                entry.setTimestamp(rs.getLong("last_changed"));
+                entry.setPreviousState(rs.getBoolean("previous_state"));
+                entry.setUsername(rs.getString("username"));
+                return entry;
+            }
+            
+        }, userId);
+
+    }
+
+    public List<AuditEntry> getSiteAuditRecords(long siteId) {
+        String sql = "SELECT * FROM site_auditing WHERE site_id = ?";
+        return jdbcTemplate.query(sql, new RowMapper(){
+            @Override
+            public SiteAuditEntry mapRow(ResultSet rs, int i) throws SQLException {
+                SiteAuditEntry entry = new SiteAuditEntry();
+                entry.setTimestamp(rs.getLong("last_accessed"));
+                entry.setUsername(rs.getString("username"));
+                entry.setPreviousCountry(rs.getString("previous_country"));
+                entry.setPreviousRegion(rs.getString("previous_region"));
+                entry.setPreviousAddress(rs.getString("previous_address"));
+                entry.setPreviousSecurityRating(ServiceLibrary.getSecurityRating(rs.getInt("previous_security_rating")));
+                entry.setAuditingReason(AuditingReason.valueOf(rs.getString("change_reason")));
+                return entry;
+            }
+            
+        }, siteId);
+    }
+
+    public List<AuditEntry> getProjectAuditRecords(long projectId) {
+        String sql = "SELECT * FROM project_auditing WHERE project_id = ?";
+        return jdbcTemplate.query(sql, new RowMapper(){
+            @Override
+            public ProjectAuditEntry mapRow(ResultSet rs, int i) throws SQLException {
+                ProjectAuditEntry entry = new ProjectAuditEntry();
+                
+                // this will be null if the project is fresh
+                String projectStatusString = rs.getString("previous_status") != null ? rs.getString("previous_status") : "PROPOSED";
+                entry.setTimestamp(rs.getLong("last_changed"));
+                entry.setUsername(rs.getString("username"));
+                entry.setPreviousBudget(rs.getDouble("previous_budget"));
+                entry.setPreviousState(ProjectStatus.valueOf(projectStatusString));
+                entry.setPreviousSummary(rs.getString("previous_summary"));
+                entry.setPreviousTitle(rs.getString("previous_title"));
+                entry.setPreviousSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("previous_security_rating")));
+                return entry;
+            }
+            
+        }, projectId);
     }
     
 }

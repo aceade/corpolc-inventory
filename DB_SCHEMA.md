@@ -177,7 +177,7 @@ Tracks when and who changed a project. Primary key is a combination of project_i
 | previous_budget   | numeric   | |
 | previous_security_rating | integer | |
 
-## Site Auditing
+## User Auditing
 
 Tracks when and who changed a user
 

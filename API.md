@@ -521,3 +521,73 @@ Response on success:
   "Item{name=Sewer Beer, buyingPrice=0.0, sellingPrice=54.0, weightPerUnit=10.0, consumable=true, type=ALCOHOL}": 20
 }
 ```
+
+## Auditing URLs
+Used to view audit records. Require ROLE_FULL_ADMIN to access
+
+#### View user audit records
+```
+GET /audit/user/mbison
+Response on success:
+{
+    [{
+      "timestamp": 1526139243353,
+      "username": "ajensen451",
+      "previousState": true
+    }, {
+      "timestamp": 1526139267150,
+      "username": "sfisher",
+      "previousState": false
+    }]
+}
+```
+
+#### View site audit records
+```
+GET /audit/site/1
+Response on success:
+{
+    [{
+      "timestamp": 1527327277675,
+      "username": "philiprowlands",
+      "previousCountry": "Ireland",
+      "previousRegion": "Connacht",
+      "previousAddress": "Mutton Island, Galway",
+      "previousSecurityRating": "MINIMUM",
+      "auditingReason": "creating"
+    }]
+}
+```
+
+#### View project audit_records
+```
+GET /audit/project/1
+Response on success:
+{
+    [{
+      "timestamp": 1526203198945,
+      "username": "philiprowlands",
+      "previousState": "IN_PROGRESS",
+      "previousSummary": "Yet another test",
+      "previousTitle": "Testing",
+      "previousBudget": 200.0,
+      "previousSecurityLevel": "MINIMUM"
+    }, {
+      "timestamp": 1527102247747,
+      "username": "philiprowlands",
+      "previousState": "IN_PROGRESS",
+      "previousSummary": "Yet another test",
+      "previousTitle": "Testing",
+      "previousBudget": 200.0,
+      "previousSecurityLevel": "MINIMUM"
+    }]
+}
+```
+
+#### View employee audit_records
+```
+GET /audit/employee/1
+Response on success:
+{
+}
+```
