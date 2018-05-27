@@ -449,7 +449,6 @@ POST /order/status
 ```
 GET /order/user?username=mbison
 
-```
 [{
   "id": 11,
   "items": null,
