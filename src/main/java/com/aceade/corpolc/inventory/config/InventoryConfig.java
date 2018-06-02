@@ -8,11 +8,17 @@ package com.aceade.corpolc.inventory.config;
 import com.aceade.corpolc.inventory.config.security.ProjectAuditAspect;
 import com.aceade.corpolc.inventory.config.security.UserAuditAspect;
 import com.aceade.corpolc.inventory.dao.AuditDao;
+import com.aceade.corpolc.inventory.dao.AuditDaoImpl;
 import com.aceade.corpolc.inventory.dao.EmployeeDao;
+import com.aceade.corpolc.inventory.dao.EmployeeDaoImpl;
 import com.aceade.corpolc.inventory.dao.ProjectDao;
+import com.aceade.corpolc.inventory.dao.ProjectDaoImpl;
 import com.aceade.corpolc.inventory.dao.SiteDao;
+import com.aceade.corpolc.inventory.dao.SiteDaoImpl;
 import com.aceade.corpolc.inventory.dao.SupplyDao;
+import com.aceade.corpolc.inventory.dao.SupplyDaoImpl;
 import com.aceade.corpolc.inventory.dao.UserDao;
+import com.aceade.corpolc.inventory.dao.UserDaoImpl;
 import com.aceade.corpolc.inventory.database.ConnectionFactory;
 import com.aceade.corpolc.inventory.services.AuditService;
 import com.aceade.corpolc.inventory.services.EmployeeService;
@@ -120,27 +126,27 @@ public class InventoryConfig {
     
     @Bean
     public EmployeeDao employeeDao() {
-        return new EmployeeDao();
+        return new EmployeeDaoImpl();
     }
     
     @Bean
     public SiteDao siteDao() {
-        return new SiteDao();
+        return new SiteDaoImpl();
     }
     
     @Bean
     public ProjectDao projectDao() {
-        return new ProjectDao();
+        return new ProjectDaoImpl();
     }
     
     @Bean
     public UserDao userDao() {
-        return new UserDao();
+        return new UserDaoImpl();
     }
     
     @Bean
     public SupplyDao supplyDao() {
-        return new SupplyDao();
+        return new SupplyDaoImpl();
     }
     
     @Bean
@@ -155,7 +161,7 @@ public class InventoryConfig {
     
     @Bean
     public AuditDao auditDao() {
-        return new AuditDao();
+        return new AuditDaoImpl();
     }
     
     @Bean

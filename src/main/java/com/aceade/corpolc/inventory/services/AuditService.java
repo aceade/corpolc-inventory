@@ -17,7 +17,6 @@ import com.aceade.corpolc.inventory.model.request.NewUserRequest;
 import com.aceade.corpolc.inventory.model.response.AuditEntry;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *
