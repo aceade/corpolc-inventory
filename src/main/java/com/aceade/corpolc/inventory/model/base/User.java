@@ -3,40 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.aceade.corpolc.inventory.model.request;
+package com.aceade.corpolc.inventory.model.base;
 
-import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotBlank;
+import java.util.Objects;
 
 /**
  *
  * @author philip
  */
-public class NewUserRequest {
+public class User {
     
-    @NotBlank
-    @NotNull
     private String username;
     
-    @NotBlank
-    @NotNull
     private String password;
     
-    @NotBlank
     private long employeeId;
     
-    @NotBlank
-    @NotNull
+    private boolean active;
+    
     private String role;
     
-    public NewUserRequest() {
-        // required for JSON conversion
-    }
+    public User(){}
     
-    public NewUserRequest(String username, String password, long employeeId, String role){
+    /**
+     * 
+     * @param username
+     * @param password
+     * @param employeeId
+     * @param active
+     * @param role 
+     */
+    public User(String username, String password, long employeeId, boolean active, String role) {
         this.username = username;
         this.password = password;
         this.employeeId = employeeId;
+        this.active = active;
         this.role = role;
     }
 
@@ -83,6 +84,20 @@ public class NewUserRequest {
     }
 
     /**
+     * @return the active
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
      * @return the role
      */
     public String getRole() {
@@ -98,8 +113,36 @@ public class NewUserRequest {
 
     @Override
     public String toString() {
-        return "NewUserRequest{" + "username=" + username + ", password=******, employeeId=" + employeeId + ", role=" + role + '}';
+        return "User{" + "username=" + username + ", password=******, employeeId=" + employeeId + ", active=" + active + ", role=" + role + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if (this.employeeId != other.employeeId) {
+            return false;
+        }
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        return true;
+    }
+
     
     
     

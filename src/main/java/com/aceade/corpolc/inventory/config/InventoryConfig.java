@@ -34,6 +34,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -42,6 +43,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 @Configuration
 @EnableAspectJAutoProxy
+@Profile("default")
 public class InventoryConfig {
     
     public static final String JDBC_URL = "jdbcUrl";
