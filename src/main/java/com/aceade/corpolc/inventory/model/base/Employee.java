@@ -36,6 +36,11 @@ public class Employee {
         this.name = name;
     }
     
+    public Employee(long id, String name, Date birthday) {
+        this.id = id;
+        this.name = name;
+    }
+    
     public Employee() {
         // default constructor
     }
@@ -152,4 +157,11 @@ public class Employee {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" + "id=" + id + ", name=" + name + ", username=" + username + ", birthday=" + birthday + ", department=" + department + ", workplace=" + workplace + ", clearanceLevel=" + clearanceLevel + ", salary=" + salary + ", currentlyEmployed=" + currentlyEmployed + '}';
+    }
+    
+    
 }

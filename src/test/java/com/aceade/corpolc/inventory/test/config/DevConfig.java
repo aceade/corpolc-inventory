@@ -5,10 +5,16 @@
  */
 package com.aceade.corpolc.inventory.test.config;
 
+import com.aceade.corpolc.inventory.dao.EmployeeDao;
+import com.aceade.corpolc.inventory.dao.SiteDao;
 import com.aceade.corpolc.inventory.test.dao.MockUserDao;
 import com.aceade.corpolc.inventory.dao.UserDao;
 import com.aceade.corpolc.inventory.model.base.User;
+import com.aceade.corpolc.inventory.services.EmployeeService;
+import com.aceade.corpolc.inventory.services.SiteService;
 import com.aceade.corpolc.inventory.services.UserService;
+import com.aceade.corpolc.inventory.test.dao.MockEmployeeDao;
+import com.aceade.corpolc.inventory.test.dao.MockSiteDao;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +45,26 @@ public class DevConfig {
     @Bean
     public UserService userService() {
         return new UserService();
+    }
+    
+    @Bean
+    public EmployeeService employeeService() {
+        return new EmployeeService();
+    }
+    
+    @Bean
+    public EmployeeDao employeeDao() {
+        return new MockEmployeeDao();
+    }
+    
+    @Bean
+    public SiteService siteService() {
+        return new SiteService();
+    }
+    
+    @Bean
+    public SiteDao siteDao() {
+        return new MockSiteDao();
     }
     
     @Bean

@@ -28,6 +28,22 @@ public class Site {
     public Site() {
         // default constructor
     }
+    
+    /**
+     * Used in unit testing
+     * @param id
+     * @param country
+     * @param region
+     * @param postalAddress
+     * @param securityRating 
+     */
+    public Site(long id, String country, String region, String postalAddress, SecurityRating securityRating) {
+        this.id = id;
+        this.country = country;
+        this.region = region;
+        this.postalAddress = postalAddress;
+        this.minimumSecurityLevel = securityRating;
+    }
 
     /**
      * @return the id

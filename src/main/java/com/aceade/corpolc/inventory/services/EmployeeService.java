@@ -31,6 +31,10 @@ public class EmployeeService {
         return employeeDao.getAllEmployees();
     }
     
+    public int getEmployeeCount() {
+        return employeeDao.getTotalEmployeeCount();
+    }
+    
     public long addEmployee(NewEmployeeRequest newEmployee){
         return employeeDao.addEmployee(newEmployee);
     }
