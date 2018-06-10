@@ -37,10 +37,7 @@ public class SiteService {
      * @return 
      */
     public Site getSite(long id) {
-        Site theSite = siteDao.getSite(id);
-        theSite.setPostalAddress("");
-        theSite.setRegion("");
-        return theSite;
+        return siteDao.getSite(id);
     }
     
     public boolean createSite(NewSiteRequest newSite){

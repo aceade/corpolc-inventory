@@ -6,6 +6,7 @@
 package com.aceade.corpolc.inventory.test.dao;
 
 import com.aceade.corpolc.inventory.dao.SiteDao;
+import com.aceade.corpolc.inventory.model.base.SecurityRating;
 import com.aceade.corpolc.inventory.model.base.Site;
 import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
@@ -13,6 +14,8 @@ import com.aceade.corpolc.inventory.services.ServiceLibrary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,17 +23,26 @@ import java.util.Map;
  */
 public class MockSiteDao implements SiteDao {
     
-    Map<Long, Site> sites = new HashMap<>();
-
+    private static final Logger LOG = LogManager.getLogger(MockSiteDao.class);
+    
+    private final Site mockSite = new Site(1, "Ireland", "Leinster", "Bewley's Cafe, Grafton Street, Dublin", SecurityRating.MINIMUM);
+    
+    private final Map<Long, Site> sites = new HashMap<>();
+    
+    public MockSiteDao() {
+        sites.put((long)1, mockSite);
+    }
+    
     @Override
     public boolean addSite(NewSiteRequest newSite) {
         Site theSite = new Site();
         theSite.setCountry(newSite.getCountry());
-        theSite.setRegion(theSite.getRegion());
-        theSite.setPostalAddress(theSite.getPostalAddress());
+        theSite.setRegion(newSite.getRegion());
+        theSite.setPostalAddress(newSite.getPostalAddress());
         theSite.setId(sites.size() + 1);
         theSite.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(newSite.getSecurityLevel()));
         sites.put(theSite.getId(), theSite);
+        LOG.info("Added site : " + theSite);
         return true;
     }
 
@@ -52,12 +64,18 @@ public class MockSiteDao implements SiteDao {
 
     @Override
     public Site getFullSiteDetails(long siteId) {
-        return sites.get(siteId);
+        Site theSite = sites.get(siteId);
+        LOG.info("Site returned: " + theSite);
+        return theSite;
     }
 
     @Override
     public Site getSite(long id) {
-        return getFullSiteDetails(id);
+        Site theSite = sites.get(id);
+        Site returnedSite = new Site();
+        returnedSite.setCountry(theSite.getCountry());
+        returnedSite.setId(theSite.getId());
+        return returnedSite;
     }
 
     @Override

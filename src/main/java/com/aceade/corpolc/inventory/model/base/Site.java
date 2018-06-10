@@ -13,13 +13,13 @@ public class Site {
     
     private long id;
     
-    private String country;
+    private String country = "";
     
-    private String region;
+    private String region = "";
     
-    private String postalAddress;
+    private String postalAddress = "";
     
-    private SecurityRating minimumSecurityLevel;
+    private SecurityRating minimumSecurityLevel = SecurityRating.MINIMUM;
     
     public Site(long id){
         this.id = id;

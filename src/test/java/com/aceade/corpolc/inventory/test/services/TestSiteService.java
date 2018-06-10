@@ -10,6 +10,8 @@ import com.aceade.corpolc.inventory.model.request.NewSiteRequest;
 import com.aceade.corpolc.inventory.services.SiteService;
 import com.aceade.corpolc.inventory.test.config.DevConfig;
 import javax.inject.Inject;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,44 +29,37 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles("test")
 public class TestSiteService {
     
+    private static final Logger LOG = LogManager.getLogger(TestSiteService.class);
+    
     @Inject
     private SiteService siteService;
     
-    private void addSite() {
-        NewSiteRequest newSite = new NewSiteRequest();
-        newSite.setCountry("Ireland");
-        newSite.setRegion("Leinster");
-        newSite.setPostalAddress("Bewley's Cafe, Grafton Street, Dublin");
-        siteService.createSite(newSite);
-    }
-    
     @Test
     public void getFullSiteDetails() {
-        addSite();
-        // full details should not involve null details
+        // full details should not involve empty details
         Site theSite = siteService.getFullSiteDetails(1);
-        Assert.assertNotNull(theSite.getCountry());
-        Assert.assertNotNull(theSite.getRegion());
-        Assert.assertNotNull(theSite.getPostalAddress());
+        LOG.info("Full site: " + theSite);
+        Assert.assertFalse(theSite.getCountry().isEmpty());
+        Assert.assertFalse(theSite.getRegion().isEmpty());
+        Assert.assertFalse(theSite.getPostalAddress().isEmpty());
     }
     
     @Test
     public void getSiteAddress() {
-        addSite();
-        // currently, this is the same
+        // currently, this is the same as the full details
         Site theSite = siteService.getSiteWithAddress(1);
-        Assert.assertNotNull(theSite.getCountry());
-        Assert.assertNotNull(theSite.getRegion());
-        Assert.assertNotNull(theSite.getPostalAddress());
+        LOG.info("Site with details: " + theSite);
+        Assert.assertFalse(theSite.getCountry().isEmpty());
+        Assert.assertFalse(theSite.getRegion().isEmpty());
+        Assert.assertFalse(theSite.getPostalAddress().isEmpty());
     }
     
     @Test
     public void getSite() {
-        addSite();
-        // Currently, there is no difference in the methods
         Site theSite = siteService.getSite(1);
-        Assert.assertNotNull(theSite.getCountry());
-        Assert.assertNotNull(theSite.getRegion());
-        Assert.assertNotNull(theSite.getPostalAddress());
+        LOG.info("Basic site: " + theSite);
+        Assert.assertFalse(theSite.getCountry().isEmpty());
+        Assert.assertTrue(theSite.getRegion().isEmpty());
+        Assert.assertTrue(theSite.getPostalAddress().isEmpty());
     }
 }
