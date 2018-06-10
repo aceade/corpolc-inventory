@@ -32,7 +32,29 @@ public class Project {
     public Project() {
         
     }
-
+    
+    /**
+     * Used in unit test.
+     * @param id
+     * @param title
+     * @param summary
+     * @param securityRating
+     * @param budget
+     * @param projectStatus
+     * @param sites
+     * @param employees 
+     */
+    public Project(long id, String title, String summary, SecurityRating securityRating, Double budget, ProjectStatus projectStatus, List<Site> sites, List<Employee> employees) {
+        this.id = id;
+        this.title = title;
+        this.summary = summary;
+        this.securityLevel = securityRating;
+        this.budget = budget;
+        this.status = projectStatus;
+        this.sites = sites;
+        this.employees = employees;
+    }
+    
     /**
      * @return the id
      */

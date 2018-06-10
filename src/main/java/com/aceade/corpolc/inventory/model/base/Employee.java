@@ -21,15 +21,15 @@ public class Employee {
     
     private Date birthday;
     
-    private Department department;
+    private Department department = Department.Research;
     
     private Site workplace;
     
-    private SecurityRating clearanceLevel;
+    private SecurityRating clearanceLevel = SecurityRating.MINIMUM;
     
-    private double salary;
+    private double salary = 100.00;
     
-    private boolean currentlyEmployed;
+    private boolean currentlyEmployed = true;
     
     public Employee(long id, String name) {
         this.id = id;
