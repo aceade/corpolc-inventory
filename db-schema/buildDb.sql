@@ -19,13 +19,18 @@ CREATE TABLE projects (
 CREATE TABLE employees (
     id serial,
     "name" text,
-    title text,
     department_type department,
+    workplace bigint REFERENCES sites (id),
     birthday bigint,
     salary numeric,
-    security_rating security_level,
-    currently_employed boolean,
+    security_level security_rating,
+    currently_employed boolean DEFAULT true,
     CONSTRAINT id_key PRIMARY KEY(id)
+);
+
+CREATE TABLE employee_projects (
+    employee_id bigint REFERENCES employees (id),
+    project_id bigint REFERENCES projects (id)
 );
 
 CREATE TABLE sites (
@@ -34,6 +39,11 @@ CREATE TABLE sites (
   region text,
   address text,
   security_level security_rating
+);
+
+CREATE TABLE site_projects (
+    site_id bigint REFERENCES sites (id),
+    project_id bigint REFERENCES projects (id)
 );
 
 CREATE TABLE items (
@@ -50,7 +60,7 @@ CREATE TABLE users(
     username text PRIMARY KEY UNIQUE,
     password text,
     "employeeId" bigint REFERENCES employees(id),
-    enabled boolean
+    enabled boolean DEFAULT true
 );
 
 CREATE TABLE authorities(
