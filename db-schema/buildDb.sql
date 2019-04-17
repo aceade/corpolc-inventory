@@ -8,12 +8,20 @@ CREATE TYPE resource_change_reason AS ENUM('creating', 'reading', 'updating', 'd
 CREATE TYPE project_status AS ENUM('PROPOSED','REJECTED','IN_PROGRESS','COMPLETED','CANCELLED');
 
 CREATE TABLE projects (
-  id serial,
+  id serial PRIMARY KEY,
   title text,
   summary text,
   budget numeric,
   security_level security_rating,
   status project_status
+);
+
+CREATE TABLE sites (
+  id serial PRIMARY KEY,
+  country text,
+  region text,
+  address text,
+  security_level security_rating
 );
 
 CREATE TABLE employees (
@@ -30,20 +38,14 @@ CREATE TABLE employees (
 
 CREATE TABLE employee_projects (
     employee_id bigint REFERENCES employees (id),
-    project_id bigint REFERENCES projects (id)
-);
-
-CREATE TABLE sites (
-  id serial PRIMARY KEY,
-  country text,
-  region text,
-  address text,
-  security_level security_rating
+    project_id bigint REFERENCES projects (id),
+    CONSTRAINT employee_project_key PRIMARY KEY (employee_id, project_id)
 );
 
 CREATE TABLE site_projects (
     site_id bigint REFERENCES sites (id),
-    project_id bigint REFERENCES projects (id)
+    project_id bigint REFERENCES projects (id),
+    CONSTRAINT site_project_key PRIMARY KEY (site_id, project_id)
 );
 
 CREATE TABLE items (
@@ -69,14 +71,14 @@ CREATE TABLE authorities(
 );
 
 CREATE TABLE orders(
-    "orderId" serial PRIMARY KEY,
+    id serial PRIMARY KEY,
     "siteId" integer,
     "orderDate" date,
     username text REFERENCES users(username)
 );
 
 CREATE TABLE order_items(
-    order_id bigint NOT NULL REFERENCES orders(orderId),
+    order_id bigint NOT NULL REFERENCES orders(id),
     item_id bigint NOT NULL REFERENCES items(id),
     quantity integer
 );
@@ -135,3 +137,26 @@ CREATE TABLE user_auditing(
     last_changed bigint,
     PRIMARY KEY(uid, last_changed)
 );
+
+
+
+-- Insert default values
+INSERT INTO sites (country, region, address, security_level)
+VALUES	('Ireland', 'Connacht', 'Delphi, Mweelrea', 'MEDIUM'),
+		('Null Island', 'Middle of Nowhere', 'The Buoy', 'LOW');
+		
+INSERT INTO employees ("name", department_type, birthday, salary, security_level)
+VALUES	('Test User 1', 'Board', 1000, 1000, 'HIGH'),
+		('Test User 2', 'Research', 2000, 500, 'HIGHEST');
+
+INSERT INTO projects (title, summary, budget, security_level, status)
+VALUES 	('Spionenkrabben', 'An attempt to train crabs as spies', 1000, 'MEDIUM', 'PROPOSED'),
+		('Trololo', 'Singing trolls', 2000, 'HIGH', 'REJECTED');
+
+INSERT INTO site_projects VALUES(1, 1),(2,2);
+INSERT INTO employee_projects VALUES(2,1);
+
+-- Only an idiot would have these passwords on their luggage! Or their account.
+INSERT INTO users VALUES('test1', 'password', 1),
+						('test2', '123456', 2);
+INSERT INTO authorities VALUES('test1', 'ROLE_FULL_READONLY'), ('test2', 'ROLE_ADMIN');

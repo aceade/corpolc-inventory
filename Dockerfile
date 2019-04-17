@@ -5,4 +5,6 @@ FROM postgres
 
 ENV POSTGRES_DB connacht_trading
 COPY db-schema/buildDb.sql /docker-entrypoint-initdb.d/
-# COPY db-schema/addInitialValues.sql /docker-entrypoint-initdb.d/
+#COPY db-schema/addInitialValues.sql /docker-entrypoint-initdb.d/
+
+# Run the application now
