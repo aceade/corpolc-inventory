@@ -1,4 +1,3 @@
-CREATE DATABASE corpolcInventory;
 
 -- Create various enums that the tables will require
 CREATE TYPE department AS ENUM('Board', 'Finance', 'Maintenance', 'Marketing', 'PublicRelations', 'Research', 'Security', 'Shipping');
@@ -145,9 +144,9 @@ INSERT INTO sites (country, region, address, security_level)
 VALUES	('Ireland', 'Connacht', 'Delphi, Mweelrea', 'MEDIUM'),
 		('Null Island', 'Middle of Nowhere', 'The Buoy', 'LOW');
 		
-INSERT INTO employees ("name", department_type, birthday, salary, security_level)
-VALUES	('Test User 1', 'Board', 1000, 1000, 'HIGH'),
-		('Test User 2', 'Research', 2000, 500, 'HIGHEST');
+INSERT INTO employees ("name", department_type, workplace, birthday, salary, security_level)
+VALUES	('Test User 1', 'Board', 1, 1000, 1000, 'HIGH'),
+		('Test User 2', 'Research', 1, 2000, 500, 'HIGHEST');
 
 INSERT INTO projects (title, summary, budget, security_level, status)
 VALUES 	('Spionenkrabben', 'An attempt to train crabs as spies', 1000, 'MEDIUM', 'PROPOSED'),
