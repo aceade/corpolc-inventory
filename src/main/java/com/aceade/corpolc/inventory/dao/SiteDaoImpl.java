@@ -112,7 +112,7 @@ public class SiteDaoImpl extends BaseDao implements SiteDao {
 
     @Override
     public long getSiteId(NewSiteRequest req) {
-        String sql = "SELECT id FROM sites WHERE country = ? AND region = ? AND \"postalAddress\" = ?";
+        String sql = Queries.GET_SITE_ID;
         return jdbcTemplate.queryForObject(sql, Long.class, req.getCountry(), req.getRegion(), req.getPostalAddress());
     }
 }

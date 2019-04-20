@@ -39,7 +39,7 @@ public class EmployeeDaoImpl extends BaseDao implements EmployeeDao {
     
     @Override
     public int getTotalEmployeeCount() {
-        String sql = "SELECT COUNT(id) from employees AS count";
+        String sql = Queries.COUNT_EMPLOYEES;
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
@@ -66,14 +66,14 @@ public class EmployeeDaoImpl extends BaseDao implements EmployeeDao {
 
     @Override
     public Site getSite(long employeeId) {
-        String sql = "SELECT * FROM sites WHERE id = (SELECT workplace FROM employees WHERE id = ?)";
+        String sql = Queries.GET_EMPLOYEE_WORKPLACE;
         Site theSite = jdbcTemplate.queryForObject(sql, Site.class, employeeId);
         return theSite;
     }
 
     @Override
     public long getEmployeeId(NewEmployeeRequest newEmployeeRequest) {
-        String sql = "SELECT id FROM employees WHERE name = ? AND birthday = ? AND workplace = ?";
+        String sql = Queries.GET_EMPLOYEE_ID;
         return jdbcTemplate.queryForObject(sql, Long.class, newEmployeeRequest.getName(), newEmployeeRequest.getBirthday(),
                 newEmployeeRequest.getSiteId());
     }

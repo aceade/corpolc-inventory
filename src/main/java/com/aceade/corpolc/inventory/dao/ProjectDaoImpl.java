@@ -58,21 +58,21 @@ public class ProjectDaoImpl extends BaseDao implements ProjectDao {
 
     @Override
     public List<Project> getProjectsForEmployee(long employeeId, boolean sanitise) {
-        String sql = "SELECT p.id, p.title, p.summary, p.security_rating, p.status, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
+        String sql = Queries.SELECT_PROJECTS_FOR_EMPLOYEE;
         List<Project> projects = jdbcTemplate.query(sql, new ProjectRowMapper(), employeeId);
         return projects;
     }
 
     @Override
     public List<Project> getAll() {
-        String sql = "SELECT * FROM projects";
+        String sql = Queries.SELECT_ALL_PROJECTS;
         List<Project> results = jdbcTemplate.query(sql, new ProjectRowMapper());
         return results;
     }
 
     @Override
     public long addNewProject(NewProjectRequest newProjectRequest) {
-        String sql = "INSERT INTO projects (id, title, summary, budget, \"security_rating\", status) VALUES(?, ?, ?, ?, ?, 'PROPOSED')";
+        String sql = Queries.ADD_PROJECT;
         
         int totalProjects = getTotalProjectCount();
         int newId = totalProjects + 1;
@@ -91,7 +91,7 @@ public class ProjectDaoImpl extends BaseDao implements ProjectDao {
     public boolean setProjectStatus(ChangeProjectStatusRequest request) {
         long id = request.getProjectId();
         LOGGER.info("Updating status of project [" + id + "]");
-        String sql = "UPDATE projects SET status = ?::project_status WHERE id = ?";
+        String sql = Queries.SET_PROJECT_STATUS;
         
         // since jdbcTemplate.update returns the number of affected rows, might as well check that a single row updated
         int rowsAffected = jdbcTemplate.update(sql, request.getNewProjectStatus().name(), id);
@@ -100,7 +100,7 @@ public class ProjectDaoImpl extends BaseDao implements ProjectDao {
 
     @Override
     public boolean isUserOnProject(long projectId, String username) {
-        String sql = "SELECT * FROM employee_projects ep WHERE ep.project_id=? AND ep.employee_id = (SELECT \"employeeId\" FROM users WHERE username = ?)";
+        String sql = Queries.SELECT_PROJECTS_FOR_USER;
         return (Boolean) jdbcTemplate.queryForObject(sql, new RowMapper(){
             @Override
             public Boolean mapRow(ResultSet rs, int i) throws SQLException {
@@ -117,7 +117,7 @@ public class ProjectDaoImpl extends BaseDao implements ProjectDao {
      */
     @Override
     public long getProjectId(NewProjectRequest request) {
-        String sql = "SELECT id FROM projects WHERE summary = ? AND title = ? AND budget = ?";
+        String sql = Queries.AUDIT_GET_PROJECT_ID;
         return jdbcTemplate.queryForObject(sql, Long.class, request.getSummary(), request.getTitle(), request.getBudget());
     }
     

@@ -8,6 +8,7 @@ package com.aceade.corpolc.inventory.dao;
 import com.aceade.corpolc.inventory.database.ItemRowMapper;
 import com.aceade.corpolc.inventory.database.OrderRowMapper;
 import com.aceade.corpolc.inventory.database.SiteStockMapper;
+import com.aceade.corpolc.inventory.database.Queries;
 import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
@@ -45,13 +46,13 @@ public class SupplyDaoImpl implements SupplyDao {
 
     @Override
     public void addItem(NewItemRequest newItem) {
-        String sql = "INSERT INTO items (name, buying_price, selling_price, weight, consumable, type) VALUES (?, ?, ?, ?, ?, ?::supply_type )";
+        String sql = Queries.ADD_ITEM;
         jdbcTemplate.update(sql, newItem.getName(), newItem.getBuyingPrice(), newItem.getSellingPrice(), newItem.getWeightPerUnit(), newItem.isConsumable(), newItem.getType().name());
     }
 
     @Override
     public Item getItem(long itemId) {
-        String sql = "SELECT * FROM items WHERE id = ?";
+        String sql = Queries.GET_ITEM;
         return (Item) jdbcTemplate.queryForObject(sql, new ItemRowMapper(), itemId);
     }
 
@@ -60,8 +61,8 @@ public class SupplyDaoImpl implements SupplyDao {
         long siteId = newOrderRequest.getSiteId();
         Map<Long, Integer> orderItems = newOrderRequest.getOrderItems();
         Date orderDate = newOrderRequest.getOrderDate();
-        String orderSql = "INSERT INTO orders (\"siteId\", \"orderDate\", status, username) VALUES (?, ?, 'SUBMITTED', ?)";
-        String itemSql = "INSERT INTO order_items (order_id, item_id, quantity) VALUES (?,?,?)";
+        String orderSql = Queries.ADD_ORDER;
+        String itemSql = Queries.ADD_ORDER_ITEM;
 
         // a KeyHolder allows me to get the order of the inserted object...handy!
         KeyHolder kh = new GeneratedKeyHolder();
@@ -91,7 +92,7 @@ public class SupplyDaoImpl implements SupplyDao {
 
     @Override
     public Order viewOrder(long orderId) {
-        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.id AS \"siteId\", s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.\"orderId\" = ? AND o.\"siteId\" = s.id";
+        String sql = Queries.GET_ORDER;
         Order order = (Order) jdbcTemplate.queryForObject(sql, new OrderRowMapper(), orderId);
 
         order.setItems(getOrderItems(orderId));
@@ -100,7 +101,7 @@ public class SupplyDaoImpl implements SupplyDao {
 
     @Override
     public Map<Item, Integer> getOrderItems(long orderId) {
-        String sql = "SELECT i.name, i.buying_price, i.selling_price, i.weight, i.consumable, i.type, oi.quantity FROM items i, order_items oi WHERE oi.item_id = i.id AND oi.order_id = ?";
+        String sql = Queries.GET_ORDER_ITEMS;
 
         // using a ResultSetExtractor allows me to define HOW I generate the map
         Map<Item, Integer> items = (Map<Item, Integer>) jdbcTemplate.query(sql, new ResultSetExtractor() {
@@ -128,13 +129,13 @@ public class SupplyDaoImpl implements SupplyDao {
 
     @Override
     public List<Order> viewOrdersByUser(String username) {
-        String sql = "SELECT o.\"orderId\", o.\"orderDate\", o.status, o.username, s.id AS \"siteId\", s.\"postalAddress\", s.country, s.region FROM orders o, sites s WHERE o.username = ? AND o.\"siteId\" = s.id";
+        String sql = Queries.GET_ORDERS_BY_USER;
         return jdbcTemplate.query(sql, new OrderRowMapper(), username);
     }
 
     @Override
     public void updateOrderStatus(ChangeOrderStatusRequest changeOrder) {
-        String sql = "UPDATE orders SET status = ?::order_status WHERE \"orderId\" = ?";
+        String sql = Queries.SET_ORDER_STATUS;
         jdbcTemplate.update(new PreparedStatementCreator(){
             @Override
             public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
@@ -148,13 +149,13 @@ public class SupplyDaoImpl implements SupplyDao {
 
     @Override
     public List<Item> getItemsWithName(String name) {
-        String sql = "SELECT * FROM items WHERE name LIKE ?";
+        String sql = Queries.GET_ITEMS_BY_NAME;
         return jdbcTemplate.query(sql, new ItemRowMapper(), "%"+name +"%");
     }
 
     @Override
     public Map<Item, Integer> getSiteStocks(long siteId) {
-        String sql = "SELECT s.quantity, i.id, i.name, i.type, i.weight, i.selling_price, i.weight, i.consumable FROM site_stocks s, items i WHERE s.item_id = i.id AND s.site_id = ?";
+        String sql = Queries.GET_SITE_STOCKS;
         return (Map<Item, Integer>) jdbcTemplate.query(sql, new SiteStockMapper(), siteId);
     }
 

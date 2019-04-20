@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.aceade.corpolc.inventory.database.Queries;
 
 /**
  *
@@ -28,7 +29,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     @Override
     public boolean addUser(NewUserRequest newUser) {
         LOGGER.info("Adding new user");
-        String sql = "INSERT INTO users (username, password, \"employeeId\", enabled) VALUES(?,?,?,true); INSERT into authorities(username, authority) VALUES (?,?)";
+        String sql = Queries.ADD_USER;
         
         boolean success = false;
         Connection dbConnection = connectionFactory.getConnection();
@@ -49,7 +50,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     
     @Override
     public boolean disableUser(String username) {
-        String sql = "UPDATE users SET enabled=false WHERE username = ?";
+        String sql = Queries.DISABLE_USER;
         Connection dbConnection = connectionFactory.getConnection();
         try (PreparedStatement stmt = dbConnection.prepareStatement(sql)) {
             stmt.setString(1, username);
