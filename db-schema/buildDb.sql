@@ -159,3 +159,7 @@ INSERT INTO employee_projects VALUES(2,1);
 INSERT INTO users VALUES('test1', 'password', 1),
 						('test2', '123456', 2);
 INSERT INTO authorities VALUES('test1', 'ROLE_FULL_READONLY'), ('test2', 'ROLE_ADMIN');
+
+INSERT INTO items(name, buying_price, selling_price, weight, consumable, "type")
+VALUES  ('Mún Beer', 10, 20, 10, true, 'ALCOHOL'),
+		('Bonglesticks', 10, 50, 5, false, 'TOOLS');

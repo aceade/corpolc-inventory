@@ -79,7 +79,7 @@ public class InventoryConfig {
     @Bean
     @Named(JDBC_URL)
     public String jdbcUrl() {
-        return System.getProperty("com.aceade.corpolc.jdbcUrl", "jdbc:postgresql://localhost:5432/connacht_trading") ;
+        return System.getProperty("com.aceade.corpolc.jdbcUrl", "jdbc:postgresql://localhost:5432/corpol") ;
     }
     
     @Bean
