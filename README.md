@@ -2,7 +2,7 @@
 
 ## About
 
-This is a project/employee/site directory for a fictional corporation. I started this as some basic Spring practice, but decided to expand it as a means of teaching myself vulnerability scanning.
+This is a project/employee/site directory for a fictional corporation. I started this as some Spring practice, but decided to expand it as a means of teaching myself vulnerability scanning and Docker.
 
 #### Things to note:
 
@@ -17,3 +17,16 @@ This is a project/employee/site directory for a fictional corporation. I started
 
 See the LICENCE file
 
+## Running and building
+
+### Running the Postgresql Docker container
+
+* Building: `sudo docker build --tag=corpolc .` 
+* Running: `sudo docker run -p 5432:5432 -e POSTGRES_PASSWORD=${password} corpolc`.
+* Running in background: `sudo docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=${password} corpolc`. Will print the hash required to stop the container
+* Check if running: `sudo docker container ls`
+* Close in background: `sudo docker container stop ${hash}`
+
+### Building the application
+
+`mvn clean install`
