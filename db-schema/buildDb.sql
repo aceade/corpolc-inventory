@@ -155,9 +155,11 @@ VALUES 	('Spionenkrabben', 'An attempt to train crabs as spies', 1000, 'MEDIUM',
 INSERT INTO site_projects VALUES(1, 1),(2,2);
 INSERT INTO employee_projects VALUES(2,1);
 
--- Only an idiot would have these passwords on their luggage! Or their account.
-INSERT INTO users VALUES('test1', 'password', 1),
-						('test2', '123456', 2);
+-- These are the BCrypt hashes for "password" and "12345", respectively.
+-- The sort of thing that only an idiot would have on their luggage.
+-- Spring Security 4.2.3 requires the $2a$ encoding - see https://github.com/spring-projects/spring-security/issues/3320
+INSERT INTO users VALUES('test1', '$2a$10$2sPCHKQlq5LK.Lrr6P0Wc.AXhxqYkRPhd6fjxv4vhaDKb0erOmHXK', 1),
+						('test2', '$2a$10$L9bufy/7TZoZqSYDfUHQc.WnaKEydeUOlJ52zgZ8lw2w/FGL0CtEG', 2);
 INSERT INTO authorities VALUES('test1', 'ROLE_FULL_READONLY'), ('test2', 'ROLE_ADMIN');
 
 INSERT INTO items(name, buying_price, selling_price, weight, consumable, "type")

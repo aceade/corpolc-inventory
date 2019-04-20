@@ -22,4 +22,5 @@ public enum SecurityRating {
     public int toInt() {
         return this.ordinal();
     }
+    
 }

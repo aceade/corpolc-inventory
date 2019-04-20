@@ -26,7 +26,7 @@ public class ProjectRowMapper implements RowMapper {
         project.setSummary(rs.getString("summary"));
         project.setBudget(rs.getDouble("budget"));
         project.setStatus(ProjectStatus.valueOf(rs.getString("status")));
-        project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("security_rating")));
+        project.setSecurityLevel(ServiceLibrary.getSecurityRating(rs.getString("security_level")));
         return project;
     }
     

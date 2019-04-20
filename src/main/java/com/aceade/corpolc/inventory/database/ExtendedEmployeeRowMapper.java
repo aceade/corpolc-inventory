@@ -21,17 +21,17 @@ public class ExtendedEmployeeRowMapper implements RowMapper {
     @Override
     public Employee mapRow(ResultSet rs, int i) throws SQLException {
         Employee drone = new Employee(rs.getLong("id"), rs.getString(("name")));
-        drone.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
+        drone.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getString("security_level")));
         drone.setSalary(rs.getDouble("salary"));
-        drone.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
-        drone.setBirthday(rs.getDate("birthday"));
-        drone.setCurrentlyEmployed(rs.getBoolean("current"));
+        drone.setDepartment(ServiceLibrary.getDepartment(rs.getString("department_type")));
+        drone.setBirthday(ServiceLibrary.getDateFromTimestamp(rs.getLong("birthday")));
+        drone.setCurrentlyEmployed(rs.getBoolean("currently_employed"));
         
         Site site = new Site (rs.getLong("workplace"));
         site.setCountry(rs.getString("country"));
         site.setRegion(rs.getString("region"));
-        site.setPostalAddress(rs.getString("postalAddress"));
-        site.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("siteSecurityLevel")));
+        site.setPostalAddress(rs.getString("address"));
+        site.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getString("site_security_level")));
         drone.setWorkplace(site);
         return drone;
     }

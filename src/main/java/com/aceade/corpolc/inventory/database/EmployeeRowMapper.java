@@ -23,10 +23,10 @@ public class EmployeeRowMapper implements RowMapper {
     @Override
     public Employee mapRow(ResultSet rs, int i) throws SQLException {
         Employee drone = new Employee(rs.getLong("id"), rs.getString(("name")));
-        drone.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
+        drone.setClearanceLevel(ServiceLibrary.getSecurityRating(rs.getString("security_level")));
         drone.setSalary(rs.getDouble("salary"));
-        drone.setDepartment(ServiceLibrary.getDepartment(rs.getInt("department")));
-        drone.setBirthday(rs.getDate("birthday"));
+        drone.setDepartment(ServiceLibrary.getDepartment(rs.getString("department_type")));
+        drone.setBirthday(ServiceLibrary.getDateFromTimestamp(rs.getLong("birthday")));
         drone.setCurrentlyEmployed(true);
         drone.setWorkplace(new Site(rs.getLong("workplace")));
         return drone;

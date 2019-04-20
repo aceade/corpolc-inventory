@@ -16,7 +16,7 @@ public class Queries {
      */
     
     public static final String SELECT_EMPLOYEE = "SELECT e.*, s.* FROM employees as e, sites as s WHERE e.id = ? AND s.id = e.workplace;";
-    public static final String SELECT_ALL_EMPLOYEES = "SELECT e.*, s.* FROM employees as e, sites AS s where e.workplace = s.id ORDER BY e.id;";
+    public static final String SELECT_ALL_EMPLOYEES = "SELECT e.*, s.id, s.country, s.region, s.address, s.security_level AS site_security_level FROM employees as e, sites AS s where e.workplace = s.id ORDER BY e.id;";
     public static final String COUNT_EMPLOYEES = "SELECT COUNT(id) FROM employees";
     public static final String SELECT_EMPLOYEES_BY_SITE = "SELECT e.*, s.* FROM employees as e, sites AS s WHERE e.workplace = ?;";
     public static final String ADD_EMPLOYEE = "INSERT INTO employees (id, name, birthday, department_type, workplace, security_level, salary, currently_employed) VALUES (?, ?, ?, ?, ?, ?, ?, true)";
@@ -42,8 +42,8 @@ public class Queries {
     public static final String SELECT_PROJECT = "SELECT * FROM projects WHERE id = ?";
     public static final String SELECT_ALL_PROJECTS = "SELECT * FROM projects";
     public static final String COUNT_PROJECTS = "SELECT COUNT(id) as numberOfProjects FROM projects";
-    public static final String SELECT_EMPLOYEES_FOR_PROJECT = "SELECT e.*, ep.project_id FROM employees as e, employee_projects AS ep WHERE ep.project_id = ? AND ep.employee_id = e.id AND e.current = true";
-    public static final String SELECT_SITES_FOR_PROJECT = "SELECT s.* FROM sites AS s, sites_projects AS sp WHERE sp.project_id = ? AND sp.site_id = s.id";
+    public static final String SELECT_EMPLOYEES_FOR_PROJECT = "SELECT e.*, ep.project_id FROM employees as e, employee_projects AS ep WHERE ep.project_id = ? AND ep.employee_id = e.id AND e.currently_employed = true";
+    public static final String SELECT_SITES_FOR_PROJECT = "SELECT s.* FROM sites AS s, site_projects AS sp WHERE sp.project_id = ? AND sp.site_id = s.id";
     public static final String SELECT_PROJECTS_FOR_EMPLOYEE = "SELECT p.*, ep.employee_id FROM projects AS p, employee_projects AS ep WHERE ep.employee_id = ? AND ep.project_id = p.id";
     public static final String ADD_PROJECT = "INSERT INTO projects (id, title, summary, budget, security_level, status) VALUES(?, ?, ?, ?, ?, 'PROPOSED')";
     public static final String SET_PROJECT_STATUS = "UPDATE projects SET status = ?::project_status WHERE id = ?";

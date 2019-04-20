@@ -27,6 +27,9 @@ See the LICENCE file
 * Check if running: `sudo docker container ls`
 * Close in background: `sudo docker container stop ${hash}`
 
-### Building the application
+### Building and running the application
 
-`mvn clean install`
+* `mvn clean install`
+* `mvn spring-boot:run -Dcom.aceade.corpolc.jdbcUser=postgres -Dcom.aceade.corpolc.jdbcPassword=${password}`
+
+When it's running, visit localhost:8081/home.html

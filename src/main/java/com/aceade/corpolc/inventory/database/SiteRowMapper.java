@@ -20,10 +20,10 @@ public class SiteRowMapper implements RowMapper {
     @Override
     public Site mapRow(ResultSet rs, int i) throws SQLException {
         Site site = new Site(rs.getLong("id"));
-        site.setPostalAddress(rs.getString("postalAddress"));
+        site.setPostalAddress(rs.getString("address"));
         site.setCountry(rs.getString("country"));
         site.setRegion(rs.getString("region"));
-        site.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getInt("securityLevel")));
+        site.setMinimumSecurityLevel(ServiceLibrary.getSecurityRating(rs.getString("security_level")));
         return site;
     }
     

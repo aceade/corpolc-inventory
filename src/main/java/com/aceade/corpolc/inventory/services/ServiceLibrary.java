@@ -34,9 +34,21 @@ public class ServiceLibrary {
         return SecurityRating.values()[id - 1];
     }
     
+    public static SecurityRating getSecurityRating(String name) {
+		return SecurityRating.valueOf(name);
+	}
+    
     public static Department getDepartment(int id) {
         return Department.values()[id - 1];
     }
+    
+    public static Department getDepartment(String name) {
+		return Department.valueOf(name);
+	}
+	
+	public static Date getDateFromTimestamp(long timestamp) {
+		return new Date(timestamp);
+	}
     
     /**
      * Check the user's security rating. 
