@@ -15,7 +15,7 @@ public class Queries {
      * EMPLOYEE related
      */
     
-    public static final String SELECT_EMPLOYEE = "SELECT e.*, s.* FROM employees as e, sites as s WHERE e.id = ? AND s.id = e.workplace;";
+    public static final String SELECT_EMPLOYEE = "SELECT e.*, s.id, s.country, s.region, s.address, s.security_level AS site_security_level FROM employees as e, sites as s WHERE e.id = ? AND s.id = e.workplace;";
     public static final String SELECT_ALL_EMPLOYEES = "SELECT e.*, s.id, s.country, s.region, s.address, s.security_level AS site_security_level FROM employees as e, sites AS s where e.workplace = s.id ORDER BY e.id;";
     public static final String COUNT_EMPLOYEES = "SELECT COUNT(id) FROM employees";
     public static final String SELECT_EMPLOYEES_BY_SITE = "SELECT e.*, s.* FROM employees as e, sites AS s WHERE e.workplace = ?;";

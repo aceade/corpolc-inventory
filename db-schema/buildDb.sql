@@ -25,7 +25,8 @@ CREATE TABLE sites (
 
 CREATE TABLE employees (
     id serial,
-    "name" text,
+    name text,
+    title text,
     department_type department,
     workplace bigint REFERENCES sites (id),
     birthday bigint,
@@ -54,7 +55,7 @@ CREATE TABLE items (
   selling_price numeric,
   weight numeric,
   consumable boolean,
-  "type" item_types
+  type item_types
 );
 
 CREATE TABLE users(
@@ -145,14 +146,14 @@ VALUES	('Ireland', 'Connacht', 'Delphi, Mweelrea', 'MEDIUM'),
 		('Null Island', 'Middle of Nowhere', 'The Buoy', 'LOW'),
 		('Amity', 'New York', 'USA', 'MINIMUM');
 		
-INSERT INTO employees ("name", title, department_type, workplace, birthday, salary, security_level)
+INSERT INTO employees (name, title, department_type, workplace, birthday, salary, security_level)
 VALUES	('Graf Bernd Otto von Schtickschtock', 'CEO', 'Board', 1, 1000, 1000, 'HIGH'),
 		('Adam Jensen', 'CSO', 'Board', 1, 2000, 750, 'HIGH'),
 		('Patton Ffrench', 'Chief Legal Officer', 'Board', 1, 3000, 900, 'HIGH'),
 		('Aoife Mannion', 'CFO', 'Board', 1, 4000, 850, 'HIGH'),
-		('Freya Bjornsson', 'CMO', 'Board', 1, 5000, 850, 'HIGH')
-		('Samuel Fisher', 'Head of Security', 'Security', 1, 6000, 850, 'HIGHEST')
-		('Sam Quint', 'Skipper', 'Transport', 3, 7000, 100, 'LOW')
+		('Freya Bjornsson', 'CMO', 'Board', 1, 5000, 850, 'HIGH'),
+		('Samuel Fisher', 'Head of Security', 'Security', 1, 6000, 850, 'HIGHEST'),
+		('Sam Quint', 'Skipper', 'Shipping', 3, 7000, 100, 'LOW'),
 		('Albrecht Zweistein', 'Researcher (Physics)', 'Research', 1, 8000, 500, 'CONFIDENTIAL'),
 		('Pauline Bean', 'Maintenance Programmer', 'Maintenance', 2, 9000, 300, 'LOW'),
 		('Edward Seagoon', 'Rumourmonger', 'Marketing', 2, 1000, 300, 'LOW');
@@ -165,7 +166,7 @@ VALUES 	('Spionenkrabben', 'An attempt to train crabs as spies', 1000, 'MEDIUM',
 		('New Coffee Machines', 'Coffee machines for offices', 300, 'LOW', 'COMPLETED');
 
 INSERT INTO site_projects VALUES(1, 1),(2,2);
-INSERT INTO employee_projects VALUES(2,1);
+INSERT INTO employee_projects VALUES(2,1), (8,3);
 
 -- Spring Security 4.2.3 requires the $2a$ encoding - see https://github.com/spring-projects/spring-security/issues/3320
 -- The sample passwords here are, respectively:
@@ -190,7 +191,7 @@ INSERT INTO authorities VALUES	('bvonschtick', 'ROLE_FULL_READONLY'),
 								('squint2', 'ROLE_VIEW_ALL_ADDRESSES'),
 								('albrechtzweistein', 'ROLE_PROJECT_ADMIN'),
 								('pbean', 'ROLE_VIEW_OWN_DETAILS'),
-								('nseagoon', 'ROLE_SITE_ADMIN');
+								('nseagoon', 'ROLE_VIEW_OWN_DETAILS');
 
 INSERT INTO items(name, buying_price, selling_price, weight, consumable, "type")
 VALUES  ('Mún Beer', 10, 20, 10, true, 'ALCOHOL'),
@@ -198,5 +199,5 @@ VALUES  ('Mún Beer', 10, 20, 10, true, 'ALCOHOL'),
 
 -- add a basic order
 INSERT INTO orders  (site, date, username)
-VALUES				(1, 3000, 'test1');
+VALUES				(1, 3000, 'bvonschtick');
 INSERT INTO order_items VALUES (1, 1, 10), (1, 2, 5);

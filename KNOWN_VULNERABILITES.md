@@ -1,6 +1,6 @@
 # List of known vulnerabilties
 
-As stated in the README, there *WILL* be vulnerabilties in this. Some will be deliberate, for educational purposes. Others will be accidental.
+As stated in the README, there *WILL* be vulnerabilties in this. Some will be deliberate, for educational or development purposes. Others will be accidental.
 
 ## Injection attacks
 
