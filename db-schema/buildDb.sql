@@ -194,8 +194,15 @@ INSERT INTO authorities VALUES	('bvonschtick', 'ROLE_FULL_READONLY'),
 								('nseagoon', 'ROLE_VIEW_OWN_DETAILS');
 
 INSERT INTO items(name, buying_price, selling_price, weight, consumable, "type")
-VALUES  ('Mún Beer', 10, 20, 10, true, 'ALCOHOL'),
-		('Bonglesticks', 10, 50, 5, false, 'TOOLS');
+VALUES  ('Swamp Beer', 10, 20, 10, true, 'ALCOHOL'),
+		('Bonglesticks', 10, 50, 5, false, 'TOOLS'),
+		('Klobb', 100, 150, 1.5, false, 'WEAPONS'),
+		('Bandages', 5, 15, false, 0.5, 'MEDICAL_EQUIMENT'),
+		('First Aid Kit', 10, 25, 2, false, 'MEDICAL_EQUIMENT'),
+		('Aspirin Case', 5, 15, false, 1, 'MEDICAL_EQUIMENT'),
+		('N00b Tube', 100, 500, false, 10, 'WEAPONS'),
+		('Red Staplers', 10, 50, false, 0.5, 'OFFICE_SUPPLIES'),
+		('Advent Burgers', 100, 500, true, 10, 'FOOD');
 
 -- add a basic order
 INSERT INTO orders  (site, date, username)
