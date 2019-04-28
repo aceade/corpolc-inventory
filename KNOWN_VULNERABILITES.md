@@ -30,13 +30,17 @@ As stated in the README, there *WILL* be vulnerabilties in this. Some will be de
 ## Vulnerable dependencies
 
 * org.springframework.security:spring-security-core:4.2.3.RELEASE
-** CVE-2019-3795 - moderate severity
-** CVE-2018-1199 - *high* severity
+	* CVE-2019-3795 - moderate severity
+	* CVE-2018-1199 - *high* severity
 * org.apache.tomcat.embed:tomcat-embed-core:8.5.16
-** CVE-2018-8034 - low severity
-** CVE-2018-8014 - *high* severity
-** CVE-2018-1336 - moderate severity
-** CVE-2018-1305 - moderate severity
-** CVE-2018-8037 - moderate severity
-** CVE-2018-11784 - moderate severity
-** CVE-2018-1304 - moderate severity
+	* CVE-2018-8034 - low severity
+	* CVE-2018-8014 - *high* severity
+	* CVE-2018-1336 - moderate severity
+	* CVE-2018-1305 - moderate severity
+	* CVE-2018-8037 - moderate severity
+	* CVE-2018-11784 - moderate severity
+	* CVE-2018-1304 - moderate severity
+	
+## Default passwords
+The buildDb.sql file creates default usernames with default passwords. *DO NOT USE THE ONES LISTED THERE*
+
