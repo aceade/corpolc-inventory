@@ -1,19 +1,29 @@
 # DB SCHEMA
 
-This file lists the database schema. This currently uses a Postgresql 9.3 database.
+This file lists the database schema. This currently uses a Postgresql 9.3 database. The most recent version will be contained in the buildDb.sql file.
+
+## Enums/types
+
+* department: ['Board', 'Finance', 'Maintenance', 'Marketing', 'PublicRelations', 'Production', 'Research', 'Security', 'Shipping']
+* security_rating: ['MINIMUM','LOW', 'MEDIUM', 'PRIVATE', 'CONFIDENTIAL', 'HIGH', 'HIGHEST']
+* item_types: ['FOOD', 'ALCOHOL', 'MEDICAL_EQUIPMENT', 'TOOLS', 'OFFICE_SUPPLIES', 'WEAPONS']
+* resource_change_reason: ['creating', 'reading', 'updating', 'deleting']
+* project_status: ['PROPOSED','REJECTED','IN_PROGRESS','COMPLETED','CANCELLED']
 
 ## Employees
 
+
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
-| ID            | bigint    | Primary key. Should really be a serial |
+| id            | serial    | Primary key. Autoincremented |
 | name          | text      | Employee's full name |
-| birthday      | date      |  |
-| department    | integer   | Should probably be an enum |
+| title          | text      | Employee's full name |
+| birthday      | long      | UTC timestamp |
+| department_type    | department | What branch do they work for |
 | workplace     | integer   | ID for the site where they work |
-| securityLevel | integer   | Ranges from 0 (minimum) to 7 (maximum). Should really be an enum |
+| security_level | security_rating   | Their clearance level. See the security_rating enum |
 | salary        | numeric   | Salary per annum |
-| current       | boolean   | Do they currently work for us or not? |
+| currently_employed       | boolean   | Do they currently work for us or not? |
 
 ## Employee-projects
 
@@ -21,30 +31,30 @@ Acts as a mapping between the employes and projects tables.
 
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
-| employeeId    | bigint    | Mapped to the ID column in employees |
-| projectId     | bigint    | Mapped to the ID column in projects  |
+| employee_id    | bigint    | Mapped to the id column in employees |
+| project_id     | bigint    | Mapped to the id column in projects  |
 
 ## Projects
 
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
-| ID            | integer   | Primary key. Should really be a serial |
+| id            | serial   | Primary key. |
 | title         | text      | The project's name |
 | summary       | text      | What the project is about |
-| budget        | numeric   | How much is being spent on this project |
-| securityRating     | integer   | Minimum clearance level for all employees working on this |
-| status | enum | Can be PROPOSED, CANCELLED, REJECTED, IN_PROGRESS, or COMPLETE |
+| budget        | numeric   | How much is being spent on this project in total |
+| security_level | integer   | Minimum clearance level for all employees working on this |
+| status | project_status | Can be PROPOSED, CANCELLED, REJECTED, IN_PROGRESS, or COMPLETE |
 
 
 ## Sites
 
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
-| ID            | integer   | Primary key. Should really be a serial |
-| country       | text      |  |
-| region        | text      |  |
-| postalAddress | text      |  |
-| securityLevel | integer   | Minimum security level for any employees working here |
+| ID            | serial   | Primary key. Autoincremented |
+| country       | text      | E.g. Ireland |
+| region        | text      | E.g. Connacht |
+| address | text      | The postal address. May or may not include a postcode |
+| security_level | integer   | Minimum security level for any employees working here |
 
 ## Sites-projects
 
@@ -66,6 +76,13 @@ Tracks the supplies currently at a site
 | quantity      | integer   | How much we currently have in stock |
 
 ## Items
+id serial PRIMARY KEY,
+  name text,
+  buying_price numeric,
+  selling_price numeric,
+  weight numeric,
+  consumable boolean,
+  type item_types
 
 Tracks items for supply purposes
 
@@ -77,7 +94,7 @@ Tracks items for supply purposes
 | selling_price | numeric   | How much we sell it for |
 | weight        | numeric   | Weight per unit in kg |
 | consumable    | boolean   | Can you eat it? |
-| type          | enum      | Can be FOOD, ALCOHOL, MEDICAL_EQUIPMENT, TOOLS, OFFICE_SUPPLIES, WEAPONS |
+| type          | item_types      | See the item_types enum |
 
 ## Orders
 
@@ -85,9 +102,9 @@ Tracks orders to a site
 
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
-| orderId       | integer   | Primary key. Autoincremented |
-| siteId        | integer   | Identifies the site to which they are being shipped |
-| orderDate     | date      | When this was placed |
+| id       | serial   | Primary key. Autoincremented |
+| site        | integer   | Identifies the site to which they are being shipped |
+| date     | date      | When this was placed |
 | username      | text      | Who placed the order. Mapped to username in users table |
 
 ## Order-items
@@ -108,7 +125,7 @@ Handles login details
 |---------------|-----------|-----------|
 | username      | text      | Unique username |
 | password      | text      | Salted and hashed using BCrypt |
-| employeeId    | bigint    | Mapped to the ID column in the employees table |
+| employee    | bigint    | Mapped to the ID column in the employees table |
 | enabled       | boolean   | If set to true, the user may log in. Otherwise, they may not |
 
 
@@ -119,7 +136,7 @@ Used to define the user's role
 | Column        | Type      | Comments  |
 |---------------|-----------|-----------|
 | username      | text      | Username. Must match that in the user table |
-| authority     | text      | Matches a role, e.g. FULL_ADMIN, EDIT_OWN_DETAILS |
+| authority     | text      | Matches a role, e.g. ROLE_FULL_ADMIN, ROLE_EDIT_OWN_DETAILS |
 
 
 ## Test
