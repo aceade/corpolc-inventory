@@ -269,7 +269,7 @@ Required roles: ROLE_FULL_ADMIN,ROLE_FULL_READONLY
 ```
 GET /site/count
 Response: 2
-
+```
 
 #### Add site
 Required role: ROLE_FULL_ADMIN
@@ -286,8 +286,6 @@ Request Body:
 
 Response on success: 200 OK
 Response on failure: 500 Internal Server Error
-
-```
 
 #### Delete Site
 Required role: ROLE_FULL_ADMIN
