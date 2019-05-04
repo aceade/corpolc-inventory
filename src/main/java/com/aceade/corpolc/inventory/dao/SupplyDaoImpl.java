@@ -56,6 +56,7 @@ public class SupplyDaoImpl implements SupplyDao {
         return (Item) jdbcTemplate.queryForObject(sql, new ItemRowMapper(), itemId);
     }
     
+    @Override
     public List<Item> getAllItems() {
 		String sql = Queries.GET_ALL_ITEMS;
 		return jdbcTemplate.query(sql, new ItemRowMapper());
