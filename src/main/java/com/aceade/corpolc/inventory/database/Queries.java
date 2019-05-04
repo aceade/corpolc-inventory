@@ -56,6 +56,7 @@ public class Queries {
      
     public static final String ADD_ITEM = "INSERT INTO items (name, buying_price, selling_price, weight, consumable, type) VALUES (?, ?, ?, ?, ?, ?::supply_type )";
     public static final String GET_ITEM = "SELECT * FROM items WHERE id = ?";
+    public static final String GET_ALL_ITEMS = "SELECT * FROM items";
     public static final String ADD_ORDER = "INSERT INTO orders (\"siteId\", \"orderDate\", status, username) VALUES (?, ?, 'SUBMITTED', ?)";
     public static final String ADD_ORDER_ITEM = "INSERT INTO order_items (order_id, item_id, quantity) VALUES (?,?,?)";
     public static final String GET_ORDER = "SELECT o.*, s.* FROM orders o, sites s WHERE o.\"orderId\" = ? AND o.\"siteId\" = s.id";

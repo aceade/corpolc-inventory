@@ -29,7 +29,6 @@ See the LICENCE file
 
 ### Building and running the application
 
-* `mvn clean install`
 * `mvn spring-boot:run -Dcom.aceade.corpolc.jdbcUser=postgres -Dcom.aceade.corpolc.jdbcPassword=${password}`
 
 When it's running, visit localhost:8081/home.html

@@ -18,6 +18,7 @@ and open the template in the editor.
         <script src="resources/employees.js"></script>
         <script src="resources/projects.js"></script>
         <script src="resources/sites.js"></script>
+        <script src="resources/items.js"></script>
         <link href="resources/inventory.css" rel="stylesheet">
     </head>
     <body>
@@ -130,6 +131,11 @@ and open the template in the editor.
                         </select>
                         <button onclick="sites.add()">Submit</button>
                     </div>
+                </div>
+                
+                <label class="noselect" onclick="inventory.toggleElement('#itemControlDiv')" >Items and Orders</label>
+                <div id="itemControlDiv" class="controlDiv">
+                    <button onclick="supplies.getAllItems()">View All Items</button>
                 </div>
             </div>
             

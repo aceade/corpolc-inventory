@@ -343,6 +343,32 @@ Response on failure: false (200 OK)
 ## Supply URLs
 Used to place or view orders, or add/view items
 
+#### View all items
+```
+GET /items/all
+Response:
+[
+	{
+	  "id" : 1
+	  "name": "First Aid Kit",
+	  "buyingPrice": 10.5,
+	  "sellingPrice": 12.2,
+	  "weightPerUnit": 1.0,
+	  "consumable": false,
+	  "type": "MEDICAL_EQUIPMENT"
+	},
+	{
+	  "id" : 2
+	  "name": "First Aid Kit",
+	  "buyingPrice": 10.5,
+	  "sellingPrice": 12.2,
+	  "weightPerUnit": 1.0,
+	  "consumable": false,
+	  "type": "MEDICAL_EQUIPMENT"
+	}
+]
+```
+
 #### View an item
 ```
 GET /item?id=1

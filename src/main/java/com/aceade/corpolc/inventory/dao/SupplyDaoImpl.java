@@ -55,6 +55,11 @@ public class SupplyDaoImpl implements SupplyDao {
         String sql = Queries.GET_ITEM;
         return (Item) jdbcTemplate.queryForObject(sql, new ItemRowMapper(), itemId);
     }
+    
+    public List<Item> getAllItems() {
+		String sql = Queries.GET_ALL_ITEMS;
+		return jdbcTemplate.query(sql, new ItemRowMapper());
+	}
 
     @Override
     public void placeOrder(NewOrderRequest newOrderRequest, String username) {

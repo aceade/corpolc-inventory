@@ -22,6 +22,8 @@ public interface SupplyDao {
     void addItem(NewItemRequest newItem);
 
     Item getItem(long itemId);
+    
+    List<Item> getAllItems();
 
     List<Item> getItemsWithName(String name);
 

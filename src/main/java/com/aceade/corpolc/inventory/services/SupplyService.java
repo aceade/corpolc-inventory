@@ -30,6 +30,10 @@ public class SupplyService {
         supplyDao.addItem(newItem);
     }
     
+    public List<Item> getAllItems() {
+		return supplyDao.getAllItems();
+	}
+    
     public Item getItem(long itemId) {
         return supplyDao.getItem(itemId);
     }

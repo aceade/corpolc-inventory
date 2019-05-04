@@ -41,6 +41,11 @@ public class SupplyController {
         return supplyService.getItem(itemId);
     }
     
+    @RequestMapping(value="/item/all", method = RequestMethod.GET)
+    public List<Item> viewAllItems() {
+		return supplyService.getAllItems();
+	}
+    
     @RequestMapping(value="/item/search", method = RequestMethod.GET)
     public List<Item> searchForItems(@RequestParam(value="name", required=true) String name) {
         return supplyService.getItemsWithName(name);
