@@ -21,7 +21,7 @@ public class Order {
     
     private Site address;
     
-    private Date orderDate;
+    private long orderDate;
     
     private OrderStatus orderStatus;
     
@@ -62,14 +62,14 @@ public class Order {
     /**
      * @return the orderDate
      */
-    public Date getOrderDate() {
+    public long getOrderDate() {
         return orderDate;
     }
 
     /**
      * @param orderDate the orderDate to set
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(long orderDate) {
         this.orderDate = orderDate;
     }
 

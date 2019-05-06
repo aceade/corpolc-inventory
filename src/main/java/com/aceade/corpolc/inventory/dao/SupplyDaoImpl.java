@@ -66,7 +66,7 @@ public class SupplyDaoImpl implements SupplyDao {
     public void placeOrder(NewOrderRequest newOrderRequest, String username) {
         long siteId = newOrderRequest.getSiteId();
         Map<Long, Integer> orderItems = newOrderRequest.getOrderItems();
-        Date orderDate = newOrderRequest.getOrderDate();
+        long orderDate = newOrderRequest.getOrderDate();
         String orderSql = Queries.ADD_ORDER;
         String itemSql = Queries.ADD_ORDER_ITEM;
 
@@ -77,9 +77,9 @@ public class SupplyDaoImpl implements SupplyDao {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 
                 // it turns out that the ID column must be specified...
-                PreparedStatement st = connection.prepareStatement(orderSql, new String[]{"orderId"});
+                PreparedStatement st = connection.prepareStatement(orderSql, new String[]{"id"});
                 st.setLong(1, siteId);
-                st.setDate(2, new java.sql.Date(orderDate.getTime()));
+                st.setLong(2, orderDate);
                 st.setString(3, username);
                 return st;
             }
@@ -97,11 +97,11 @@ public class SupplyDaoImpl implements SupplyDao {
     }
 
     @Override
-    public Order viewOrder(long orderId) {
+    public Order viewOrder(long id) {
         String sql = Queries.GET_ORDER;
-        Order order = (Order) jdbcTemplate.queryForObject(sql, new OrderRowMapper(), orderId);
+        Order order = (Order) jdbcTemplate.queryForObject(sql, new OrderRowMapper(), id);
 
-        order.setItems(getOrderItems(orderId));
+        order.setItems(getOrderItems(id));
         return order;
     }
 

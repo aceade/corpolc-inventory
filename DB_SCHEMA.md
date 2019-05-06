@@ -76,13 +76,6 @@ Tracks the supplies currently at a site
 | quantity      | integer   | How much we currently have in stock |
 
 ## Items
-id serial PRIMARY KEY,
-  name text,
-  buying_price numeric,
-  selling_price numeric,
-  weight numeric,
-  consumable boolean,
-  type item_types
 
 Tracks items for supply purposes
 
@@ -105,6 +98,7 @@ Tracks orders to a site
 | id       | serial   | Primary key. Autoincremented |
 | site        | integer   | Identifies the site to which they are being shipped |
 | date     | date      | When this was placed |
+| status     | order_status      | See the order_status enum |
 | username      | text      | Who placed the order. Mapped to username in users table |
 
 ## Order-items

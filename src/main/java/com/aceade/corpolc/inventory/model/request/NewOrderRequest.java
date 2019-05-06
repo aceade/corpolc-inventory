@@ -20,7 +20,7 @@ public class NewOrderRequest {
     private long siteId;
     
     @NotNull
-    private Date orderDate;
+    private long orderDate;
     
     // map of object IDs to quantity
     @NotNull
@@ -47,14 +47,14 @@ public class NewOrderRequest {
     /**
      * @return the orderDate
      */
-    public Date getOrderDate() {
+    public long getOrderDate() {
         return orderDate;
     }
 
     /**
      * @param orderDate the orderDate to set
      */
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(long orderDate) {
         this.orderDate = orderDate;
     }
 

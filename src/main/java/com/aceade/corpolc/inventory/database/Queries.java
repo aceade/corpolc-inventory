@@ -54,15 +54,15 @@ public class Queries {
      * Supply related
      */
      
-    public static final String ADD_ITEM = "INSERT INTO items (name, buying_price, selling_price, weight, consumable, type) VALUES (?, ?, ?, ?, ?, ?::supply_type )";
+    public static final String ADD_ITEM = "INSERT INTO items (name, buying_price, selling_price, weight, consumable, type) VALUES (?, ?, ?, ?, ?, ?::item_types )";
     public static final String GET_ITEM = "SELECT * FROM items WHERE id = ?";
     public static final String GET_ALL_ITEMS = "SELECT * FROM items";
-    public static final String ADD_ORDER = "INSERT INTO orders (\"siteId\", \"orderDate\", status, username) VALUES (?, ?, 'SUBMITTED', ?)";
+    public static final String ADD_ORDER = "INSERT INTO orders (site, date, status, username) VALUES (?, ?, 'SUBMITTED'::order_status, ?)";
     public static final String ADD_ORDER_ITEM = "INSERT INTO order_items (order_id, item_id, quantity) VALUES (?,?,?)";
-    public static final String GET_ORDER = "SELECT o.*, s.* FROM orders o, sites s WHERE o.\"orderId\" = ? AND o.\"siteId\" = s.id";
+    public static final String GET_ORDER = "SELECT o.*, o.id AS order_id, s.*, s.id AS site_id FROM orders o, sites s WHERE o.id = ? AND o.site = s.id";
     public static final String GET_ORDER_ITEMS = "SELECT i.*, oi.quantity FROM items i, order_items oi WHERE oi.item_id = i.id AND oi.order_id = ?";
-    public static final String GET_ORDERS_BY_USER = "SELECT o.*, s.* FROM orders o, sites s WHERE o.username = ? AND o.\"siteId\" = s.id";
-    public static final String SET_ORDER_STATUS = "UPDATE orders SET status = ?::order_status WHERE \"orderId\" = ?";
+    public static final String GET_ORDERS_BY_USER = "SELECT o.*, s.* FROM orders o, sites s WHERE o.username = ? AND o.site = s.id";
+    public static final String SET_ORDER_STATUS = "UPDATE orders SET status = ?::order_status WHERE id = ?";
     public static final String GET_ITEMS_BY_NAME = "SELECT * FROM items WHERE name LIKE ?";
     public static final String GET_SITE_STOCKS = "SELECT s.quantity, i.* FROM site_stocks s, items i WHERE s.item_id = i.id AND s.site_id = ?";
     
@@ -71,7 +71,7 @@ public class Queries {
      * User related
      */
      
-    public static final String ADD_USER = "INSERT INTO users (username, password, \"employeeId\", enabled) VALUES(?,?,?,true); INSERT into authorities(username, authority) VALUES (?,?)";
+    public static final String ADD_USER = "INSERT INTO users (username, password, employee, enabled) VALUES(?,?,?,true); INSERT into authorities(username, authority) VALUES (?,?)";
     public static final String DISABLE_USER = "UPDATE users SET enabled=false WHERE username = ?";
 }
 

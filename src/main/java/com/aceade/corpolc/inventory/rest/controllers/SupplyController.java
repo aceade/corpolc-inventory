@@ -9,6 +9,7 @@ import com.aceade.corpolc.inventory.model.request.ChangeOrderStatusRequest;
 import com.aceade.corpolc.inventory.model.request.NewItemRequest;
 import com.aceade.corpolc.inventory.model.request.NewOrderRequest;
 import com.aceade.corpolc.inventory.model.supplies.Item;
+import com.aceade.corpolc.inventory.model.base.Role;
 import com.aceade.corpolc.inventory.model.supplies.Order;
 import com.aceade.corpolc.inventory.services.SupplyService;
 import java.util.List;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +53,7 @@ public class SupplyController {
         return supplyService.getItemsWithName(name);
     }
     
+    @Secured({Role.ROLE_FULL_ADMIN})
     @RequestMapping(value="/item", method=RequestMethod.POST)
     public void addItem(@RequestBody NewItemRequest newItem, HttpServletRequest req) {
         LOGGER.info("User [" + req.getRemoteUser() + "] adding new item [" + newItem + "]");

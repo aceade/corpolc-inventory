@@ -21,14 +21,14 @@ public class OrderRowMapper implements RowMapper {
     @Override
     public Order mapRow(ResultSet rs, int i) throws SQLException {
         Order order = new Order();
-        order.setId(rs.getLong("orderId"));
-        order.setOrderDate(rs.getDate("orderDate"));
+        order.setId(rs.getLong("order_id"));
+        order.setOrderDate(rs.getLong("date"));
         order.setUsername(rs.getString("username"));
         order.setOrderStatus(OrderStatus.valueOf(rs.getString("status")));
         Site site = new Site();
-        site.setId(rs.getLong("siteId"));
+        site.setId(rs.getLong("site_id"));
         site.setCountry(rs.getString("country"));
-        site.setPostalAddress(rs.getString("postalAddress"));
+        site.setPostalAddress(rs.getString("address"));
         site.setRegion(rs.getString("region"));
         order.setAddress(site);
         return order;

@@ -37,12 +37,25 @@
             contentType: "application/json",
             data: JSON.stringify(jsonData),
             processData: false,
-            success: function(results){
-                logJson(results);
-            },
             error: function(results){
                 logResult(results);
-            }
+            },
+            statusCode: {
+				200: function(results) {
+					logJson(results);
+				},
+				401: function(results){
+					alert("You are not authorised to make this request!");
+					console.error(results);
+				},
+				404: function() {
+					alert("Wrong URL");
+				},
+				500: function(results) {
+					alert("A server error occurred!");
+					console.error(results);
+				}
+			}
         });
     };
     

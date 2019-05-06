@@ -5,6 +5,7 @@ CREATE TYPE security_rating AS ENUM('MINIMUM','LOW', 'MEDIUM', 'PRIVATE', 'CONFI
 CREATE TYPE item_types AS ENUM('FOOD', 'ALCOHOL', 'MEDICAL_EQUIPMENT', 'TOOLS', 'OFFICE_SUPPLIES', 'WEAPONS');
 CREATE TYPE resource_change_reason AS ENUM('creating', 'reading', 'updating', 'deleting');
 CREATE TYPE project_status AS ENUM('PROPOSED','REJECTED','IN_PROGRESS','COMPLETED','CANCELLED');
+CREATE TYPE order_status AS ENUM('SUBMITTED', 'CANCELLED', 'IN_TRANSIT', 'DELIVERED');
 
 CREATE TABLE projects (
   id serial PRIMARY KEY,
@@ -74,6 +75,7 @@ CREATE TABLE orders(
     id serial PRIMARY KEY,
     site integer,
     date bigint,
+    status order_status DEFAULT 'SUBMITTED',
     username text REFERENCES users(username)
 );
 
@@ -197,12 +199,12 @@ INSERT INTO items(name, buying_price, selling_price, weight, consumable, "type")
 VALUES  ('Swamp Beer', 10, 20, 10, true, 'ALCOHOL'),
 		('Bonglesticks', 10, 50, 5, false, 'TOOLS'),
 		('Klobb', 100, 150, 1.5, false, 'WEAPONS'),
-		('Bandages', 5, 15, false, 0.5, 'MEDICAL_EQUIMENT'),
-		('First Aid Kit', 10, 25, 2, false, 'MEDICAL_EQUIMENT'),
-		('Aspirin Case', 5, 15, false, 1, 'MEDICAL_EQUIMENT'),
-		('N00b Tube', 100, 500, false, 10, 'WEAPONS'),
-		('Red Staplers', 10, 50, false, 0.5, 'OFFICE_SUPPLIES'),
-		('Advent Burgers', 100, 500, true, 10, 'FOOD');
+		('Bandages', 5, 15, 0.5, false, 'MEDICAL_EQUIPMENT'),
+		('First Aid Kit', 10, 25, 2, false, 'MEDICAL_EQUIPMENT'),
+		('Aspirin Case', 5, 15, 1, false, 'MEDICAL_EQUIPMENT'),
+		('N00b Tube', 100, 500, 10, false, 'WEAPONS'),
+		('Red Staplers', 10, 50, 0.5, false, 'OFFICE_SUPPLIES'),
+		('Advent Burgers', 100, 500, 10, true, 'FOOD');
 
 -- add a basic order
 INSERT INTO orders  (site, date, username)
